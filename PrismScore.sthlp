@@ -1,0 +1,323 @@
+{smcl}
+{* *! version 1.0 21 Jul 2022}{...}
+{viewerdialog "prismscore" "dialog prismscore"}{...}
+{viewerjumpto "Syntax" "./PrismScore##syntax"}{...}
+{viewerjumpto "Description" "./PrismScore##description"}{...}
+{viewerjumpto "Options" "./PrismScore##options"}{...}
+{viewerjumpto "Remarks" "./PrismScore##remarks"}{...}
+{viewerjumpto "Custom Implementations" "./PrismScore##custom"}{...}
+{viewerjumpto "License" "./PrismScore##License"}{...}
+{title:Title}
+
+{phang}
+{bf:PRISM Score} {hline 2} a command to calculate the PRISM III and PRISM IV scores
+
+{marker syntax}{...}
+{title:Syntax}
+{p 8 17 2}
+{cmdab:prismscore}
+[newvarlist]
+[{help if}]
+[{help in}]
+{cmd:,}
+{it:options}
+
+{synoptset 20 tabbed}{...}
+{syntab: {bf:newvarlist} - will contain the calculated score; need to specifiy either 1, 3 or 4 variables:}
+{synoptline}
+{syntab:PRISM III}
+{synopt:3 variables} must follow this order: neurologicscore_var nonneurologicscore_var totalscore_var{p_end}
+{p2line}
+{syntab:PRISM IV}
+{synopt:1 variable} variable will contain {ul:only} the PRISM IV score.{p_end}
+{synopt:4 variables} must follow this order: neurologicscore_var nonneurologicscore_var totalscore_var prism4_var{p_end}
+
+{synoptset 20 tabbed}{...}
+{synopthdr}
+{synoptline}
+{syntab:PRISM III (required)}
+
+{synopt:Age - Must specify either {opt age} or both {opt dob} and {opt doa}} {p_end}
+{p2line}
+{synopt:{opt age(varname)}} age variable. Requires special coding.{p_end}
+{synopt:{opt dob(varname)}} date of birth variable {p_end}
+{synopt:{opt doa(varname)}} date of admission variable {p_end}
+
+{synopt:Temperature} {p_end}
+{p2line}
+{synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+
+{synopt: {it:Optional}} {p_end}
+{synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+
+{synopt:Additional Vitals} {p_end}
+{p2line}
+{synopt:{opt sbp(varname)}} systolic blood pressure variable. {p_end}
+{synopt:{opt hr(varname)}} heart rate variable. {p_end}
+{synopt:{opt gcs(varname)}} Glasgow Coma Score variable. {p_end}
+{synopt:{opt pup:ils(varname)}} number of pupils > 3mm and fixed. {p_end}
+
+{synopt:Acid-Base Status} {p_end}
+{p2line}
+
+{synopt:{opt ph(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+{synopt:{opt bicarb(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+{synopt:{opt pc:o2(varname)}} PCO2 variable. {p_end}
+{synopt:{opt pa:o2(varname)}} PaO2 variable. {p_end}
+
+{synopt: {it:Optional}} {p_end}
+{synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+{synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
+{synopt:Laboratory Values} {p_end}
+{p2line}
+{synopt:{opt glu:cose(varname)}} glucose variable in mg/dL. {p_end}
+{synopt:{opt pot:assium(varname)}} potassium variable in mmol/L. {p_end}
+{synopt:{opt cr:eatinine(varname)}} creatinine variable in mg/dL. {p_end}
+{synopt:{opt bun(varname)}} BUN variable in mg/dL. {p_end}
+{synopt:{opt wbc(varname)}} WBC variable in cells/mm3. {p_end}
+{synopt:{opt plt(varname)}} Platelet Count variable in cells/mm3. {p_end}
+{p2line}
+
+
+{syntab:PRISM IV (optional)}
+{synopt:{opt prism:iv}} calculates the PRISM IV % mortality. Options below are required if {opt prismiv} specified  {p_end}
+{p2line}
+{synopt:{opt sou:rce(varname)}} admission source. Requires special coding. {p_end}
+
+{synopt:{opt cpr(varname)}} CPR status. {p_end}
+
+{synopt:{opt can:cer(varname)}} cancer status.{p_end}
+
+{synopt:{opt risk(varname)}} low-risk system of primary dysfunction status. {p_end}
+
+{syntab:Additional Options}
+{p2line}
+
+{synoptset 20 tabbed}{...}
+{synopt:{opt si}} will calculate scores based on SI Lab values. {p_end}
+{synopt:{opt pltu:nit(integer)}} allows specifying a different platelet count unit.{p_end}
+{synopt:{opt wbcu:nit(integer)}} allows specifying a different WBC unit.{p_end}
+{synopt:{opt FAHR:enheit}} allows specifying a different temperature unit.{p_end}
+
+{syntab:Debugging Options}
+{p2line}
+
+{synopt:{opt trace}} enables the trace option for the command. Useful in case of unexpected errors. {p_end}
+
+{synopt:{opt supp:ress}} suppresses warnings regarding data imputation
+
+{synopt:{opt suppressa:ll}} suppress all errors and data validation functions
+
+{synopt:{opt noimp:utation}} shows missing score if any variables are missing
+
+{synopt:{opt noval:idation}} supresses out-of-range data checks. If this is not specified, values that are out-of-range will be considered missing. 
+
+{synoptline}
+{p2colreset}{...}
+{p 4 6 2}
+
+{marker description}{...}
+{title:Description}
+{pstd}
+
+{pstd}
+ {cmd:prismscore} calculates PRISM III and PRISM IV scores for use in PICU research
+
+{marker options}{...}
+{title:Options}
+
+{phang} 
+For all required variables, if there is data missing you will receive a warning. The calculation still be performed using normal values for the age group. See options  {opt suppress} and {opt suppressall} for more information. 
+
+{dlgtab:Main}
+
+{phang}
+{opt prismiv} will calculate a percentage mortality based on the PRISM IV score. This will require specifying {opt admitsource(varname)}, {opt cancer(varname)}, {opt cpr(varname)}, and {opt risk(varname)}.
+
+{dlgtab:PRISM III}
+
+{phang}
+{opt age(varname numeric)} designates the age variable. Age must be coded as: 
+{bf:0} = (<- - 14 days] | {bf:1} = (14 days - 1 month) | {bf:2} = [1 month - 12 months) | {bf:3} = [12 months - 12 years) | {bf:4} = [12 years ->). Alternatively use {opt dob} and {opt doa} for automatic calculations of age. 
+This is recommended if the age is not already appropriately coded.
+
+{phang}
+{opt dob(varname time)} designates the date of birth variable. Date of birth must be in  %td format.
+
+{phang}
+{opt doa(varname time)} designates the date of admission variable. Date of admission must be in  %td format.
+
+{synoptline}
+
+{phang}
+{opt sbp(varname numeric)} designates the systolic blood pressure variable. 
+
+{phang}
+{opt hr(varname numeric)} designates the heart rate variable. 
+
+{phang}
+{opt gcs(varname integer)} designates the Glascow Coma Score variable. 
+
+{phang}
+{opt pupils(varname integer)} designates the variable containing the number of pupils >3mm and fixed. 
+
+{phang}
+{opt temp(varname numeric)} designates the temperature variable. If there is only one temperature recorded, the command will use the recorded temperature for both high and low temperature calculations. If both a high and a low temperature value are recorded, specify {opt templow}.
+
+{phang}
+{opt templow(varname numeric)} designates the low temperature variable. If both {opt temp} and {opt templow} are specified, the command will compare the values and will use the highest value for high temperature calculations and the lowest value for the low temperature calcuations. 
+
+{synoptline}
+
+{phang}
+{opt ph(varname numeric)} designates the ph variable. If there is only one pH recorded, the command will use the recorded pH for
+ both high and low pH calculations. If both a high and a low pH value are recorded, specify {opt phhigh}. 
+
+{phang}
+{opt phhigh(varname numeric)} designates the high ph variable. If both {opt ph} and {opt phhigh} are specified, the command will compare the values and will use the highest value for high ph calculations and the lowest value for the low ph calculations. 
+
+{phang}
+{opt bicarb(varname numeric)} designates the HCO3 {&mu}{superscript:-}/CO {sub:2} variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations. If both a high and a low bicarbonate value are recorded, specify {opt bicarbhigh}. 
+
+{phang}
+{opt bicarbhigh(varname numeric)} designates the high HCO3 {sup:-}/CO {sub:2} variable. If both {opt bicarb} and {opt bicarbhigh} are specified, the command will compare the values and will use the highest value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations. 
+
+{phang}
+{opt pco2(varname numeric)} designates the PCO2 variable; not to be confused with the bicarb variable. 
+
+{phang}
+{opt po2(varname numeric)} designates the PO2 variable. 
+
+{synoptline}
+
+{phang}
+{opt glucose(varname)} glucose variable in mg/dL.
+
+{phang}
+{opt potassium(varname)} potassium variable in mmol/L. 
+
+{phang}
+{opt creatinine(varname)} creatinine variable in mg/dL. 
+
+{phang}
+{opt bun(varname)} BUN variable in mg/dL. 
+
+{phang}
+{opt wbc(varname)} WBC variable in cells/mm3. 
+
+{phang}
+{opt plt(varname)} Platelet Count variable in cells/mm3. 
+
+{phang}
+{opt fahrenheit} Changes temperature units to Fahrenheit. 
+
+{dlgtab:PRISM IV}
+
+{phang}
+{opt source(varname)} Admission Source variable. Source must be coded as: {bf:0} = Operating Room or PACU | {bf:1} = Another Hospital| {bf:2} = Inpatient Unit| {bf:3} = Emergency Department.
+
+{phang}
+{opt cpr(varname)} CPR in the last 24h variable. CPR must be coded as: {bf:0} = No | {bf:1} = Yes.
+
+{phang}
+{opt cancer(varname)} Acute or Chronic Cancer variable. Cancer must be coded as: {bf:0} = No | {bf:1} = Yes.
+
+{phang}
+{opt risk(varname)} Low-risk systems of primary dysfunction variable. Risk must be coded as: {bf:0} = No | {bf:1} = Yes. Endocrine, hematologic, musculoskeletal, and renal systems are defined as low risk.
+
+{dlgtab:Unit Options}
+
+{phang}
+{opt wbcunit(numeric)} If not specified, it defaults to cells/mm3 - {opt wbcunit(1)}. If data is in 1000 * cells/mm3 specify {opt wbcunit(1000)}.
+
+{phang}
+{opt pltunit(numeric)} If not specified, it defaults to cells/mm3 - {opt pltunit(1)}. If data is in 1000 * cells/mm3 specify {opt pltunit(1000)}.
+
+{phang}
+{opt si} If specified, it assumes glucose is recorded as mmol/L, creatinine is recorded as umol/L and BUN is recorded as mmol/L. Otherwise it assumes glucose, creatinine and BUN are recorded as mg/dL. 
+
+{dlgtab:Useful}
+
+{phang}
+{opt trace} enables trace
+
+{phang}
+{opt suppress} suppresses warnings about calculation with missing values
+
+{phang}
+{opt suppressall} suppresses all warnings and data checks
+
+{phang}
+{opt noimputation} calculated score will be set to missing if any of the included variables are missing
+
+{phang}
+{opt novalidation} if this option is {ul:NOT} specified, variables that are out of range (incompatible with known physiology) will be set to missing.  
+
+
+	Physiologic Variable{col 35} Acceptable Ranges
+	{col 35} {it:(min) - (max)}
+	{hline 45}
+	Systolic BP{col 35}0{col 40} -{col 45}300
+	Heart Rate{col 35}0{col 40} -{col 45}300
+	Temperature - C{col 35}25{col 40} -{col 45}45
+	Temperature - F{col 35}77{col 40} -{col 45}113
+	pH{col 35}6.5{col 40} -{col 45}7.9
+	Bicarbonate{col 35}0.1{col 40} -{col 45}60
+	PCO2{col 35}1{col 40} -{col 45}200
+	PaO2{col 35}1 {col 40} -{col 45}600
+	Glucose - mg/dL{col 35}5 {col 40} -{col 45}999
+	Glucose - mmol/L{col 35}0.2 {col 40} -{col 45}55.45
+	Creatinine - mg/dL{col 35}0.01 {col 40} -{col 45}15
+	Creatinine - mmol/L{col 35}0.8 {col 40} -{col 45}1350
+	BUN - mg/dL{col 35}1 {col 40} -{col 45}150
+	BUN - mmol/L{col 35}0.3 {col 40} -{col 45}53.6
+	Potassium{col 35}1 {col 40} -{col 45}10
+	GCS{col 35}3 {col 40} -{col 45}15
+
+
+
+{marker custom}{...}
+{title:Custom Implementations}
+
+{pstd}
+ Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016. If you wish to change them, you have to modify the prismscore.ado file. 
+ I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please email me and I'm happy to help. 
+ 
+ {pstd}
+ {it:Instructions}{break}Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for {hi:CHANGE THIS}. Modify the coefficients as needed and reload the program.  The following commands should be helpful:
+
+{phang}
+1. {stata doedit prismscore.ado}
+
+{phang}
+2. Make edits and save.
+
+{phang}
+3. {stata program drop prismscore}
+
+{phang}
+4. {stata do prismscore.ado}
+
+
+{title:References}
+{pstd}
+
+{pstd}
+[1] Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52. {break}[2] Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
+
+{pstd}
+
+{pstd}
+
+{title:Author}
+{p}
+
+Razvan Azamfirei
+Email: {browse "mailto:stata@azamfirei.com":stata@azamfirei.com}
+
+{marker License}{...}
+{title:License}
+{p} This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.{p_end}
+See the GNU General Public {browse "gnu.org/licenses/gpl-3.0.html":License} for more details.
