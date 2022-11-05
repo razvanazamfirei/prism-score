@@ -1,12 +1,12 @@
 {smcl}
 {* *! version 1.0 21 Jul 2022}{...}
 {viewerdialog "prismscore" "dialog prismscore"}{...}
-{viewerjumpto "Syntax" "./PrismScore##syntax"}{...}
-{viewerjumpto "Description" "./PrismScore##description"}{...}
-{viewerjumpto "Options" "./PrismScore##options"}{...}
-{viewerjumpto "Remarks" "./PrismScore##remarks"}{...}
-{viewerjumpto "Custom Implementations" "./PrismScore##custom"}{...}
-{viewerjumpto "License" "./PrismScore##License"}{...}
+{viewerjumpto "Syntax" "./prismscore##syntax"}{...}
+{viewerjumpto "Description" "./prismscore##description"}{...}
+{viewerjumpto "Options" "./prismscore##options"}{...}
+{viewerjumpto "Remarks" "./prismscore##remarks"}{...}
+{viewerjumpto "Custom Implementations" "./prismscore##custom"}{...}
+{viewerjumpto "License" "./prismscore##License"}{...}
 {title:Title}
 
 {phang}
