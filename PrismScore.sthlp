@@ -236,6 +236,9 @@ This is recommended if the age is not already appropriately coded.
 
 {phang}
 {opt si} If specified, it assumes glucose is recorded as mmol/L, creatinine is recorded as umol/L and BUN is recorded as mmol/L. Otherwise it assumes glucose, creatinine and BUN are recorded as mg/dL. 
+{phang}
+{opt fahrenheit}} If specified, it assumes glucose is recorded in Fahrenheit. If not specified, Celsius is assumed.{p_end}
+
 
 {dlgtab:Useful}
 
