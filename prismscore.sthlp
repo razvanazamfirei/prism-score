@@ -53,29 +53,41 @@
 {synopt:Additional Vitals} {p_end}
 {p2line}
 {synopt:{opt sbp(varname)}} systolic blood pressure variable. {p_end}
+
 {synopt:{opt hr(varname)}} heart rate variable. {p_end}
+
 {synopt:{opt gcs(varname)}} Glasgow Coma Score variable. {p_end}
+
 {synopt:{opt pup:ils(varname)}} number of pupils > 3mm and fixed. {p_end}
 
 {synopt:Acid-Base Status} {p_end}
 {p2line}
 
 {synopt:{opt ph(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+
 {synopt:{opt bicarb(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
 {synopt:{opt pc:o2(varname)}} PCO2 variable. {p_end}
+
 {synopt:{opt pa:o2(varname)}} PaO2 variable. {p_end}
 
 {synopt: {it:Optional}} {p_end}
 {synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+
 {synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
 
 {synopt:Laboratory Values} {p_end}
 {p2line}
 {synopt:{opt glu:cose(varname)}} glucose variable in mg/dL. {p_end}
+
 {synopt:{opt pot:assium(varname)}} potassium variable in mmol/L. {p_end}
+
 {synopt:{opt cr:eatinine(varname)}} creatinine variable in mg/dL. {p_end}
+
 {synopt:{opt bun(varname)}} BUN variable in mg/dL. {p_end}
+
 {synopt:{opt wbc(varname)}} WBC variable in cells/mm3. {p_end}
+
 {synopt:{opt plt(varname)}} Platelet Count variable in cells/mm3. {p_end}
 {p2line}
 
@@ -96,8 +108,11 @@
 
 {synoptset 20 tabbed}{...}
 {synopt:{opt si}} will calculate scores based on SI Lab values. {p_end}
+
 {synopt:{opt pltu:nit(integer)}} allows specifying a different platelet count unit.{p_end}
+
 {synopt:{opt wbcu:nit(integer)}} allows specifying a different WBC unit.{p_end}
+
 {synopt:{opt FAHR:enheit}} allows specifying a different temperature unit.{p_end}
 
 {syntab:Debugging Options}
