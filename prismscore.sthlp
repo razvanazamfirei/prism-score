@@ -7,6 +7,7 @@
 {viewerjumpto "Remarks" "./prismscore##remarks"}{...}
 {viewerjumpto "Custom Implementations" "./prismscore##custom"}{...}
 {viewerjumpto "License" "./prismscore##License"}{...}
+{viewerjumpto "Variable Coding Reference" "./prismscore##variable"}{...}
 {title:Title}
 
 {phang}
@@ -40,7 +41,9 @@
 {synopt:Age - Must specify either {opt age} or both {opt dob} and {opt doa}} {p_end}
 {p2line}
 {synopt:{opt age(varname)}} age variable. Requires special coding.{p_end}
+
 {synopt:{opt dob(varname)}} date of birth variable {p_end}
+
 {synopt:{opt doa(varname)}} date of admission variable {p_end}
 
 {synopt:Temperature} {p_end}
@@ -193,10 +196,10 @@ This is recommended if the age is not already appropriately coded.
 {opt phhigh(varname numeric)} designates the high ph variable. If both {opt ph} and {opt phhigh} are specified, the command will compare the values and will use the highest value for high ph calculations and the lowest value for the low ph calculations. 
 
 {phang}
-{opt bicarb(varname numeric)} designates the HCO3 {&mu}{superscript:-}/CO {sub:2} variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations. If both a high and a low bicarbonate value are recorded, specify {opt bicarbhigh}. 
+{opt bicarb(varname numeric)} designates the HCO3-/CO2 variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations. If both a high and a low bicarbonate value are recorded, specify {opt bicarbhigh}. 
 
 {phang}
-{opt bicarbhigh(varname numeric)} designates the high HCO3 {sup:-}/CO {sub:2} variable. If both {opt bicarb} and {opt bicarbhigh} are specified, the command will compare the values and will use the highest value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations. 
+{opt bicarbhigh(varname numeric)} designates the high HCO3-/CO2 variable. If both {opt bicarb} and {opt bicarbhigh} are specified, the command will compare the values and will use the highest value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations. 
 
 {phang}
 {opt pco2(varname numeric)} designates the PCO2 variable; not to be confused with the bicarb variable. 
@@ -251,8 +254,9 @@ This is recommended if the age is not already appropriately coded.
 
 {phang}
 {opt si} If specified, it assumes glucose is recorded as mmol/L, creatinine is recorded as umol/L and BUN is recorded as mmol/L. Otherwise it assumes glucose, creatinine and BUN are recorded as mg/dL. 
+
 {phang}
-{opt fahrenheit} If specified, it assumes glucose is recorded in Fahrenheit. If not specified, Celsius is assumed.{p_end}
+{opt fahrenheit} If specified, it assumes glucose is recorded in Fahrenheit. If not specified, Celsius is assumed.
 
 
 {dlgtab:Useful}
@@ -293,7 +297,32 @@ This is recommended if the age is not already appropriately coded.
 	Potassium{col 35}1 {col 40} -{col 45}10
 	GCS{col 35}3 {col 40} -{col 45}15
 
+{marker variable}{...}
+{title:Variable Coding Reference}
 
+	Variable{col 30}Value{col 45}Reference
+	{hline 60}
+	Age{col 30}0{col 45}<= 14 days
+	{col 30}1{col 45}>  14 days & <= 1 month
+	{col 30}2{col 45}>  1 month & <= 1 year
+	{col 30}3{col 45}>  1 year & < 12 years
+	{col 30}4{col 45}>= 12 years
+	
+	Source{col 30}0{col 45}Operating Room or PACU
+	{col 30}1{col 45}Another Hospital
+	{col 30}2{col 45}Inpatient Unit
+	{col 30}3{col 45}Emergency Department
+	
+	CPR{col 30}0{col 45}No
+	{col 30}1{col 45}Yes
+
+	Cancer{col 30}0{col 45}No
+	{col 30}1{col 45}Yes
+
+	Risk(Low-Risk){col 30}0{col 45}No
+	{col 30}1{col 45}Yes
+	{hline 60}
+	Note: 1 month - 30 days; 1 year - 365 days
 
 {marker custom}{...}
 {title:Custom Implementations}
