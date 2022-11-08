@@ -1,9 +1,10 @@
 v 3
 d prismscore
-d PRISM Score Calculator.
+d PRISM Score Calculator
 d Razvan Azamfirei
-d Johns Hopkins University School of Medicine Department of Anesthesiology and Critical Care Medicine
-d Distribution-Date: 07nov2022
-f prismscore.ado
-f prismscore.sthlp
-f prismscore.dlg
+d Department of Anesthesiology and Critical Care Medicine
+d Johns Hopkins University School of Medicine 
+d Distribution-Date: 28nov2022
+f src/prismscore.ado
+f src/prismscore.sthlp
+f src/prismscore.dlg
