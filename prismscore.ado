@@ -9,7 +9,6 @@
 |																			   |
 |	     																	   |
 \*----------------------------------------------------------------------------*/
-	window menu append item "stUserData" "Prism Score" "db prismscore"
 	program prismscore
 	if (c(stata_version) < 17) {
         di as txt "note: this command is written " ///
