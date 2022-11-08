@@ -1,0 +1,40 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}PRISMIII_Data_Generation
+       {txt}log:  {res}/Users/razvanazamfirei/Git/stata-commands/prism-score/prism3_data_generation.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 Nov 2022, 18:55:39
+
+{com}. run "/Users/razvanazamfirei/Git/stata-commands/prism-scoring-private/prism3_data_generation.do"
+{res}{txt}Seed set as 391037629. See do file for RNG State.
+{res}{txt}Beggining Data Validation.
+{res}{txt}#.........
+{res}{txt}#####.....
+{res}{txt}Total Score checks have passed.
+{res}{txt}######....
+{res}{txt}#########.
+{res}{txt}##########
+{res}{txt}Age checks have passed.
+{res}Proceed to command validation.
+{txt}Score Calculation Check Passed - 1/2
+{res}{txt}Score Calculation Check Passed - 2/2
+{res}{txt}PRISM 3 Calculations Validated
+  {res}10000000:32(69606):4152101434:4167507368
+  1000000:31(98659):229536574:1644950358
+  1000000:31(98659):355682158:2012663667
+  1000000:31(98659):1077618683:695698882
+  1000000:31(98659):3495976149:1104676716
+  1000000:31(98659):1140995326:2190301665
+  1000000:31(98659):3624732945:415539793
+  1000000:31(98659):2443141902:3656286849
+  1000000:31(98659):1410366864:3293928628
+  1000000:31(98659):874835610:3418031310
+  1000000:31(98659):2732423101:2470588668
+{com}. log close PRISMIII_Data_Generation
+      {txt}name:  {res}PRISMIII_Data_Generation
+       {txt}log:  {res}/Users/razvanazamfirei/Git/stata-commands/prism-score/prism3_data_generation.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 Nov 2022, 19:00:09
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
