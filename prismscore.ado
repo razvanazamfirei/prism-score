@@ -10,6 +10,7 @@
 |	     																	   |
 \*----------------------------------------------------------------------------*/
 	program prismscore
+	preserve
 	if (c(stata_version) < 17) {
         di as txt "note: this command is written " ///
         "and tested for Stata release 17.0 or higher"
@@ -20,13 +21,11 @@
     else loc vers 17
     
     version `vers'
-
+novarabbrev {
 quietly{	
 ********************************************************************************
 
-	local age 
-	local dob 
-	local doa
+	local age dob doa
 	tempvar I_ageIV calculated_age
 	local l_catvar3 sbp gcs hr pupils
 	local l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
@@ -228,10 +227,10 @@ quietly{
 			}
 		}
 	}
-set varabbrev off
 //	Sets coefficients and bounds
 
 	tempname `l_scalars' 
+	
 		// PRISM IV coefficients - Change this
 		scalar intercept = -5.776
 		scalar agecoef0 = 1.311
@@ -769,7 +768,6 @@ if prismivoption == 1 {
 	replace `prismivvar' = `prismfinal' 
 }
 ********************************************************************************
-set varabbrev on
 if traceoption == 1{
 	set trace off
 }
@@ -783,9 +781,10 @@ if suppressoption == 2 {
 	*/	_newline "`helpme'"
 }
 }
+}
 ********************************************************************************
 di as text _newline "Calculation completed successfully." _continue
-
+restore, not
 end
 
 /*
