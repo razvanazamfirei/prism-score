@@ -514,6 +514,10 @@ if noimputationoption == 0 {
 		
 		if agecase == 5 {
 			generate `calculated_age' = datediff(`I_dob', `I_doa', "DAY")
+			capture assert `calculated_age' >= 0
+			if _rc != 0 {
+				di as error "Calculated age is negative. Observations will be ignored."
+			}
 			generate `I_age' = 0 if inrange(`calculated_age', 0, 30)
 			replace `I_age' = 1 if inrange(`calculated_age', 31, 365)
 			replace `I_age' = 2 if inrange(`calculated_age', 366, 4380) //12y
