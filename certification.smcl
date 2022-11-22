@@ -1,0 +1,95 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}Certification
+       {txt}log:  {res}/Users/razvanazamfirei/Git/stata-commands/prism-score/Validation/certification.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}22 Nov 2022, 11:43:58
+
+{com}. do "/Users/razvanazamfirei/Git/stata-commands/prism-score/Validation/prismscore_confirm.do"
+{txt}
+{com}. cscript prismscore adofile prismscore
+{txt}{hline 63}BEGIN prismscore
+
+-> which prismscore, usesysdir
+/Users/razvanazamfirei/Library/Application Support/Stata/ado/plus/p/prismscore.ado
+{res}{txt}
+{com}. use "Validated Data.dta"
+{txt}
+{com}. datasignature confirm using "Validated Data.dtasig", strict
+{res}{txt}{p 2 3 2}
+(data unchanged since 21nov2022 18:59{txt})
+{p_end}
+
+{com}. 
+. qui prismscore neuro_c nonneuro_c totalscore_c, age(age) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose) potassium(potassium) creatinine(creatinine) bun(bun) wbc(wbc) plt(plt) pt(pt) ptt(ptt)
+{txt}
+{com}. 
+.         assert neuro_c == neuro
+{txt}
+{com}.         assert nonneuro_ == nonneuro_c
+{txt}
+{com}.         assert totalscore_c == totalscore
+{txt}
+{com}.         
+. drop neuro_c nonneuro_c totalscore_c
+{txt}
+{com}. 
+. qui prismscore neuro_c nonneuro_c totalscore_c, doa(doa) dob(dob) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose_si) potassium(potassium) creatinine(creatinine_si) bun(bun_si) wbc(wbc_k) plt(plt_k) pt(pt) ptt(ptt) pltunit(1000) wbcunit(1000) si
+{txt}
+{com}.         assert neuro_c == neuro
+{txt}
+{com}.         assert nonneuro_ == nonneuro_c
+{txt}
+{com}.         assert totalscore_c == totalscore
+{txt}
+{com}. drop neuro_c nonneuro_c totalscore_c
+{txt}
+{com}. 
+. clear
+{txt}
+{com}. 
+. use "P4_Validated Data.dta"
+{txt}
+{com}. datasignature confirm using "P4_Validated Data.dtasig", strict
+{res}{txt}{p 2 3 2}
+(data unchanged since 22nov2022 11:38{txt})
+{p_end}
+
+{com}. 
+. qui prismscore neuro_c nonneuro_c totalscore_c score, age(age) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose) potassium(potassium) creatinine(creatinine) bun(bun) wbc(wbc) plt(plt) pt(pt) ptt(ptt) prismiv source(source) risk(risk) cancer(cancer) cpr(cpr)
+{txt}
+{com}. 
+.         assert abs(float(prism4) - float(score)) < 2 * 1E-2
+{txt}
+{com}.         assert neuro_c == neuro
+{txt}
+{com}.         assert nonneuro_ == nonneuro_c
+{txt}
+{com}.         assert totalscore_c == totalscore
+{txt}
+{com}.         drop score neuro_c nonneuro_c totalscore_c
+{txt}
+{com}.         
+.         qui prismscore neuro_c nonneuro_c totalscore_c score, dob(dob) doa(doa) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose_si) potassium(potassium) creatinine(creatinine_si) bun(bun_si) wbc(wbc_k) plt(plt_k) pt(pt) ptt(ptt) pltunit(1000) wbcunit(1000) si prismiv source(source) risk(risk) cancer(cancer) cpr(cpr)
+{txt}
+{com}.         assert abs(float(prism4) - float(score)) < 2 * 1E-2
+{txt}
+{com}.         assert neuro_c == neuro
+{txt}
+{com}.         assert nonneuro_ == nonneuro_c
+{txt}
+{com}.         assert totalscore_c == totalscore
+{txt}
+{com}.         drop score neuro_c nonneuro_c totalscore_c
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. log close Certification
+      {txt}name:  {res}Certification
+       {txt}log:  {res}/Users/razvanazamfirei/Git/stata-commands/prism-score/Validation/certification.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}22 Nov 2022, 11:45:22
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
