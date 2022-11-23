@@ -9,6 +9,7 @@
 |																			   |
 |	     																	   |
 \*----------------------------------------------------------------------------*/
+	*! | Version: 1.0 | Last Updated: Nov 2, 2022 | 
 	program prismscore
 	preserve
 	if (c(stata_version) < 17) {
