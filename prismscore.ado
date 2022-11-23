@@ -56,21 +56,21 @@ cap program drop 	prismscore
 	
 ********************************************************************************	
 
-	syntax [newvarlist(generate)] [if] [in], [age(varname numeric)] /*
+	syntax newvarlist(min=1 max=4 generate) [if] [in], [Age(varname num)] /*
 	*/	[dob(varname)] [doa(varname)] /*
-	*/	sbp(varname numeric)  temp(varname numeric) [TEMPLow(varname numeric)]/*
-	*/	gcs(varname numeric) hr(varname numeric) PUPils(varname numeric)/*
-	*/	ph(varname numeric) [PHHigh(varname numeric)] bicarb(varname numeric)/*
-	*/	[BICARBHigh(varname numeric)] PCo2(varname numeric) /*
-	*/	POTassium(varname numeric) PAo2(varname numeric) /*
-	*/	GLUcose(varname numeric) CReatinine(varname numeric) /*
-	*/	bun(varname numeric) wbc(varname numeric) plt(varname numeric) /*
-	*/	[pt(varname numeric)] [ptt(varname numeric)] /*
-	***/	[PRISMiv] [cpr(varname numeric)] [CANcer(varname numeric)] /*
-			*/	[risk(varname numeric)] [SOUrce(varname numeric)]/*
+	*/	Sbp(varname num)  temp(varname num) [TEMPLow(varname num)]/*
+	*/	Gcs(varname num) Hr(varname num) PUPils(varname num)/*
+	*/	ph(varname num) [PHHigh(varname num)] bicarb(varname num)/*
+	*/	[BICARBHigh(varname num)] PCo2(varname num) /*
+	*/	POTassium(varname num) PAo2(varname num) /*
+	*/	GLUcose(varname num) CReatinine(varname num) /*
+	*/	Bun(varname num) wbc(varname num) plt(varname num) /*
+	*/	[pt(varname num)] [ptt(varname num)] /*
+	***/	[PRISMiv] [cpr(varname num)] [CANcer(varname num)] /*
+			*/	[Risk(varname num)] [SOUrce(varname num)]/*
 	***/	[SI] [TRACE] [SUPPress] [SUPPRESSAll] [NOIMPutation] /*
 	***/	[NOVALidation]/*
-	***/	[PLTUnit(integer 1)] [WBCUnit(integer 1)] [FAHRenheit] 
+	***/	[PLTUnit(int 1)] [WBCUnit(int 1)] [FAHRenheit] 
 	
 		marksample touse, nov
 
@@ -144,9 +144,9 @@ cap program drop 	prismscore
 	loc i = 0 
 	cap {
 		foreach x in `varlist' {
-		loc i = `i' + 1
-		loc newvar_`i' `x'
-	} 
+			loc i = `i' + 1
+			loc newvar_`i' `x'
+		} 
 	}
 	if prismivoption == 1 {
 		if `i' == 1{
@@ -207,16 +207,16 @@ cap program drop 	prismscore
 		gen `I_`x'' = ``x'' 
 	}
 	foreach x in `l_scores' {		// Generates placeholders for PRISM III
-			gen ``x'' = 0 		// sub-scores
-		}
+		gen ``x'' = 0 				// sub-scores
+	}
 	if prismivoption == 1 {			// If calculating PRISM IV
 		foreach x in `l_catvar4' {	// Generates PRISM IV vars
 			cap {
 				gen `I_`x'' = ``x'' if `touse'
 			}
 			if _rc != 0 & suppressoption != 2 {
-			di as err "`x' not specified. `helpme'"
-			err 498
+				di as err "`x' not specified. `helpme'"
+				err 498
 			}
 		}
 		if noimputationoption == 1 {	
