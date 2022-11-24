@@ -9,19 +9,9 @@
 |																			   |
 |	     																	   |
 \*----------------------------------------------------------------------------*/
-<<<<<<< Updated upstream
-	*! | Version: 1.0 | Last Updated: Nov 2, 2022 | 
-<<<<<<< Updated upstream
-cap program drop 	prismscore
-	program 		prismscore
-=======
-	program prismscore
-=======
 	*! | Version: 1.1 | Last Updated: Nov 23, 2022 | 
 cap program drop 	prismscore
 	program 		prismscore
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	preserve
 		if (c(stata_version) < 17) {
 			di as txt "note: this command is written " ///
@@ -36,21 +26,10 @@ cap program drop 	prismscore
 	novarabbrev {
 	qui{	
 ********************************************************************************
-<<<<<<< Updated upstream
-
-	loc age dob doa
-	tempvar I_ageIV calculated_age
-<<<<<<< Updated upstream
-	loc l_catvar3 sbp gcs hr pupils
-	loc l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
-=======
-=======
  
 	tempvar ageIV calculated_age age dob doa
->>>>>>> Stashed changes
 	local l_catvar3 sbp gcs hr pupils
 	local l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
->>>>>>> Stashed changes
 	*/	bun wbc plt 
 	loc l_numvar3opt templow phhigh bicarbhigh pt ptt
 	loc l_catvar4 cpr cancer risk source
@@ -76,15 +55,7 @@ cap program drop 	prismscore
 	
 ********************************************************************************	
 
-<<<<<<< Updated upstream
-	syntax newvarlist(min=1 max=4 generate) [if] [in], [Age(varname num)] /*
-=======
-<<<<<<< Updated upstream
-	syntax [newvarlist(generate)] [if] [in], [age(varname numeric)] /*
-=======
 	syntax newvarlist(min=1 max=4 generate) [if] [in], [age(varname num)] /*
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	*/	[dob(varname)] [doa(varname)] /*
 	*/	Sbp(varname num)  temp(varname num) [TEMPLow(varname num)]/*
 	*/	Gcs(varname num) Hr(varname num) PUPils(varname num)/*
@@ -220,19 +191,6 @@ cap program drop 	prismscore
 	foreach x in `l_scores' `l_scores4'{
 		tempvar `x'
 	}
-<<<<<<< Updated upstream
-	foreach x in `l_catvar3' {		// Generates PRISM III categorical vars
-		gen `I_`x'' = ``x'' 
-	}	
-
-	foreach x in `l_numvar3opt' {	// Generates "optional" PRISM III num vars
-<<<<<<< Updated upstream
-		cap {
-			gen `I_`x'' = ``x''
-=======
-		capture {
-			generate `I_`x'' = ``x''
-=======
 	foreach x in `l_allvars' dob doa age{ 		// Generates Temporary Names for all vars
 		tempvar `x'_i
 	}	
@@ -249,47 +207,27 @@ cap program drop 	prismscore
 			tempvar `x'
 			gen ``x'' = ``x'_i'
 			drop ``x'_i'
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		}
 	continue
 	}
 		
 	foreach x in `l_numvar3' {		// Generates required PRISM III num vars
-<<<<<<< Updated upstream
-		gen `I_`x'' = ``x'' 
-=======
-<<<<<<< Updated upstream
-		generate `I_`x'' = ``x'' 
-=======
 		gen ``x'_i' = ``x'' 
 		tempvar `x'
 		gen ``x'' = ``x'_i'
 		drop ``x'_i' 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	}
 	foreach x in `l_scores' {		// Generates placeholders for PRISM III
 		gen ``x'' = 0 				// sub-scores
 	}
 	if prismivoption == 1 {			// If calculating PRISM IV
 		foreach x in `l_catvar4' {	// Generates PRISM IV vars
-<<<<<<< Updated upstream
-			cap {
-				gen `I_`x'' = ``x'' if `touse'
-=======
-<<<<<<< Updated upstream
-			capture {
-				generate `I_`x'' = ``x'' if `touse'
-=======
 			cap {
 			gen ``x'_i' = ``x'' if `touse'
 			tempvar `x'
 			gen ``x'' = ``x'_i' if `touse'
 			drop ``x'_i'
 			continue
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 			}
 			if _rc != 0 & suppressoption != 2 {
 				di as err "`x' not specified. `helpme'"
@@ -451,61 +389,6 @@ cap program drop 	prismscore
 *------------------------------------------------------------------------------*
                    
 if noimputationoption == 0 {	
-<<<<<<< Updated upstream
-	cap conf v `I_templow'
-=======
-<<<<<<< Updated upstream
-	capture confirm variable `I_templow'
->>>>>>> Stashed changes
-	if _rc != 0 {
-		tempvar I_templow
-		gen `I_templow' = `I_temp' if `touse'
-	} 	
-	else {
-		tempvar thtmp tltmp
-		replace `I_temp' = `I_templow' if `I_temp' == . & `touse'
-		replace `I_templow' = `I_temp' if `I_templow' == . & `touse'
-		gen `tltmp' = `I_templow' /*
-		*/	if inrange(`I_temp', `I_templow', .) & `touse'
-		gen `thtmp' = `I_temp' /*
-		*/	if inrange(`I_templow', ., `I_temp') & `touse'
-		replace `I_temp' = min(`I_temp', `tltmp', `thtmp') if `touse'
-		replace `I_templow' = max(`I_templow', `tltmp', `thtmp') if `touse'
-		drop `thtmp' `tltmp'
-	}
-
-	cap conf v `I_phhigh'
-	if _rc != 0 {
-		tempvar I_phhigh
-		gen `I_phhigh' = `I_ph' if `touse'
-	}
-	else{
-		tempvar phtmp pltmp
-		replace `I_ph' = `I_phhigh' if `I_ph' == . & `touse'
-		replace `I_phhigh' = `I_ph' if `I_phhigh' == . & `touse'
-		gen `pltmp' = `I_phhigh' /*
-		*/	if inrange(`I_ph', `I_phhigh', .) & `touse'
-		gen `phtmp' = `I_ph' if inrange(`I_phhigh', ., `I_ph') & `touse'
-		replace `I_ph' = min(`I_ph', `pltmp', `phtmp') if `touse'
-		replace `I_phhigh' = max(`I_phhigh', `pltmp', `phtmp') if `touse'
-		drop `phtmp' `pltmp'
-	}
-	cap conf v `I_bicarbhigh'
-	if _rc != 0 {
-		tempvar I_bicarbhigh
-		gen `I_bicarbhigh' = `I_bicarb' if `touse'
-	}
-	if _rc == 0 {
-		tempvar bhtmp bltmp
-		replace `I_bicarb' = `I_bicarbhigh' if `I_bicarb' == . & `touse'
-		replace `I_bicarbhigh' = `I_bicarb' if `I_bicarbhigh' == . & `touse'
-		gen `bltmp' = `I_bicarbhigh' /*
-		*/	if inrange(`I_bicarb', `I_bicarbhigh', .) & `touse'
-		gen `bhtmp' = `I_bicarb' /*
-		*/	if inrange(`I_bicarbhigh', ., `I_bicarb') & `touse'
-		replace `I_bicarb' = min(`I_bicarb', `bltmp', `bhtmp') if `touse'
-		replace `I_bicarbhigh' = max(`I_bicarbhigh', `bltmp', `bhtmp') /*
-=======
 	cap conf v `templow'
 	if _rc != 0 {
 		tempvar templow
@@ -555,7 +438,6 @@ if noimputationoption == 0 {
 		*/	if inrange(`bicarbhigh', ., `bicarb') & `touse'
 		replace `bicarb' = min(`bicarb', `bltmp', `bhtmp') if `touse'
 		replace `bicarbhigh' = max(`bicarbhigh', `bltmp', `bhtmp') /*
->>>>>>> Stashed changes
 		*/	if `touse'
 		drop `bhtmp' `bltmp'
 	}
@@ -563,18 +445,7 @@ if noimputationoption == 0 {
 ********************************************************************************
 // Error Checking
 
-<<<<<<< Updated upstream
-		cap {
-=======
-<<<<<<< Updated upstream
-		capture {
->>>>>>> Stashed changes
-			tempvar I_age
-			gen `I_age' = `age'
-		}
-=======
 		cap conf numeric v `age'
->>>>>>> Stashed changes
 			if _rc != 0{
 				sca ag1 = 0
 			}
@@ -582,36 +453,14 @@ if noimputationoption == 0 {
 				sca ag1 = 1
 			}
 		
-<<<<<<< Updated upstream
-		cap {
-=======
-<<<<<<< Updated upstream
-		capture {
->>>>>>> Stashed changes
-			tempvar I_dob
-			gen `I_dob' = `dob'
-		}
-=======
 		cap conf numeric v `dob'
->>>>>>> Stashed changes
 			if _rc != 0 {
 				sca ag2 = 0
 			}
 			else {
 				sca ag2 = 1
 			}
-<<<<<<< Updated upstream
-		cap {
-=======
-<<<<<<< Updated upstream
-		capture {
->>>>>>> Stashed changes
-			tempvar I_doa
-			gen `I_doa' = `doa'
-		}
-=======
 		cap conf numeric v `doa'
->>>>>>> Stashed changes
 			if _rc != 0 {
 				sca ag3 = 0
 			}
@@ -656,42 +505,11 @@ if noimputationoption == 0 {
 			
 		// Ensures categorical variables are entered in the correct format
 		if agecase == 1 {
-<<<<<<< Updated upstream
-			cou if !inlist(`I_age', 0, 1, 2, 3, 4, .)
-=======
-<<<<<<< Updated upstream
-			count if !inlist(`I_age', 0, 1, 2, 3, 4, .)
-=======
 			cou if !inlist(`age', 0, 1, 2, 3, 4, .)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 				if r(N) != 0 {
 					di as err "Age is not in the correct format. `helpme'"
 					err 498
 				}
-<<<<<<< Updated upstream
-			gen `I_ageIV' = 0 if `I_age' == 0
-=======
-<<<<<<< Updated upstream
-			generate `I_ageIV' = 0 if `I_age' == 0
->>>>>>> Stashed changes
-			replace `I_ageIV' = 1 if `I_age' == 1
-			replace `I_ageIV' = 2 if `I_age' == 2
-			replace `I_ageIV' = 3 if inrange(`I_age', 3,4)
-			replace `I_age' = 0 if inrange(`I_age',0,1)
-			replace `I_age' = 1 if `I_age' == 2
-			replace `I_age' = 2 if `I_age' == 3
-			replace `I_age' = 3 if `I_age' == 4
-		}
-		
-		if agecase == 5 {
-<<<<<<< Updated upstream
-			gen `calculated_age' = datediff(`I_dob', `I_doa', "DAY")
-			cap as `calculated_age' >= 0, f
-=======
-			generate `calculated_age' = datediff(`I_dob', `I_doa', "DAY")
-			capture assert `calculated_age' >= 0
-=======
 			gen `ageIV' = 0 if `age' == 0
 			replace `ageIV' = 1 if `age' == 1
 			replace `ageIV' = 2 if `age' == 2
@@ -705,38 +523,9 @@ if noimputationoption == 0 {
 		if agecase == 5 {
 			gen `calculated_age' = datediff(`dob', `doa', "d")
 			cap as `calculated_age' >= 0, f
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 			if _rc != 0 {
 				di as err "Calculated age is negative. Observations will be ignored."
 			}
-<<<<<<< Updated upstream
-			gen `I_age' = 0 if inrange(`calculated_age', 0, 30)
-=======
-<<<<<<< Updated upstream
-			generate `I_age' = 0 if inrange(`calculated_age', 0, 30)
->>>>>>> Stashed changes
-			replace `I_age' = 1 if inrange(`calculated_age', 31, 365)
-			replace `I_age' = 2 if inrange(`calculated_age', 366, 4380) //12y
-			replace `I_age' = 3 if inrange(`calculated_age', 4381, .) //12y
-			gen `I_ageIV' = 0 if inrange(`calculated_age', 0, 14)
-			replace `I_ageIV' = 1 if inrange(`calculated_age', 15, 30)
-			replace `I_ageIV' = 2 if `I_age' == 1
-			replace `I_ageIV' = 3 if inrange(`I_age', 2,3)
-		}
-
-	if suppressoption != 2 { 	// Checks that either PT or PTT are specified
-<<<<<<< Updated upstream
-=======
-		scalar rc1 = 0			// If either are missing generates empty var
-		scalar rc2 = 0			// to prevent errors in calculation.
-		scalar ag1 = 0
-		scalar ag2 = 0
-		scalar ag3 = 0
-		scalar ag4 = 0
-		capture {
-			confirm variable `I_pt'
-=======
 			tempvar age
 			gen `age' = 0 if inrange(`calculated_age', 0, 30)
 			replace `age' = 1 if inrange(`calculated_age', 31, 365)
@@ -749,7 +538,6 @@ if noimputationoption == 0 {
 		}
 
 	if suppressoption != 2 { 	// Checks that either PT or PTT are specified
->>>>>>> Stashed changes
 		sca rc1 = 0			// If either are missing generates empty var
 		sca rc2 = 0			// to prevent errors in calculation.
 		sca ag1 = 0
@@ -757,28 +545,13 @@ if noimputationoption == 0 {
 		sca ag3 = 0
 		sca ag4 = 0
 		cap {
-<<<<<<< Updated upstream
-			conf v `I_pt'
-=======
 			conf v `pt'
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		}
 			if _rc != 0 {
 				sca rc1 = 1
 			}
-<<<<<<< Updated upstream
-		cap {
-			conf v `I_ptt'
-=======
-<<<<<<< Updated upstream
-		capture {
-			confirm variable `I_ptt'
-=======
 		cap {
 			conf v `ptt'
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		}
 			if _rc != 0 {
 				sca rc2 = 1
@@ -797,73 +570,33 @@ if noimputationoption == 0 {
 			}
 		}
 
-<<<<<<< Updated upstream
-	cou if !inlist(`I_pupils', 0, 1, 2, .)
-=======
-<<<<<<< Updated upstream
-	count if !inlist(`I_pupils', 0, 1, 2, .)
-=======
 	cou if !inlist(`pupils', 0, 1, 2, .)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	if r(N) != 0 {
 			di as err "Pupils are not in the correct format. `helpme'"
 			err 498
 		}
 
 if prismivoption == 1 & noimputationoption == 0 {
-<<<<<<< Updated upstream
-	cou if !inlist(`I_source', 0, 1, 2, 3, .) 
-=======
-<<<<<<< Updated upstream
-	count if !inlist(`I_source', 0, 1, 2, 3, .) 
-=======
 	cou if !inlist(`source', 0, 1, 2, 3, .) 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	if r(N) != 0 {
 		di as err "source is not in the correct format. `helpme'"
 		err 498
 			}
 	if suppressoption == 0 {
-<<<<<<< Updated upstream
-		cou if `I_source' == .
-=======
-<<<<<<< Updated upstream
-		count if `I_source' == .
-=======
 		cou if `source' == .
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		if r(N) != 0 {
 			di as err "source imputed. `helpme'"
 			}
 	}	
 	
 	foreach x in cpr cancer risk {
-<<<<<<< Updated upstream
-		cou if !inlist(`I_`x'', 0, 1, .)
-=======
-<<<<<<< Updated upstream
-		count if !inlist(`I_`x'', 0, 1, .)
-=======
 		cou if !inlist(``x'', 0, 1, .)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		if r(N) != 0 {
 			di as err "`x' is not binary. `helpme'"
 			err 450
 		}
 		if suppressoption == 0 {
-<<<<<<< Updated upstream
-			cou if `I_`x'' == .
-=======
-<<<<<<< Updated upstream
-			count if `I_`x'' == .
-=======
 			cou if ``x'' == .
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 			if r(N) != 0 {
 				di as err "Some `x' values imputed. `helpme'"
 			}
@@ -873,27 +606,11 @@ if prismivoption == 1 & noimputationoption == 0 {
 }	// If errors are suppressed, generates empty vars for missing variables 
 if suppressoption == 2{ 
 	foreach x in `l_allvars' {
-<<<<<<< Updated upstream
-		cap{
-		conf v `I_`x''
-		}
-		if _rc != 0 {
-			gen `I_`x'' = .
-=======
-<<<<<<< Updated upstream
-		capture{
-		confirm var `I_`x''
-		}
-		if _rc != 0 {
-			generate `I_`x'' = .
-=======
 		cap{
 		conf v ``x''
 		}
 		if _rc != 0 {
 			gen ``x'' = .
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		}
 	}
 }	// Assigns age and source coefficients based on age and source values
@@ -927,24 +644,6 @@ if validationoption == 1{
 		di "pH High"
 	replace `phhigh' = . if `phhigh' < 6.5 & `phhigh' > 7.9
 		di "Bicarb Low"
-<<<<<<< Updated upstream
-	replace `I_bicarb' = . if `I_bicarb' < 0.1 & `I_bicarb' > 60
-		di "Bicarb High"
-	replace `I_bicarbhigh' = . if `I_bicarbhigh' < 0.1 & `I_bicarbhigh' > 60
-		di "PCO2"
-	replace `I_pco2' = . if `I_pco2' < 1 & `I_pco2' > 200
-		di "PaO2"
-	replace `I_pao2' = . if `I_pao2' < 1 & `I_pao2' > 600
-		di "Glucose"
-	replace `I_glucose' = . if `I_glucose' < gluoor0 & `I_glucose' > gluoor1
-		di "Potassium"
-	replace `I_potassium' = . if `I_potassium' < 1 & `I_potassium' > 10
-		di "Creatinine"
-	replace `I_creatinine' = . if `I_creatinine' < croor0 & /*
-	*/	`I_creatinine' > croor1
-		di "BUN"
-	replace `I_bun' = . if `I_bun' < bunoor0 & `I_bun' > bunoor1
-=======
 	replace `bicarb' = . if `bicarb' < 0.1 & `bicarb' > 60
 		di "Bicarb High"
 	replace `bicarbhigh' = . if `bicarbhigh' < 0.1 & `bicarbhigh' > 60
@@ -961,7 +660,6 @@ if validationoption == 1{
 	*/	`creatinine' > croor1
 		di "BUN"
 	replace `bun' = . if `bun' < bunoor0 & `bun' > bunoor1
->>>>>>> Stashed changes
 	}
 }
 ********************************************************************************
@@ -1045,26 +743,6 @@ if validationoption == 1{
 		// Places temporary variables into permanent ones
 	if noimputationoption == 1 {
 		tempvar missingcheck3
-<<<<<<< Updated upstream
-		
-		egen `missingcheck3' = rowmiss(`I_sbp' `I_gcs' `I_hr' `I_pupils'	  /*
-		*/	`I_temp' `I_' `I_ph' `I_' `I_bicarb' `I_' `I_pco2' `I_pao2'		  /*
-		*/	`I_glucose' `I_potassium' `I_creatinine' `I_bun' `I_wbc' `I_plt'  /*
-		*/	`I_templow' `I_phhigh' `I_bicarbhigh' `I_pt' `I_ptt' )
-		
-			replace `neuroscore' = . if `missingcheck3' != 0
-			replace `nonneuroscore' = . if `missingcheck3' != 0
-			replace `totalscore' = . if `missingcheck3' != 0
-=======
-<<<<<<< Updated upstream
-		egen `missingcheck3' = rowmiss(`I_sbp' `I_gcs' `I_hr' `I_pupils' /*
-		*/	`I_temp' `I_' `I_ph' `I_' `I_bicarb' `I_' `I_pco2' `I_pao2' /*
-		*/	`I_glucose' `I_potassium' `I_creatinine' `I_bun' `I_wbc' `I_plt' /*
-		*/	`I_templow' `I_phhigh' `I_bicarbhigh' `I_pt' `I_ptt' )
-		replace `neuroscore' = . if `missingcheck3' != 0
-		replace `nonneuroscore' = . if `missingcheck3' != 0
-		replace `totalscore' = . if `missingcheck3' != 0
-=======
 		egen `missingcheck3' = rowmiss(`sbp' `gcs' `hr' `pupils' /*
 		*/	`temp' `' `ph' `' `bicarb' `' `pco2' `pao2' /*
 		*/	`glucose' `potassium' `creatinine' `bun' `wbc' `plt' /*
@@ -1072,8 +750,6 @@ if validationoption == 1{
 			replace `neuroscore' = . if `missingcheck3' != 0
 			replace `nonneuroscore' = . if `missingcheck3' != 0
 			replace `totalscore' = . if `missingcheck3' != 0
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	}	
 	cap {	
 		replace `neurovar' = `neuroscore'
@@ -1085,19 +761,9 @@ if validationoption == 1{
 if prismivoption == 1 {
 		// Calculates PRISM IV coefficient sum
 		
-<<<<<<< Updated upstream
-	gen double `prismintermediate' = intercept + `age_score' + /*
-=======
-<<<<<<< Updated upstream
-	generate double `prismintermediate' = intercept + `age_score' + /*
->>>>>>> Stashed changes
-	*/	`source_score' + (`I_cpr' * cprcoef) + (`I_cancer' * cancercoef) + /*
-	*/	(`I_risk' * riskcoef) + (`neuroscore' * neurocoef) + /*
-=======
 	gen double `prismintermediate' = intercept + `age_score' + /*
 	*/	`source_score' + (`cpr' * cprcoef) + (`cancer' * cancercoef) + /*
 	*/	(`risk' * riskcoef) + (`neuroscore' * neurocoef) + /*
->>>>>>> Stashed changes
 	*/	(`nonneuroscore' * nonneurocoef) if `touse'
 	
 		// Applies logistic function to previous result
