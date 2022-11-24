@@ -28,8 +28,8 @@ cap program drop 	prismscore
 ********************************************************************************
  
 	tempvar ageIV calculated_age age dob doa
-	local l_catvar3 sbp gcs hr pupils
-	local l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
+	loc l_catvar3 sbp gcs hr pupils
+	loc l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
 	*/	bun wbc plt 
 	loc l_numvar3opt templow phhigh bicarbhigh pt ptt
 	loc l_catvar4 cpr cancer risk source
@@ -55,21 +55,26 @@ cap program drop 	prismscore
 	
 ********************************************************************************	
 
-	syntax newvarlist(min=1 max=4 generate) [if] [in], [age(varname num)] /*
-	*/	[dob(varname)] [doa(varname)] /*
-	*/	Sbp(varname num)  temp(varname num) [TEMPLow(varname num)]/*
-	*/	Gcs(varname num) Hr(varname num) PUPils(varname num)/*
-	*/	ph(varname num) [PHHigh(varname num)] bicarb(varname num)/*
-	*/	[BICARBHigh(varname num)] PCo2(varname num) /*
-	*/	POTassium(varname num) PAo2(varname num) /*
-	*/	GLUcose(varname num) CReatinine(varname num) /*
-	*/	Bun(varname num) wbc(varname num) plt(varname num) /*
-	*/	[pt(varname num)] [ptt(varname num)] /*
-	***/	[PRISMiv] [cpr(varname num)] [CANcer(varname num)] /*
-			*/	[Risk(varname num)] [SOUrce(varname num)]/*
-	***/	[SI] [TRACE] [SUPPress] [SUPPRESSAll] [NOIMPutation] /*
-	***/	[NOVALidation]/*
-	***/	[PLTUnit(int 1)] [WBCUnit(int 1)] [FAHRenheit] 
+	syntax newvarlist(min=1 max=4 generate) [if] [in], 		///
+		[age(varname num)] [dob(varname)] [doa(varname)] 	///
+		Sbp(varname num) Hr(varname num) 					///
+		temp(varname num) [TEMPLow(varname num)] 			///
+		Gcs(varname num)  PUPils(varname num) 				///
+		ph(varname num) [PHHigh(varname num)] 				///
+		bicarb(varname num) [BICARBHigh(varname num)] 		///
+		PCo2(varname num) PAo2(varname num)					///
+		GLUcose(varname num) POTassium(varname num)			///
+		Bun(varname num) CReatinine(varname num)			///
+		wbc(varname num) plt(varname num)					///
+		[pt(varname num)] [ptt(varname num)]				///
+			[PRISMiv]										///
+				[cpr(varname num)] [CANcer(varname num)]	///
+				[Risk(varname num)] [SOUrce(varname num)]	///
+			[SI] [FAHRenheit]								///
+			[WBCUnit(int 1)] [PLTUnit(int 1)]				///
+			[NOIMPutation] [NOVALidation]					///
+			[SUPPress] [SUPPRESSAll]						///
+		[TRACE] 	
 	
 		marksample touse, nov
 
@@ -142,9 +147,9 @@ cap program drop 	prismscore
 	
 	loc i = 0
 	cap {
-		foreach x in `varlist' {
+		foreach var in `varlist' {
 			loc i = `i' + 1
-			loc newvar_`i' `x'
+			loc newvar_`i' `var'
 		}
 	}
 	if prismivoption == 1 {
@@ -184,45 +189,45 @@ cap program drop 	prismscore
 
 ///	Defines Variables and Various Coefficients
 
-	foreach x in `l_scores' `l_scores4'{
-		tempvar `x'
+	foreach score in `l_scores' `l_scores4'{
+		tempvar `score'
 	}
-	foreach x in `l_allvars' dob doa age{ 		// Generates Temporary Names for all vars
-		tempvar `x'_i
+	foreach var in `l_allvars' dob doa age{ 		// Generates Temporary Names for all vars
+		tempvar `var'_i
 	}
 
-	foreach x in `l_catvar3' {		// Generates PRISM III categorical vars
-		gen ``x'_i' = ``x'' 
-		tempvar `x'
-		gen ``x'' = ``x'_i'
-		drop ``x'_i'
+	foreach cat_var in `l_catvar3' {		// Generates PRISM III categorical vars
+		gen ``cat_var'_i' = ``cat_var'' 
+		tempvar `cat_var'
+		gen ``cat_var'' = ``cat_var'_i'
+		drop ``cat_var'_i'
 	}
-	foreach x in `l_numvar3opt' dob doa age{	// Generates "optional" PRISM III num vars
+	foreach num_var in `l_numvar3opt' dob doa age{	// Generates "optional" PRISM III num vars
 		cap {
-			gen ``x'_i' = ``x'' 
-			tempvar `x'
-			gen ``x'' = ``x'_i'
-			drop ``x'_i'
+			gen ``num_var'_i' = ``num_var'' 
+			tempvar `num_var'
+			gen ``num_var'' = ``num_var'_i'
+			drop ``num_var'_i'
 		}
 		continue
 	}
 
-	foreach x in `l_numvar3' {		// Generates required PRISM III num vars
-		gen ``x'_i' = ``x'' 
-		tempvar `x'
-		gen ``x'' = ``x'_i'
-		drop ``x'_i' 
+	foreach num_var in `l_numvar3' {		// Generates required PRISM III num vars
+		gen ``num_var'_i' = ``num_var'' 
+		tempvar `num_var'
+		gen ``num_var'' = ``num_var'_i'
+		drop ``num_var'_i' 
 	}
-	foreach x in `l_scores' {		// Generates placeholders for PRISM III
-		gen ``x'' = 0 				// sub-scores
+	foreach score in `l_scores' {		// Generates placeholders for PRISM III
+		gen ``score'' = 0 				// sub-scores
 	}
 	if prismivoption == 1 {			// If calculating PRISM IV
-		foreach x in `l_catvar4' {	// Generates PRISM IV vars
+		foreach cat_var in `l_catvar4' {	// Generates PRISM IV vars
 			cap {
-				gen ``x'_i' = ``x'' if `touse'
-				tempvar `x'
-				gen ``x'' = ``x'_i' if `touse'
-				drop ``x'_i'
+				gen ``cat_var'_i' = ``cat_var'' if `touse'
+				tempvar `cat_var'
+				gen ``cat_var'' = ``cat_var'_i' if `touse'
+				drop ``cat_var'_i'
 				continue
 			}
 			if _rc != 0 & suppressoption != 2 {
@@ -231,13 +236,13 @@ cap program drop 	prismscore
 			}
 		}
 		if noimputationoption == 1 {	
-			foreach x in `l_scores4' {
-				gen ``x'' = . if `touse'
+			foreach score in `l_scores4' {
+				gen ``score'' = . if `touse'
 			}
 		}
 		if noimputationoption == 0 {
-			foreach x in `l_scores4' {
-				gen ``x'' = 0 if `touse'
+			foreach score in `l_scores4' {
+				gen ``score'' = 0 if `touse'
 			}
 		}
 	}
@@ -385,59 +390,59 @@ cap program drop 	prismscore
 *------------------------------------------------------------------------------*
 
 if noimputationoption == 0 {
-	cap conf v `templow'
-	if _rc != 0 {
-		tempvar templow
-		gen `templow' = `temp' if `touse'
-	}
-	else {
-		tempvar thtmp tltmp
-		replace `temp' = `templow' if `temp' == . & `touse'
-		replace `templow' = `temp' if `templow' == . & `touse'
-		gen `tltmp' = `templow' /*
-		*/	if inrange(`temp', `templow', .) & `touse'
-		gen `thtmp' = `temp' /*
-		*/	if inrange(`templow', ., `temp') & `touse'
-		replace `temp' = min(`temp', `tltmp', `thtmp') if `touse'
-		replace `templow' = max(`templow', `tltmp', `thtmp') if `touse'
-		drop `thtmp' `tltmp'
-	}
+		cap conf v `templow'
+		if _rc != 0 {
+			tempvar templow
+			gen `templow' = `temp' if `touse'
+		}
+		else {
+			tempvar thtmp tltmp
+			replace `temp' = `templow' if `temp' == . & `touse'
+			replace `templow' = `temp' if `templow' == . & `touse'
+			gen `tltmp' = `templow' /*
+			*/	if inrange(`temp', `templow', .) & `touse'
+			gen `thtmp' = `temp' /*
+			*/	if inrange(`templow', ., `temp') & `touse'
+			replace `temp' = min(`temp', `tltmp', `thtmp') if `touse'
+			replace `templow' = max(`templow', `tltmp', `thtmp') if `touse'
+			drop `thtmp' `tltmp'
+		}
 
-	cap conf v `phhigh'
-	if _rc != 0 {
-		tempvar phhigh
-		gen `phhigh' = `ph' if `touse'
+		cap conf v `phhigh'
+		if _rc != 0 {
+			tempvar phhigh
+			gen `phhigh' = `ph' if `touse'
+		}
+		else{
+			tempvar phtmp pltmp
+			replace `ph' = `phhigh' if `ph' == . & `touse'
+			replace `phhigh' = `ph' if `phhigh' == . & `touse'
+			gen `pltmp' = `phhigh' /*
+			*/	if inrange(`ph', `phhigh', .) & `touse'
+			gen `phtmp' = `ph' if inrange(`phhigh', ., `ph') & `touse'
+			replace `ph' = min(`ph', `pltmp', `phtmp') if `touse'
+			replace `phhigh' = max(`phhigh', `pltmp', `phtmp') if `touse'
+			drop `phtmp' `pltmp'
+		}
+		cap conf v `bicarbhigh'
+		if _rc != 0 {
+			tempvar bicarbhigh
+			gen `bicarbhigh' = `bicarb' if `touse'
+		}
+		if _rc == 0 {
+			tempvar bhtmp bltmp
+			replace `bicarb' = `bicarbhigh' if `bicarb' == . & `touse'
+			replace `bicarbhigh' = `bicarb' if `bicarbhigh' == . & `touse'
+			gen `bltmp' = `bicarbhigh' /*
+			*/	if inrange(`bicarb', `bicarbhigh', .) & `touse'
+			gen `bhtmp' = `bicarb' /*
+			*/	if inrange(`bicarbhigh', ., `bicarb') & `touse'
+			replace `bicarb' = min(`bicarb', `bltmp', `bhtmp') if `touse'
+			replace `bicarbhigh' = max(`bicarbhigh', `bltmp', `bhtmp') /*
+			*/	if `touse'
+			drop `bhtmp' `bltmp'
+		}
 	}
-	else{
-		tempvar phtmp pltmp
-		replace `ph' = `phhigh' if `ph' == . & `touse'
-		replace `phhigh' = `ph' if `phhigh' == . & `touse'
-		gen `pltmp' = `phhigh' /*
-		*/	if inrange(`ph', `phhigh', .) & `touse'
-		gen `phtmp' = `ph' if inrange(`phhigh', ., `ph') & `touse'
-		replace `ph' = min(`ph', `pltmp', `phtmp') if `touse'
-		replace `phhigh' = max(`phhigh', `pltmp', `phtmp') if `touse'
-		drop `phtmp' `pltmp'
-	}
-	cap conf v `bicarbhigh'
-	if _rc != 0 {
-		tempvar bicarbhigh
-		gen `bicarbhigh' = `bicarb' if `touse'
-	}
-	if _rc == 0 {
-		tempvar bhtmp bltmp
-		replace `bicarb' = `bicarbhigh' if `bicarb' == . & `touse'
-		replace `bicarbhigh' = `bicarb' if `bicarbhigh' == . & `touse'
-		gen `bltmp' = `bicarbhigh' /*
-		*/	if inrange(`bicarb', `bicarbhigh', .) & `touse'
-		gen `bhtmp' = `bicarb' /*
-		*/	if inrange(`bicarbhigh', ., `bicarb') & `touse'
-		replace `bicarb' = min(`bicarb', `bltmp', `bhtmp') if `touse'
-		replace `bicarbhigh' = max(`bicarbhigh', `bltmp', `bhtmp') /*
-		*/	if `touse'
-		drop `bhtmp' `bltmp'
-	}
-}
 ********************************************************************************
 // Error Checking
 
@@ -585,28 +590,28 @@ if prismivoption == 1 & noimputationoption == 0 {
 			}
 	}
 
-	foreach x in cpr cancer risk {
-		cou if !inlist(``x'', 0, 1, .)
+	foreach var in cpr cancer risk {
+		cou if !inlist(``var'', 0, 1, .)
 		if r(N) != 0 {
-			di as err "`x' is not binary. `helpme'"
+			di as err "`var' is not binary. `helpme'"
 			err 450
 		}
 		if suppressoption == 0 {
-			cou if ``x'' == .
+			cou if ``var'' == .
 			if r(N) != 0 {
-				di as err "Some `x' values imputed. `helpme'"
+				di as err "Some `var' values imputed. `helpme'"
 			}
 		}
 	}
 }
 }	// If errors are suppressed, generates empty vars for missing variables 
 if suppressoption == 2{ 
-	foreach x in `l_allvars' {
+	foreach var in `l_allvars' {
 		cap{
-		conf v ``x''
+			conf v ``var''
 		}
 		if _rc != 0 {
-			gen ``x'' = .
+			gen ``var'' = .
 		}
 	}
 }	// Assigns age and source coefficients based on age and source values
