@@ -373,17 +373,17 @@ cap program drop 	prismscore
 
 	sca wbc0 = wbc0 / wbcoption // Uses WBC option to set wbc bounds
 
-*------------------------------------------------------------------------------*	
-* 	Protects against edge cases where foo_high < foo_low. First it fills in    * 
+*------------------------------------------------------------------------------*
+*	Protects against edge cases where foo_high < foo_low. First it fills in	   *
 *	missing values from the paired variable (if foo_low != . & foo_high == .   *
-*	foo_high = foo_low. Then it places foo_high and foo_low in tempvars and    *
+*	foo_high = foo_low. Then it places foo_high and foo_low in tempvars and	   *
 *	replaces foo_high/foo_low with max/min of all values. 					   *
 *																			   *
 *	In simpler terms, for measurements that have both a high and a low variable*
 *	only one has to be specified. If both are specified, even if the data is   *
 *	entered incorrectly (e.g. high value in low variable) this will fix it.	   *
 *------------------------------------------------------------------------------*
-                   
+
 if noimputationoption == 0 {
 	cap conf v `templow'
 	if _rc != 0 {
