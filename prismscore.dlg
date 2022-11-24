@@ -4,6 +4,9 @@
 
 VERSION 17.0
 
+INCLUDE _std_small
+INCLUDE header
+
 POSITION . . 480 560
 
 DIALOG main, label("prismscore - Calculate PRISM Scores") tabtitle("Main")
