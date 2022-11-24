@@ -1,13 +1,13 @@
 /*----------------------------------------------------------------------------*\
-| PRISM Score Calculator - a statistical package designed to calculate         |
-| 	PRISM III & IV scores.													   |
+|	PRISM Score Calculator - a statistical package designed to calculate	   |
+|		PRISM III & IV scores.												   |
 |																			   |
 |	For help, please see help prismscore. 									   |
 |																			   |
-|	Version: 1.1 | Created: Jul 28, 2022 | Last Updated: Nov 2, 2022		   | 
+|	Version: 1.1 | Created: Jul 28, 2022 | Last Updated: Nov 2, 2022		   |
 |	Author: Razvan Azamfirei - stata@azamfirei.com							   |
 |																			   |
-|	     																	   |
+|																			   |
 \*----------------------------------------------------------------------------*/
 	*! | Version: 1.1 | Last Updated: Nov 23, 2022 | 
 cap program drop 	prismscore
@@ -21,7 +21,7 @@ cap program drop 	prismscore
 			loc vers = c(stata_version)
 		}
 		else loc vers 17
-    version `vers'
+	version `vers'
 	
 	novarabbrev {
 	qui{	
@@ -116,36 +116,36 @@ cap program drop 	prismscore
 	}
 	else{
 		sca prismivoption = 0
-	} 
+	}
 	if "`si'" != "" {
 		sca sioption = 1
 	}
 	else {
 		sca sioption = 0
-	} 
+	}
 	if "`fahrenheit'" != "" {
 		sca tempoption = 1
 	}
 	else {
 		sca tempoption = 0
-	} 
+	}
 	
 *------------------------------------------------------------------------------*
 *	Parses varlist - Counts total number of variables, assign each variable a  *
-*	number corresponding to its position and then assigns final vars.          *
+*	number corresponding to its position and then assigns final vars.		   *
 *	Rules: 																	   *
-*		1. If calculating PRISM IV score you must have 1 newvar (becomes       * 
+*		1. If calculating PRISM IV score you must have 1 newvar (becomes	   *
 *		PRISM IV or 4 vars for the PRISM III scores + PRISM IV score.		   *
 *																			   *
-*		2. If calculating PRISM III scores you need to have 3 variables. 	   *
+*		2. If calculating PRISM III scores you need to have 3 variables.	   *
 *------------------------------------------------------------------------------*
 	
-	loc i = 0 
+	loc i = 0
 	cap {
 		foreach x in `varlist' {
 			loc i = `i' + 1
 			loc newvar_`i' `x'
-		} 
+		}
 	}
 	if prismivoption == 1 {
 		if `i' == 1{
@@ -181,26 +181,22 @@ cap program drop 	prismscore
 			loc totalvar `newvar_3'
 		}
 	}
-	
 
 ///	Defines Variables and Various Coefficients
-
-/* 	All internal variables start with I_; otherwise STATA gets confused if foo *
-*	is the dataset variable and there is a tempvar called `foo'.              */
 
 	foreach x in `l_scores' `l_scores4'{
 		tempvar `x'
 	}
 	foreach x in `l_allvars' dob doa age{ 		// Generates Temporary Names for all vars
 		tempvar `x'_i
-	}	
+	}
 
 	foreach x in `l_catvar3' {		// Generates PRISM III categorical vars
 		gen ``x'_i' = ``x'' 
 		tempvar `x'
 		gen ``x'' = ``x'_i'
 		drop ``x'_i'
-		}
+	}
 	foreach x in `l_numvar3opt' dob doa age{	// Generates "optional" PRISM III num vars
 		cap {
 			gen ``x'_i' = ``x'' 
@@ -208,9 +204,9 @@ cap program drop 	prismscore
 			gen ``x'' = ``x'_i'
 			drop ``x'_i'
 		}
-	continue
+		continue
 	}
-		
+
 	foreach x in `l_numvar3' {		// Generates required PRISM III num vars
 		gen ``x'_i' = ``x'' 
 		tempvar `x'
@@ -223,11 +219,11 @@ cap program drop 	prismscore
 	if prismivoption == 1 {			// If calculating PRISM IV
 		foreach x in `l_catvar4' {	// Generates PRISM IV vars
 			cap {
-			gen ``x'_i' = ``x'' if `touse'
-			tempvar `x'
-			gen ``x'' = ``x'_i' if `touse'
-			drop ``x'_i'
-			continue
+				gen ``x'_i' = ``x'' if `touse'
+				tempvar `x'
+				gen ``x'' = ``x'_i' if `touse'
+				drop ``x'_i'
+				continue
 			}
 			if _rc != 0 & suppressoption != 2 {
 				di as err "`x' not specified. `helpme'"
@@ -248,7 +244,7 @@ cap program drop 	prismscore
 //	Sets coefficients and bounds
 
 	tempname `l_scalars' 
-	
+
 		// PRISM IV coefficients - Change this
 		sca intercept = -5.776
 		sca agecoef0 = 1.311
@@ -264,7 +260,7 @@ cap program drop 	prismscore
 		sca riskcoef = -1.697
 		sca neurocoef = 0.197
 		sca nonneurocoef = 0.163
-	
+
 		// PRISM III vital bounds
 		sca sbp0 = 40
 		sca sbp1 = 45
@@ -281,7 +277,7 @@ cap program drop 	prismscore
 		sca tmp0 = float(33.0)
 		sca tmp1 = float(40.0)
 		sca gcs0 = 8
-		
+
 		//	PRISM IV lab bounds - must be float or else comparison will not work
 		//	close to the boundries because of how STATA stores numbers
 		
@@ -297,14 +293,14 @@ cap program drop 	prismscore
 		sca pco20 = float(50.0)
 		sca pco21 = float(75)
 
-		sca pot0 = float(6.9)		
+		sca pot0 = float(6.9)
 		sca glu0 = float(200)
 		sca cr0 = float(0.85)
 		sca cr1 = float(0.9)
 		sca cr2 = float(1.30)
 		sca bun0 = float(11.9)
 		sca bun1 = float(14.90)
-		
+
 		sca wbc0 = 3000
 		sca pt0 = float(22.0)
 		sca ptt0 = float(57.0)
@@ -313,7 +309,7 @@ cap program drop 	prismscore
 		sca plt1 = 99999
 		sca plt2 = 100000
 		sca plt3 = 200000
-		
+
 		sca gluoor0 = float(5)
 		sca gluoor1 = float(999)
 		sca croor0 = float(0.01)
@@ -322,12 +318,12 @@ cap program drop 	prismscore
 		sca bunoor1 = float(150)
 		sca tmpoor0 = float(25.0)
 		sca tmpoor1 = float(45.0)
-		
-// 	Replaces bounds for lab values in SI units and temperature in F. 
+
+// 	Replaces bounds for lab values in SI units and temperature in F.
 
 		// Rather than converting the underlying values, I'm just setting new
 		// bounds; cleaner and less resource-intensive 
-		
+
 	if sioption == 1 {
 		sca glu0 = float(11.0)
 		sca cr0 = float(75)
@@ -341,20 +337,20 @@ cap program drop 	prismscore
 		sca croor1 = float(1350)
 		sca bunoor0 = float(0.3)
 		sca bunoor1 = float(53.6)
-	}	
-	
+	}
+
 	if tempoption == 1 {
 		sca tmp0 = float(91.4)
 		sca tmp1 = float(104.0) 
 		sca tmpoor0 = float(77.0)
 		sca tmpoor1 = float(113.0)
 	}
-	
+
 //	Changes bounds for WBC and Platelets based on units (cells vs 1000 cells)
 
 		// Default option is all cell counts in cells. If K cells, sets
 		// option to 1000 which is used further down
-		
+
 	sca plateletoption = 1
 	sca wbcoption = 1
 	if `pltunit' == 1000 {
@@ -370,11 +366,11 @@ cap program drop 	prismscore
 	if `wbcunit'!= 1 & `wbcunit' != 1000 & `wbcunit' != . {
 		di as err "WBC Unit incorrectly specified."
 		err 498
-	}	 	
+	}
 	forvalues x = 0(1)3 { // Uses plateletoption to set platelet bounds
 		sca plt`x' = plt`x' / plateletoption
 	}
-	
+
 	sca wbc0 = wbc0 / wbcoption // Uses WBC option to set wbc bounds
 
 *------------------------------------------------------------------------------*	
@@ -388,12 +384,12 @@ cap program drop 	prismscore
 *	entered incorrectly (e.g. high value in low variable) this will fix it.	   *
 *------------------------------------------------------------------------------*
                    
-if noimputationoption == 0 {	
+if noimputationoption == 0 {
 	cap conf v `templow'
 	if _rc != 0 {
 		tempvar templow
 		gen `templow' = `temp' if `touse'
-	} 	
+	}
 	else {
 		tempvar thtmp tltmp
 		replace `temp' = `templow' if `temp' == . & `touse'
@@ -452,7 +448,7 @@ if noimputationoption == 0 {
 			else {
 				sca ag1 = 1
 			}
-		
+
 		cap conf numeric v `dob'
 			if _rc != 0 {
 				sca ag2 = 0
@@ -472,19 +468,19 @@ if noimputationoption == 0 {
 		if ag1 == 1 & ag4 == 0 {
 			sca agecase = 1 // Only categorical age is specified
 		}
-		
+
 		if ag1 == 1 & inrange(ag4, 1, 2) {
 			sca agecase = 2 // Both age & DoB DoA are specified
 		}
-		
+
 		if ag1 == 0 & ag4 == 0 {
 			sca agecase = 3 // Nothing is specified
 		}
-		
+
 		if ag1 == 0 & ag4 == 1 {
 			sca agecase = 4
 		}
-		
+
 		if ag1 == 0 & ag4 == 2 {
 			sca agecase = 5
 		}
@@ -492,17 +488,17 @@ if noimputationoption == 0 {
 			di as err "Both age, DoB and DoA are specified."
 			di as err "Specify either age or DoB and DoA"
 		}
-		
+
 		if agecase == 3 {
 			di as err "Neither age, DoB or DoA are specified."
 			di as err "Specify either age or DoB and DoA"
 		}
-		
+
 		if agecase == 4 {
 			di as err "You must specify both DoB and DoA"
 		}
-		
-			
+
+
 		// Ensures categorical variables are entered in the correct format
 		if agecase == 1 {
 			cou if !inlist(`age', 0, 1, 2, 3, 4, .)
@@ -519,7 +515,7 @@ if noimputationoption == 0 {
 			replace `age' = 2 if `age' == 3
 			replace `age' = 3 if `age' == 4
 		}
-		
+
 		if agecase == 5 {
 			gen `calculated_age' = datediff(`dob', `doa', "d")
 			cap as `calculated_age' >= 0, f
@@ -555,7 +551,7 @@ if noimputationoption == 0 {
 		}
 			if _rc != 0 {
 				sca rc2 = 1
-			}	
+			}
 		sca rc3 = rc1 + rc2	
 		if rc3 == 2 {
 			di as err "You must specify either PT or PTT. `helpme'"
@@ -587,8 +583,8 @@ if prismivoption == 1 & noimputationoption == 0 {
 		if r(N) != 0 {
 			di as err "source imputed. `helpme'"
 			}
-	}	
-	
+	}
+
 	foreach x in cpr cancer risk {
 		cou if !inlist(``x'', 0, 1, .)
 		if r(N) != 0 {
@@ -622,7 +618,7 @@ if prismivoption == 1 {
 
 	forvalues x = 0(1)3 {
 		replace `age_score' = agecoef`x' if `ageIV' == `x'
-	} 
+	}
 }
 
 if validationoption == 1{
@@ -671,29 +667,29 @@ if validationoption == 1{
 	replace `sbp_score' = 7 if ((`age' == 0 & `sbp' < sbp0) |  /*
 	*/	(`age' == 1 & `sbp' < sbp1) | (`age' == 2 & `sbp' < sbp2) | /*
 	*/	(`age' == 3 & `sbp' < sbp3)) & `sbp' != .
-	
+
 	replace `temperature_score' = 3 if (`temp' > tmp1 | `templow' > tmp1 |/*
 	*/	`temp' < tmp0 | `templow' < tmp0) & `temp' != . & `templow' != .
-	
+
 	replace `mentalstatus_score' = 5 if `gcs' < gcs0 & `gcs' != .
 	replace `mentalstatus_score' = 0 if `gcs' >= gcs0 & `gcs' != .
-	
+
 	replace `hr_score' = 3 if ((`age' == 0 & inrange(`hr', hr4, hr5)) | /*
 	*/	(`age' == 1 & inrange(`hr', hr4, hr5)) | /*
 	*/	(`age' == 2 & inrange(`hr', hr2, hr3))|/*
 	*/	(`age' == 3 & inrange(`hr', hr0, hr1))) & `hr' != . 
 	replace `hr_score' = 4 if ((`age' == 0 & hr > hr5) | /*
 	*/	(`age' == 1 & `hr' > hr5) | (`age' == 2 & `hr' > hr3) | /*
-	*/	(`age' == 3 & `hr' > hr1)) & `hr' != . 
-		
+	*/	(`age' == 3 & `hr' > hr1)) & `hr' != .
+
 	replace `pupils_score' = 7 if `pupils' == 1
 	replace `pupils_score' = 11 if `pupils' == 2 
 	replace `pupils_score' = 0 if `pupils' == 0
-	
+
 	replace `acidosis_score' = 2 if (inrange(`ph', ph0, ph1) | /*
 	*/	inrange(`bicarb', bicarb0, bicarb1)) 
 	replace `acidosis_score' = 6 if (`ph' < ph0 | `bicarb' < bicarb0 ) /*
-	*/	& `ph' != . & `bicarb' != . 
+	*/	& `ph' != . & `bicarb' != .
 
 	replace `ph_score' = 2 if inrange(`phhigh', ph2, ph3) | /*
 	*/	inrange(`ph', ph2, ph3)
@@ -704,28 +700,28 @@ if validationoption == 1{
 
 	replace `bicarb_score' = 4 if (`bicarbhigh' > bicarb2 /*
 	*/	& `bicarbhigh' != .) | (`bicarb' > bicarb2 & `bicarb' != .)
-		
+
 	replace `pao2_score' = 3 if inrange(`pao2', pao20, pao21) 
 	replace `pao2_score' = 6 if `pao2' < pao20 & `pao2' != .	
-		
+
 	replace `wbc_score' = 4 if `wbc' < wbc0 
 	replace `coag_score' = 3 if (`age' == 0 & ((inrange(`pt', pt0, .) & /*
 	*/	!inlist(`pt',pt0)) |((inrange(`ptt', ptt1, .) & /*
 	*/	!inlist(`ptt',ptt1))))) | (inrange(`age', 1, 3) & /*
 	*/	((inrange(`pt', pt0, .) & !inlist(`pt',pt0))| /*
 	*/	(inrange(`ptt', ptt0, .) & !inlist(`ptt',ptt0))))
-	
+
 	replace `glucose_score' = 2 if `glucose' > glu0 & `glucose' != .
-			
+
 	replace `potassium_score' = 3 if `potassium' > pot0 & `potassium' != .
 
 	replace `creatinine_score' = 2 if ((`age' == 0 & `creatinine' > cr0)| /*
 	*/	(inrange(`age', 1, 2) & `creatinine' > cr1) | /*
 	*/	(`age' == 3 & `creatinine' > cr2)) & `creatinine'!= . 
-	
+
 	replace `bun_score' = 3	if ((`age' == 0 & `bun' > bun0) | /*
 	*/	(inrange(`age', 1, 3) & `bun' > bun1)) & `bun' !=.
-		
+
 	replace `platelet_score' = 2 if inrange(`plt', plt2, plt3)
 	replace `platelet_score' = 4 if inrange(`plt', plt0, plt1)
 	replace `platelet_score' = 5 if `plt' < plt0 & `plt' != . 
@@ -733,13 +729,13 @@ if validationoption == 1{
 ********************************************************************************
 
 	gen `neuroscore' = `pupils_score' + `mentalstatus_score' if `touse'
-    gen `nonneuroscore' = `sbp_score' + `temperature_score' +				  /* 
+	gen `nonneuroscore' = `sbp_score' + `temperature_score' +				  /* 
 	*/	`hr_score' + `acidosis_score' + `bicarb_score' + `ph_score' +		  /*
 	*/	`pao2_score' + `pco2_score' + `glucose_score' + `potassium_score' +	  /*
 	*/	`creatinine_score' + `bun_score' + `wbc_score' + `coag_score' +		  /*
 	*/	`platelet_score' if `touse'
 	gen `totalscore' = `neuroscore' + `nonneuroscore' if `touse'
-	
+
 		// Places temporary variables into permanent ones
 	if noimputationoption == 1 {
 		tempvar missingcheck3
@@ -756,20 +752,20 @@ if validationoption == 1{
 		replace `nonneurovar' = `nonneuroscore'
 		replace `totalvar' = `totalscore'
 	}
-	
+
 
 if prismivoption == 1 {
 		// Calculates PRISM IV coefficient sum
-		
+
 	gen double `prismintermediate' = intercept + `age_score' + /*
 	*/	`source_score' + (`cpr' * cprcoef) + (`cancer' * cancercoef) + /*
 	*/	(`risk' * riskcoef) + (`neuroscore' * neurocoef) + /*
 	*/	(`nonneuroscore' * nonneurocoef) if `touse'
-	
+
 		// Applies logistic function to previous result
 	gen double `prismfinal' = 100 / (1 + exp(-`prismintermediate')) /*
 	*/	if `touse'
-	
+
 		// Rounds result to make it look pretty
 	replace `prismfinal' = round(`prismfinal', 0.01) 
 	if noimputationoption == 1 {
