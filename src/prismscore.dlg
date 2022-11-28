@@ -1,0 +1,252 @@
+/* 
+  prismscore.dlg
+*/  
+
+VERSION 17.0
+
+INCLUDE _std_small
+INCLUDE header
+
+POSITION . . 480 560
+
+DIALOG main, label("prismscore - Calculate PRISM Scores") tabtitle("Main")
+BEGIN
+GROUPBOX	main	20	10	210	160,	label("PRISM III")
+TEXT	txneu	+20	+20	150	.,	label("Neurologic Score Variable:")
+EDIT	neuro	@	+20	150	.,	error("Neurologic Score Variable")
+TEXT	txnne	@	+20	180	.,	label("Non-Neurologic Score Variable:")
+EDIT	nneuro	@	+20	150	.,	error("Non-Neurologic Score Variable")
+TEXT	txtot	@	+20	150	.,	label("PRISM III Score Variable:")
+EDIT	total	@	+20	150	.,	error("PRISM III Score Variable")
+GROUPBOX	mainiv	+210	10	210	160,	label("PRISM IV")
+CHECKBOX	pr4opt	+20	+20	180	.,	label("Calculate PRISM IV Score") onclickon(program prismshow) onclickoff(program prismhide) option( prismiv) 
+TEXT	txpri	@	+40	150	.,	label("PRISM IV Score Variable:")
+EDIT	prsmf	@	+20	150	.,	error("PRISM IV Score Variable")
+
+END
+DIALOG variable, label("prismscore - Calculate PRISM Scores") tabtitle("Variables")
+BEGIN
+GROUPBOX	age	20	10	440	80,	label("Age - enter either Coded Age or both DoB and DoA")
+TEXT	txage	40	+20	120	.,	label("Coded Age:")
+VARNAME	agev	40	+20	120	.,	error("Coded Age")
+TEXT	txdob	180	30	120	.,	label("Date of Birth:")
+VARNAME	dobv	180	+20	120	.,	error("Date of Birth")
+TEXT	txdoa	320	30	120	.,	label("Date of Admission:")
+VARNAME	doav	320	+20	120	.,	error("Date of Admission")
+
+GROUPBOX	vits	20	90	440	120,	label("Vitals")
+TEXT	txsbp	40	+20	120	.,	label("SBP:")
+VARNAME	sbpv	40	+20	120	.,	error("SBP")
+TEXT	txhr0	40	+20	120	.,	label("HR:")
+VARNAME	hrv0	40	+20	120	.,	error("HR")
+TEXT	txpup	180	110	120	.,	label("Pupils:")
+VARNAME	pup0	180	+20	120	.,	error("Pupils")
+TEXT	txgcs	180	+20	120	.,	label("GCS:")
+VARNAME	gcs0	180	+20	120	.,	error("GCS")
+TEXT	txtmh	320	110	120	.,	label("Temperature High:")
+VARNAME	tmph	320	+20	120	.,	error("Temperature High")
+TEXT	txtml	320	+20	160	.,	label("Temperature Low: (opt)")
+VARNAME	tmpl	320	+20	120	.,	error("Temperature Low")
+
+GROUPBOX	phlabs	20	210	440	120,	label("Blood Gas Labs")
+TEXT	txphl	40	+20	120	.,	label("pH (low):")
+VARNAME	phlv	40	+20	120	.,	error("pH (low)")
+TEXT	txphh	40	+20	120	.,	label("pH high: (opt)")
+VARNAME	phhv	40	+20	120	.,	error("pH high")
+TEXT	txbcl	180	230	120	.,	label("Bicarbonate (low):")
+VARNAME	bclv	180	+20	120	.,	error("Bicarbonate (low)")
+TEXT	txbch	180	+20	160	.,	label("Bicarbonate high: (opt)")
+VARNAME	bchv	180	+20	120	.,	error("Bicarbonate high")
+TEXT	txpco	320	230	120	.,	label("PCO2 high:")
+VARNAME	pcov	320	+20	120	.,	error("PCO2")
+TEXT	txpoo	320	+20	120	.,	label("PaO2 low:")
+VARNAME	poov	320	+20	120	.,	error("PaO2")
+
+GROUPBOX	chelbs	20	330	290	200,	label("Chemistry and Hematology Labs")
+TEXT	txglu	40	+20	120	.,	label("Glucose High:")
+VARNAME	gluv	40	+20	120	.,	error("Glucose")
+TEXT	txpot	40	+20	120	.,	label("Potassium High:")
+VARNAME	potv	40	+20	120	.,	error("Potassium")
+TEXT	txcr	180	350	120	.,	label("Creatinine High:")
+VARNAME	crv	180	+20	120	.,	error("Creatinine")
+TEXT	txbun	180	+20	120	.,	label("BUN high:")
+VARNAME	bunv	180	+20	120	.,	error("BUN")
+
+TEXT	txwbc	40	430	120	.,	label("WBC Count:")
+VARNAME	wbcv	40	+20	120	.,	error("WBC")
+TEXT	txplt	40	+20	120	.,	label("Platelet Count:")
+VARNAME	pltv	40	+20	120	.,	error("Platelet")
+TEXT	txpt	180	430	120	.,	label("PT High:")
+VARNAME	ptv	180	+20	120	.,	error("PT")
+TEXT	txptt	180	+20	120	.,	label("PTT High:")
+VARNAME	pttv	180	+20	120	.,	error("PTT")
+
+GROUPBOX	prism4	310	330	150	200,	label("PRISM IV Variables")
+TEXT	txadm	320	+20	120	.,	label("Admit Source:")
+VARNAME	admv	320	+20	120	.,	error("Admit Source")
+TEXT	txcpr	320	+20	120	.,	label("CPR:")
+VARNAME	cprv	320	+20	120	.,	error("CPR")
+TEXT	txrsk	320	+20	120	.,	label("Risk:")
+VARNAME	rskv	320	+20	120	.,	error("Risk")
+TEXT	txcan	320	+20	120	.,	label("Cancer:")
+VARNAME	canv	320	+20	120	.,	error("Cancer")
+
+END
+DIALOG options, label("prismscore - Calculate PRISM Scores") tabtitle("Options")
+BEGIN
+GROUPBOX	WBCOpt	20	10	140	70,	label("WBC Units")
+RADIO	wbc_rad1	30	+20	120	.,	first label("cells / mm3")
+RADIO	wbc_rad2	30	+20	120	.,	last label("1000 cells / mm3") option(wbcunit(1000))
+GROUPBOX	PltOpt	170	10	140	70,	label("Platelet Units")
+RADIO	plt_rad1	+10	+20	120	.,	first label("cells / mm3") 
+RADIO	plt_rad2	@	+20	120	.,	last label("1000 cells / mm3") option(pltunit(1000))
+GROUPBOX	SIOpt	320	10	140	70,	label("Chemistry Lab Units")
+RADIO	si_rad1	+10	+20	120	.,	first label("Imperial")
+RADIO	si_rad2	@	+20	120	.,	last label("SI") option(si )
+GROUPBOX	TEMPOpt	20	90	140	70,	label("Temperature Units")
+RADIO	temp_rad1	30	+20	120	.,	first label("Celsius")
+RADIO	temp_rad2	30	+20	120	.,	last label("Fahrenheit") option(fahrenheit)
+GROUPBOX	MSCOpt	20	180	440	200,	label("Options")
+CHECKBOX	TRAC	30	+20	120	.,	label("Trace")  option(trace)
+CHECKBOX	IMP	30	+30	220	.,	label("No Imputation")  option(noimputation )
+CHECKBOX	VAL	30	+30	220	.,	label("No Validation")  option(novalidation )
+TEXT	txsup	30	+30	220	.,	label("Suppress Errors")
+RADIO	sup_rad1	30	+20	160	.,	first label ("No suppression")
+RADIO	sup_rad2	30	+20	160	.,	label ("Suppress non-critical errors")  option(suppress )
+RADIO	sup_rad3	30	+20	160	.,	last label ("Suppress all errors") option(suppressall )
+
+END
+
+OK	ok1,	label("OK")
+CANCEL	can1,	label("Cancel")
+SUBMIT	sub1,	label("Submit")
+HELP	hlp1,	view("help prismscore")
+RESET	res1
+COPY	copy1
+
+PROGRAM prismshow
+BEGIN
+	call main.prsmf.enable
+	call variable.admv.enable
+	call variable.cprv.enable
+	call variable.canv.enable
+	call variable.rskv.enable
+END
+
+PROGRAM prismhide
+BEGIN
+	call main.prsmf.disable
+	call variable.admv.disable
+	call variable.cprv.disable
+	call variable.canv.disable
+	call variable.rskv.disable
+
+END
+
+PROGRAM command
+BEGIN
+	put "prismscore"
+	if main.pr4opt.iseq(0) {
+		require main.neuro
+		require main.nneuro
+		require main.total
+	}
+	if main.pr4opt.iseq(1) {
+		require main.prsmf
+		require variable.admv
+		require variable.cprv
+		require variable.canv
+		require variable.rskv
+	}
+	if !variable.dobv.isvarname() | !variable.doav.isvarname() {
+		require variable.agev
+	}
+	if !variable.agev.isvarname(){
+		require variable.dobv
+		require variable.doav
+	}
+	require variable.sbpv
+	require variable.hrv0
+	require variable.tmph
+	require variable.gcs0
+	require variable.pup0
+	require variable.phlv
+	require variable.bclv
+	require variable.pcov
+	require variable.poov
+	require variable.gluv
+	require variable.potv
+	require variable.crv
+	require variable.bunv
+	require variable.wbcv
+	require variable.pltv
+	if variable.ptv.isdefault(){
+		require variable.pttv
+	}
+	if variable.pttv.isdefault(){
+		require variable.ptt
+	}
+	put " " main.neuro
+	put " " main.nneuro
+	put " " main.total
+	put " " main.prsmf
+	put ", "
+	if !variable.agev.isdefault(){
+		put "age(" variable.agev ") "
+	}
+	if !variable.dobv.isdefault(){
+		put "dob(" variable.dobv ") "
+	}
+	if !variable.doav.isdefault(){
+		put "doa(" variable.doav ") "
+	}
+	put "sbp(" variable.sbpv ") "
+	put "hr(" variable.hrv0 ") "
+	put "temp(" variable.tmph ") "
+	if !variable.tmpl.isdefault(){
+		put "templow(" variable.tmpl ") "
+	}
+	put "gcs(" variable.gcs0 ") "
+	put "pupils(" variable.pup0 ") "
+	put "ph(" variable.phlv ") "
+	if !variable.phhv.isdefault(){
+		put "phhigh(" variable.phhv ") "
+	}
+	put "bicarb(" variable.bclv ") "
+	if !variable.bchv.isdefault(){
+		put "bicarbhigh(" variable.bchv ") "
+	}
+	put "pco2(" variable.pcov ") "
+	put "pao2(" variable.poov ") "
+	put "glucose(" variable.gluv ") "
+	put "potassium(" variable.potv ") "
+ 	put "creatinine(" variable.crv ") "
+	put "bun(" variable.bunv ") "
+	put "wbc(" variable.wbcv ") "
+	put "plt(" variable.pltv ") "
+	if !variable.ptv.isdefault(){
+		put "pt(" variable.ptv ") "
+	}
+	if !variable.pttv.isdefault(){
+	put "ptt(" variable.pttv ") "
+	}
+	if main.pr4opt.iseq(1){
+	put " "/on main.pr4opt
+	put " cpr(" variable.cprv ") "
+	put "cancer(" variable.canv ") "
+	put "source(" variable.admv ") "
+	put "risk(" variable.rskv ") "
+	}
+	put " "/on options.wbc_rad2
+	put " "/on options.temp_rad2
+	put " "/on options.plt_rad2
+	put " "/on options.si_rad2
+	put " "/on options.TRAC
+	put " "/on options.IMP
+	put " "/on options.VAL
+	put " "/on options.sup_rad2
+	put " "/on options.sup_rad3
+	if options.sup_rad3.iseq(1){
+	stopbox rusure "You have supressed all errors. Are you sure you want to do this? "
+	}
+END
