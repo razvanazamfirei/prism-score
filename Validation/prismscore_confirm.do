@@ -1,6 +1,7 @@
 cscript prismscore adofile prismscore
-use "prism_3_dataset_1.dta"
-datasignature confirm using "prism_3_dataset_1.dtasig", strict
+
+use "prism_3_dataset_5.dta"
+datasignature confirm using "prism_3_dataset_5.dtasig", strict
 
 qui prismscore neuro_c nonneuro_c totalscore_c, age(age) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose) potassium(potassium) creatinine(creatinine) bun(bun) wbc(wbc) plt(plt) pt(pt) ptt(ptt)
 
