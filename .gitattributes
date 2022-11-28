@@ -1,4 +1,2 @@
 Validation/Validated[[:space:]]Data.dta filter=lfs diff=lfs merge=lfs -text
-Validation/P4_Validated[[:space:]]Data.dta filter=lfs diff=lfs merge=lfs -text
-Validation/Validation[[:space:]]Datasets/P4_Validated[[:space:]]Data.dta filter=lfs diff=lfs merge=lfs -text
 Validation/Validation[[:space:]]Datasets/Validated[[:space:]]Data.dta filter=lfs diff=lfs merge=lfs -text

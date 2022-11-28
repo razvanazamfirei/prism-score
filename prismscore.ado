@@ -1,78 +1,92 @@
 /*----------------------------------------------------------------------------*\
-| PRISM Score Calculator - a statistical package designed to calculate         |
-| 	PRISM III & IV scores.													   |
+|	PRISM Score Calculator - a statistical package designed to calculate	   |
+|		PRISM III & IV scores.												   |
 |																			   |
 |	For help, please see help prismscore. 									   |
 |																			   |
-|	Version: 1.0 | Created: Jul 28, 2022 | Last Updated: Nov 2, 2022		   | 
+|	Version: 1.1 | Created: Jul 28, 2022 | Last Updated: Nov 2, 2022		   |
 |	Author: Razvan Azamfirei - stata@azamfirei.com							   |
 |																			   |
-|	     																	   |
+|																			   |
 \*----------------------------------------------------------------------------*/
-	*! | Version: 1.0 | Last Updated: Nov 2, 2022 | 
-	program prismscore
+	*! | Version: 1.1 | Last Updated: Nov 23, 2022 | 
+cap program drop 	prismscore
+	program 		prismscore
 	preserve
-	if (c(stata_version) < 17) {
-        di as txt "note: this command is written " ///
-        "and tested for Stata release 17.0 or higher"
-        di as txt "it might not work properly with " ///
-        "Stata version `c(stata_version)'"
-        loc vers = c(stata_version)
-    }
-    else loc vers 17
-    
-    version `vers'
-novarabbrev {
-quietly{	
+		if (c(stata_version) < 17) {
+			di as txt "Note: this command is written " ///
+			"and comprehensively tested for Stata release 17.0 or higher."
+			di as txt "The command was tested on Stata 12.0 with no "///
+			"issues. However, a comprehensive validation was not performed."
+			di as txt "The command might not work properly with " ///
+			"Stata version `c(stata_version)'"
+			loc vers = c(stata_version)
+		}
+		else loc vers 17
+	version `vers'
+	
+	novarabbrev {
+	qui {	
 ********************************************************************************
-
-	local age dob doa
-	tempvar I_ageIV calculated_age
-	local l_catvar3 sbp gcs hr pupils
-	local l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine /*
-	*/	bun wbc plt 
-	local l_numvar3opt templow phhigh bicarbhigh pt ptt
-	local l_catvar4 cpr cancer risk source
-	local l_scores sbp_score temperature_score hr_score acidosis_score /*
-	*/	bicarb_score ph_score  pao2_score pco2_score glucose_score  /*
-	*/	potassium_score creatinine_score bun_score wbc_score coag_score /*
-	*/	platelet_score mentalstatus_score pupils_score
-	local l_scores4 age_score source_score
-	local l_allvars `l_catvar3' `l_numvar3' `l_numvar3opt' `l_catvar4'
-	local l_options prismivoption traceoption sioption /*
-	*/	suppressoption noimputationoption plateletoption tempoption /*
-	*/	validationoption
-	local l_results neuroscore nonneuroscore prismintermediate /*
-	*/	prismfinal totalscore
-	local l_scalars intercept agecoef0 agecoef1 agecoef2 agecoef3 sourcecoef0 /*
-	*/	sourcecoef1 sourcecoef2 sourcecoef3 cprcoef cancercoef riskcoef /*
-	*/	neurocoef nonneurocoef ph0 ph1 ph2 ph3 bicarb0 bicarb1 bcarb2 pao20 /*
-	*/	pao21 pco20 pco21 sbp0 sbp1 sbp2 sbp3 sbp4 sbp5 tmp0 tmp1 gcs0 /*
-	*/	hr0 hr1 hr2 hr3 hr4 hr5 pt0 ptt0 ptt1 wbc0 glu0 cr0 cr1 cr2 /*
-	*/	bun0 bun1 plt0 plt1 plt2 plt3 rc1 rc2 rc3 ag1 ag2 ag3 ag4 agecase/*
-	*/	tmpoor0 tmpoor1 gluoor0 gluoor1 croor0 croor1 bunoor0 bunoor1
-	local helpme "See help prismscore for more details."
+ 
+	tempvar ageIV calculated_age age dob doa
+	loc l_catvar3 sbp gcs hr pupils
+	loc l_numvar3 temp  ph  bicarb  pco2 pao2 glucose potassium creatinine 	///
+			bun wbc plt 
+	loc l_numvar3opt templow phhigh bicarbhigh pt ptt
+	loc l_catvar4 cpr cancer risk source
+	loc l_scores sbp_score temperature_score hr_score acidosis_score 		///
+			bicarb_score ph_score  pao2_score pco2_score glucose_score	 	///
+			potassium_score creatinine_score bun_score wbc_score coag_score ///
+			platelet_score mentalstatus_score pupils_score
+	loc l_scores4 age_score source_score
+	loc l_allvars `l_catvar3' `l_numvar3' `l_numvar3opt' `l_catvar4'
+	loc l_options prismivoption 				///
+			sioption tempoption					///
+			wbcoption plateletoption			///
+			noimputationoption validationoption ///
+			suppressoption 						///
+			traceoption	
+	loc l_results neuroscore nonneuroscore prismintermediate ///
+			prismfinal totalscore
+	loc l_scalars intercept agecoef0 agecoef1 agecoef2 agecoef3 sourcecoef0 ///
+			sourcecoef1 sourcecoef2 sourcecoef3 cprcoef cancercoef riskcoef ///
+			neurocoef nonneurocoef ph0 ph1 ph2 ph3 bicarb0 bicarb1 bcarb2 	///
+			pao20 pao21 pco20 pco21 sbp0 sbp1 sbp2 sbp3 sbp4 sbp5 tmp0 tmp1 ///
+			gcs0 hr0 hr1 hr2 hr3 hr4 hr5 pt0 ptt0 ptt1 wbc0 glu0 cr0 cr1 	///
+			cr2 bun0 bun1 plt0 plt1 plt2 plt3 rc1 rc2 rc3 ag1 ag2 ag3 ag4 	///
+			agecase tmpoor0 tmpoor1 gluoor0 gluoor1 croor0 croor1 bunoor0 	///
+			bunoor1 sbpoor0 sbpoor1 hroor0 hroor1 gcsoor0 gcsoor1 phoor0 	///
+			phoor1 co2oor0 co2oor1 pco2oor0 pco2oor1 pao2oor0 pao2oor1 		///
+			potoor0 potoor1 age0 age1 age2 age3 age4 age5 age6 age7 age8
+	loc helpme "See help prismscore for more details."
 	
 ********************************************************************************	
 
-	syntax [newvarlist(generate)] [if] [in], [age(varname numeric)] /*
-	*/	[dob(varname)] [doa(varname)] /*
-	*/	sbp(varname numeric)  temp(varname numeric) [TEMPLow(varname numeric)]/*
-	*/	gcs(varname numeric) hr(varname numeric) PUPils(varname numeric)/*
-	*/	ph(varname numeric) [PHHigh(varname numeric)] bicarb(varname numeric)/*
-	*/	[BICARBHigh(varname numeric)] PCo2(varname numeric) /*
-	*/	POTassium(varname numeric) PAo2(varname numeric) /*
-	*/	GLUcose(varname numeric) CReatinine(varname numeric) /*
-	*/	bun(varname numeric) wbc(varname numeric) plt(varname numeric) /*
-	*/	[pt(varname numeric)] [ptt(varname numeric)] /*
-	***/	[PRISMiv] [cpr(varname numeric)] [CANcer(varname numeric)] /*
-			*/	[risk(varname numeric)] [SOUrce(varname numeric)]/*
-	***/	[SI] [TRACE] [SUPPress] [SUPPRESSAll] [NOIMPutation] /*
-	***/	[NOVALidation]/*
-	***/	[PLTUnit(integer 1)] [WBCUnit(integer 1)] [FAHRenheit] 
+	syntax newvarlist(min=1 max=4 generate) [if] [in], 		///
+		[age(varname num)] [dob(varname)] [doa(varname)] 	///
+		Sbp(varname num) Hr(varname num) 					///
+		temp(varname num) [TEMPLow(varname num)] 			///
+		Gcs(varname num)  PUPils(varname num) 				///
+		ph(varname num) [PHHigh(varname num)] 				///
+		bicarb(varname num) [BICARBHigh(varname num)] 		///
+		PCo2(varname num) PAo2(varname num)					///
+		GLUcose(varname num) POTassium(varname num)			///
+		Bun(varname num) CReatinine(varname num)			///
+		wbc(varname num) plt(varname num)					///
+		[pt(varname num)] [ptt(varname num)]				///
+			[PRISMiv]										///
+				[cpr(varname num)] [CANcer(varname num)]	///
+				[Risk(varname num)] [SOUrce(varname num)]	///
+			[SI] [FAHRenheit]								///
+			[WBCUnit(int 1)] [PLTUnit(int 1)]				///
+			[NOIMPutation] [NOVALidation]					///
+			[SUPPress] [SUPPRESSAll]						///
+		[TRACE] 	
+	
+		marksample touse, nov
 
 ********************************************************************************	
-	marksample touse, novarlist
 	
 ///	Get Option State
  
@@ -80,711 +94,749 @@ quietly{
 	tempvar `l_results'
 
 	if "`trace'" != "" {
-		set trace on
-		scalar traceoption = 1
+		set tr on
+		sca traceoption = 1
 	}
 	else {
-		scalar traceoption = 0
+		sca traceoption = 0
 	}
 	if "`noimputation'" != "" {
-		scalar noimputationoption = 1
+		sca noimputationoption = 1
 	}
 	else {
-		scalar noimputationoption = 0
+		sca noimputationoption = 0
 	}	
-	if "`suppressall'" != ""{
-		scalar suppressoption = 2
+	if "`suppressall'" != "" {
+		sca suppressoption = 2
 	}
-	if "`suppress'" != "" & "`suppressall'" == ""{
-		scalar suppressoption = 1
+	if "`suppress'" != "" & "`suppressall'" == "" {
+		sca suppressoption = 1
 	}
-	if "`suppress'" == "" & "`suppressall'" == ""{
-		scalar suppressoption = 0
+	if "`suppress'" == "" & "`suppressall'" == "" {
+		sca suppressoption = 0
 	}	
 	if "`novalidation'" == "" {
-		scalar validationoption = 1
+		sca validationoption = 1
 	}
 	else {
-		scalar validationoption = 0
+		sca validationoption = 0
 	}
-	if suppressoption == 2{
-		scalar validationoption = 0
+	if suppressoption == 2 {
+		sca validationoption = 0
 	}
 	if "`prismiv'" != "" {
-		scalar prismivoption = 1
+		sca prismivoption = 1
 	}
-	else{
-		scalar prismivoption = 0
-	} 
+	else {
+		sca prismivoption = 0
+	}
 	if "`si'" != "" {
-		scalar sioption = 1
+		sca sioption = 1
 	}
 	else {
-		scalar sioption = 0
-	} 
+		sca sioption = 0
+	}
 	if "`fahrenheit'" != "" {
-		scalar tempoption = 1
+		sca tempoption = 1
 	}
 	else {
-		scalar tempoption = 0
-	} 
+		sca tempoption = 0
+	}
 	
 *------------------------------------------------------------------------------*
 *	Parses varlist - Counts total number of variables, assign each variable a  *
-*	number corresponding to its position and then assigns final vars.          *
+*	number corresponding to its position and then assigns final vars.		   *
 *	Rules: 																	   *
-*		1. If calculating PRISM IV score you must have 1 newvar (becomes       * 
+*		1. If calculating PRISM IV score you must have 1 newvar (becomes	   *
 *		PRISM IV or 4 vars for the PRISM III scores + PRISM IV score.		   *
 *																			   *
-*		2. If calculating PRISM III scores you need to have 3 variables. 	   *
+*		2. If calculating PRISM III scores you need to have 3 variables.	   *
 *------------------------------------------------------------------------------*
 	
-	local i = 0 
-	capture {
-		foreach x in `varlist' {
-		local i = `i' + 1
-		local newvar_`i' `x'
-	} 
+	loc i = 0
+	cap {
+		foreach var in `varlist' {
+			loc i = `i' + 1
+			loc newvar_`i' `var'
+		}
 	}
 	if prismivoption == 1 {
-		if `i' == 1{
-			local prismivvar `newvar_1' // Holds PRISM IV score 
+		if `i' == 1 {
+			loc prismivvar `newvar_1' // Holds PRISM IV score 
 		}
 		if inlist(`i',2,3) {
-			di as error "You must specify either 1 or 4 new" _continue
-			di as error "variable names if you are trying to" _continue
-			di as error " calculate the PRISM IV score. `helpme'"
-			error 498
+			di as err "You must specify either 1 or 4 new" _continue
+			di as err "variable names if you are trying to" _continue
+			di as err " calculate the PRISM IV score. `helpme'"
+			err 498
 		}
 		if `i' == 4 {
-			local neurovar `newvar_1'
-			local nonneurovar `newvar_2'
-			local totalvar `newvar_3'
-			local prismivvar `newvar_4'
+			loc neurovar `newvar_1'
+			loc nonneurovar `newvar_2'
+			loc totalvar `newvar_3'
+			loc prismivvar `newvar_4'
 		}
 	}
 	if prismivoption == 0 {
 		if inlist(`i', 1, 2) {
-			di as error "You must specify 3 newvarvarnames for" _continue
-			di as error " PRISM III score calculations. `helpme'"
-			error 498
+			di as err "You must specify 3 newvarvarnames for" _continue
+			di as err " PRISM III score calculations. `helpme'"
+			err 498
 		}
 		if `i' == 4 {
-			di as error "You have specified too many newvarnames" _continue
-			di as error "or have forgotten to include , prismiv"
-			error 498
+			di as err "You have specified too many newvarnames" _continue
+			di as err "or have forgotten to include prismiv"
+			err 498
 		}
 		if `i' == 3 {
-			local neurovar `newvar_1'
-			local nonneurovar `newvar_2'
-			local totalvar `newvar_3'
+			loc neurovar `newvar_1'
+			loc nonneurovar `newvar_2'
+			loc totalvar `newvar_3'
 		}
 	}
-	
 
 ///	Defines Variables and Various Coefficients
 
-/* 	All internal variables start with I_; otherwise STATA gets confused if foo *
-*	is the dataset variable and there is a tempvar called `foo'.              */
+	foreach score in `l_scores' `l_scores4' {
+		tempvar `score'
+	}
+	foreach var in `l_allvars' dob doa age { 		// Generates Temporary Names
+		tempvar `var'_i								// for all vars
+	}
 
-	tempvar `l_scores' `l_scores4'
-	foreach x in `l_allvars' { 		// Generates Temporary Names for all vars
-		tempvar I_`x'
+	foreach cat_var in `l_catvar3' {		// Generates PRISM III
+		gen ``cat_var'_i' = ``cat_var'' 	// categorical vars
+		tempvar `cat_var'
+		gen ``cat_var'' = ``cat_var'_i'
+		drop ``cat_var'_i'
 	}
-	foreach x in `l_catvar3' {		// Generates PRISM III categorical vars
-		generate `I_`x'' = ``x'' 
-	}	
+	foreach num_var in `l_numvar3opt' dob doa age {	// Generates "optional"
+		cap {										// PRISM III num vars
+			gen ``num_var'_i' = ``num_var'' 
+			tempvar `num_var'
+			gen ``num_var'' = ``num_var'_i'
+			drop ``num_var'_i'
+		}
+		continue
+	}
 
-	foreach x in `l_numvar3opt' {	// Generates "optional" PRISM III num vars
-		capture {
-			generate `I_`x'' = ``x''
-		}
+	foreach num_var in `l_numvar3' {		// Generates required PRISM III 
+		gen ``num_var'_i' = ``num_var'' 	// num vars
+		tempvar `num_var'
+		gen ``num_var'' = ``num_var'_i'
+		drop ``num_var'_i' 
 	}
-		
-	foreach x in `l_numvar3' {		// Generates required PRISM III num vars
-		generate `I_`x'' = ``x'' 
+	foreach score in `l_scores' {		// Generates placeholders for PRISM III
+		gen ``score'' = 0 				// sub-scores
 	}
-	foreach x in `l_scores' {		// Generates placeholders for PRISM III
-			generate ``x'' = 0 		// sub-scores
-		}
-	if prismivoption == 1 {			// If calculating PRISM IV
-		foreach x in `l_catvar4' {	// Generates PRISM IV vars
-			capture {
-				generate `I_`x'' = ``x'' if `touse'
+	if prismivoption == 1 {					// If calculating PRISM IV
+		foreach cat_var in `l_catvar4' {	// Generates PRISM IV vars
+			cap {
+				gen ``cat_var'_i' = ``cat_var'' if `touse'
+				tempvar `cat_var'
+				gen ``cat_var'' = ``cat_var'_i' if `touse'
+				drop ``cat_var'_i'
+				continue
 			}
 			if _rc != 0 & suppressoption != 2 {
-			di as error "`x' not specified. `helpme'"
-			error 498
+				di as err "`x' not specified. `helpme'"
+				err 102
 			}
 		}
 		if noimputationoption == 1 {	
-			foreach x in `l_scores4' {
-				generate ``x'' = . if `touse'
+			foreach score in `l_scores4' {
+				gen ``score'' = . if `touse'
 			}
 		}
 		if noimputationoption == 0 {
-			foreach x in `l_scores4' {
-				generate ``x'' = 0 if `touse'
+			foreach score in `l_scores4' {
+				gen ``score'' = 0 if `touse'
 			}
 		}
 	}
 //	Sets coefficients and bounds
 
 	tempname `l_scalars' 
-	
+
 		// PRISM IV coefficients - Change this
-		scalar intercept = -5.776
-		scalar agecoef0 = 1.311
-		scalar agecoef1 = 0.968
-		scalar agecoef2 = 0.357
-		scalar agecoef3 = 0
-		scalar sourcecoef0 = 0
-		scalar sourcecoef1 = 1.012
-		scalar sourcecoef2 = 1.626
-		scalar sourcecoef3 = 0.693
-		scalar cprcoef = 1.082
-		scalar cancercoef = 0.766
-		scalar riskcoef = -1.697
-		scalar neurocoef = 0.197
-		scalar nonneurocoef = 0.163
-	
-		// PRISM III vital bounds
-		scalar sbp0 = 40
-		scalar sbp1 = 45
-		scalar sbp2 = 55
-		scalar sbp3 = 65
-		scalar sbp4 = 75
-		scalar sbp5 = 85
-		scalar hr0 = 145
-		scalar hr1 = 155
-		scalar hr2 = 185
-		scalar hr3 = 205
-		scalar hr4 = 215
-		scalar hr5 = 225
-		scalar tmp0 = float(33.0)
-		scalar tmp1 = float(40.0)
-		scalar gcs0 = 8
+		sca intercept = -5.776
+		sca agecoef0 = 1.311
+		sca agecoef1 = 0.968
+		sca agecoef2 = 0.357
+		sca agecoef3 = 0
+		sca sourcecoef0 = 0
+		sca sourcecoef1 = 1.012
+		sca sourcecoef2 = 1.626
+		sca sourcecoef3 = 0.693
+		sca cprcoef = 1.082
+		sca cancercoef = 0.766
+		sca riskcoef = -1.697
+		sca neurocoef = 0.197
+		sca nonneurocoef = 0.163
+
+		/// PRISM III & IV age bounds
 		
-		//	PRISM IV lab bounds - must be float or else comparison will not work
+		sca age0 = 0	// 0 days
+		sca age1 = 14	// 14 days
+		sca age2 = 15	// 15 days
+		sca age3 = 30	// 1 month
+		sca age4 = 31	// 1 month + 1 day
+		sca age5 = 365	// 1 year
+		sca age6 = 366	// 1 year + 1 day
+		sca age7 = 4380	// 12 years
+		sca age8 = 4381	// 12 years + 1 day
+		
+		
+		// PRISM III vital bounds
+		sca sbp0 = 40
+		sca sbp1 = 45
+		sca sbp2 = 55
+		sca sbp3 = 65
+		sca sbp4 = 75
+		sca sbp5 = 85
+		sca hr0 = 145
+		sca hr1 = 155
+		sca hr2 = 185
+		sca hr3 = 205
+		sca hr4 = 215
+		sca hr5 = 225
+		sca tmp0 = float(33.0)
+		sca tmp1 = float(40.0)
+		sca gcs0 = 8
+
+		//	PRISM III lab bounds - must be float or else comparison will not work
 		//	close to the boundries because of how STATA stores numbers
 		
-		scalar ph0 = float(7.0) 
-		scalar ph1 = float(7.28)
-		scalar ph2 = float(7.48)
-		scalar ph3 = float(7.55)
-		scalar bicarb0 = float(5)
-		scalar bicarb1 = float(16.9)
-		scalar bicarb2 = float(34.0)
-		scalar pao20 = float(42.0)
-		scalar pao21 = float(49.9)
-		scalar pco20 = float(50.0)
-		scalar pco21 = float(75)
+		sca ph0 = float(7.0) 
+		sca ph1 = float(7.28)
+		sca ph2 = float(7.48)
+		sca ph3 = float(7.55)
+		sca bicarb0 = float(5)
+		sca bicarb1 = float(16.9)
+		sca bicarb2 = float(34.0)
+		sca pao20 = float(42.0)
+		sca pao21 = float(49.9)
+		sca pco20 = float(50.0)
+		sca pco21 = float(75)
 
-		scalar pot0 = float(6.9)		
-		scalar glu0 = float(200)
-		scalar cr0 = float(0.85)
-		scalar cr1 = float(0.9)
-		scalar cr2 = float(1.30)
-		scalar bun0 = float(11.9)
-		scalar bun1 = float(14.90)
+		sca pot0 = float(6.9)
+		sca glu0 = float(200)
+		sca cr0 = float(0.85)
+		sca cr1 = float(0.9)
+		sca cr2 = float(1.30)
+		sca bun0 = float(11.9)
+		sca bun1 = float(14.90)
+
+		sca wbc0 = float(3000)
+		sca pt0 = float(22.0)
+		sca ptt0 = float(57.0)
+		sca ptt1 = float(85.0)
+		sca plt0 = float(50000)
+		sca plt1 = float(99999)
+		sca plt2 = float(100000)
+		sca plt3 = float(200000)
+
+		sca sbpoor0 = float(0)
+		sca sbpoor1 = float(300)
+		sca hroor0 = float(0)
+		sca hroor1 = float(300)
+		sca gcsoor0 = float(3)
+		sca gscoor1 = float(15)
+		sca phoor0 = float(6.5)
+		sca phoor1 = float(7.9)
+		sca co2oor0 = float(0.1)
+		sca co2oor1 = float(60)
+		sca pco2oor0 = float(1)
+		sca pco2oor1 = float(200)
+		sca pao2oor0 = float(1)
+		sca pao2oor1 = float(600)
+		sca potoor0 = float(1)
+		sca potoor1 = float(10)
+		sca gluoor0 = float(5)
+		sca gluoor1 = float(999)
+		sca croor0 = float(0.01)
+		sca croor1 = float(15)
+		sca bunoor0 = float(1)
+		sca bunoor1 = float(150)
+		sca tmpoor0 = float(25.0)
+		sca tmpoor1 = float(45.0)
 		
-		scalar wbc0 = 3000
-		scalar pt0 = float(22.0)
-		scalar ptt0 = float(57.0)
-		scalar ptt1 = float(85.0)
-		scalar plt0 = 50000
-		scalar plt1 = 99999
-		scalar plt2 = 100000
-		scalar plt3 = 200000
-		
-		scalar gluoor0 = float(5)
-		scalar gluoor1 = float(999)
-		scalar croor0 = float(0.01)
-		scalar croor1 = float(15)
-		scalar bunoor0 = float(1)
-		scalar bunoor1 = float(150)
-		scalar tmpoor0 = float(25.0)
-		scalar tmpoor1 = float(45.0)
-		
-// 	Replaces bounds for lab values in SI units and temperature in F. 
+
+// 	Replaces bounds for lab values in SI units and temperature in F.
 
 		// Rather than converting the underlying values, I'm just setting new
 		// bounds; cleaner and less resource-intensive 
-		
+
 	if sioption == 1 {
-		scalar glu0 = float(11.0)
-		scalar cr0 = float(75)
-		scalar cr1 = float(80)
-		scalar cr2 = float(115)
-		scalar bun0 = float(4.3)
-		scalar bun1 = float(5.4)
-		scalar gluoor0 = float(0.2)
-		scalar gluoor1 = float(55.45)
-		scalar croor0 = float(0.8)
-		scalar croor1 = float(1350)
-		scalar bunoor0 = float(0.3)
-		scalar bunoor1 = float(53.6)
-	}	
-	
-	if tempoption == 1 {
-		scalar tmp0 = float(91.4)
-		scalar tmp1 = float(104.0) 
-		scalar tmpoor0 = float(77.0)
-		scalar tmpoor1 = float(113.0)
+		sca glu0 = float(11.0)
+		sca cr0 = float(75)
+		sca cr1 = float(80)
+		sca cr2 = float(115)
+		sca bun0 = float(4.3)
+		sca bun1 = float(5.4)
+		sca gluoor0 = float(0.2)
+		sca gluoor1 = float(55.45)
+		sca croor0 = float(0.8)
+		sca croor1 = float(1350)
+		sca bunoor0 = float(0.3)
+		sca bunoor1 = float(53.6)
 	}
-	
+
+	if tempoption == 1 {
+		sca tmp0 = float(91.4)
+		sca tmp1 = float(104.0) 
+		sca tmpoor0 = float(77.0)
+		sca tmpoor1 = float(113.0)
+	}
+
 //	Changes bounds for WBC and Platelets based on units (cells vs 1000 cells)
 
 		// Default option is all cell counts in cells. If K cells, sets
 		// option to 1000 which is used further down
-		
-	scalar plateletoption = 1
-	scalar wbcoption = 1
+
+	sca plateletoption = 1
+	sca wbcoption = 1
 	if `pltunit' == 1000 {
-		scalar plateletoption = 1000
+		sca plateletoption = 1000
 	}
 	if `wbcunit' == 1000 {
-		scalar wbcoption = 1000
+		sca wbcoption = 1000
 	}
-	if `pltunit'!= 1 & `pltunit' != 1000 & `pltunit' != . {
-		di as error "Platelet Unit incorrectly specified."
-		error 498
+	if `pltunit' != 1 & `pltunit' != 1000 & `pltunit' != . {
+		di as err "Platelet Unit incorrectly specified."
+		err 499
 	}
-	if `wbcunit'!= 1 & `wbcunit' != 1000 & `wbcunit' != . {
-		di as error "WBC Unit incorrectly specified."
-		error 498
-	}	 	
-	forvalues x = 0(1)3 { // Uses plateletoption to set platelet bounds
-		scalar plt`x' = plt`x' / plateletoption
+	if `wbcunit' != 1 & `wbcunit' != 1000 & `wbcunit' != . {
+		di as err "WBC Unit incorrectly specified."
+		err 499
 	}
-	
-	scalar wbc0 = wbc0 / wbcoption // Uses WBC option to set wbc bounds
+	forvalues x = 0(1)3 { 		// Uses plateletoption to set platelet bounds
+		sca plt`x' = plt`x' / plateletoption
+	}
 
-*------------------------------------------------------------------------------*	
-* 	Protects against edge cases where foo_high < foo_low. First it fills in    * 
+	sca wbc0 = wbc0 / wbcoption // Uses WBC option to set wbc bounds
+
+*------------------------------------------------------------------------------*
+*	Protects against edge cases where foo_high < foo_low. First it fills in	   *
 *	missing values from the paired variable (if foo_low != . & foo_high == .   *
-*	foo_high = foo_low. Then it places foo_high and foo_low in tempvars and    *
+*	foo_high = foo_low. Then it places foo_high and foo_low in tempvars and	   *
 *	replaces foo_high/foo_low with max/min of all values. 					   *
 *																			   *
 *	In simpler terms, for measurements that have both a high and a low variable*
 *	only one has to be specified. If both are specified, even if the data is   *
 *	entered incorrectly (e.g. high value in low variable) this will fix it.	   *
 *------------------------------------------------------------------------------*
-                   
-if noimputationoption == 0 {	
-	capture confirm variable `I_templow'
-	if _rc != 0 {
-		tempvar I_templow
-		generate `I_templow' = `I_temp' if `touse'
-	} 	
-	else {
-		tempvar thtmp tltmp
-		replace `I_temp' = `I_templow' if `I_temp' == . & `touse'
-		replace `I_templow' = `I_temp' if `I_templow' == . & `touse'
-		generate `tltmp' = `I_templow' /*
-		*/	if inrange(`I_temp', `I_templow', .) & `touse'
-		generate `thtmp' = `I_temp' /*
-		*/	if inrange(`I_templow', ., `I_temp') & `touse'
-		replace `I_temp' = min(`I_temp', `tltmp', `thtmp') if `touse'
-		replace `I_templow' = max(`I_templow', `tltmp', `thtmp') if `touse'
-		drop `thtmp' `tltmp'
-	}
 
-	capture confirm variable `I_phhigh'
-	if _rc != 0 {
-		tempvar I_phhigh
-		generate `I_phhigh' = `I_ph' if `touse'
+if noimputationoption == 0 {
+		cap conf v `templow'
+		if _rc != 0 {
+			tempvar templow
+			gen `templow' = `temp' if `touse'
+		}
+		else {
+			tempvar thtmp tltmp
+			replace `temp' = `templow' if `temp' == . & `touse'
+			replace `templow' = `temp' if `templow' == . & `touse'
+			gen `tltmp' = `templow' ///
+				if inrange(`temp', `templow', .) & `touse'
+			gen `thtmp' = `temp' 	///
+				if inrange(`templow', ., `temp') & `touse'
+			replace `temp' = min(`temp', `tltmp', `thtmp') if `touse'
+			replace `templow' = max(`templow', `tltmp', `thtmp') if `touse'
+			drop `thtmp' `tltmp'
+		}
+
+		cap conf v `phhigh'
+		if _rc != 0 {
+			tempvar phhigh
+			gen `phhigh' = `ph' if `touse'
+		}
+		else {
+			tempvar phtmp pltmp
+			replace `ph' = `phhigh' if `ph' == . & `touse'
+			replace `phhigh' = `ph' if `phhigh' == . & `touse'
+			gen `pltmp' = `phhigh'	///
+				if inrange(`ph', `phhigh', .) & `touse'
+			gen `phtmp' = `ph' if inrange(`phhigh', ., `ph') & `touse'
+			replace `ph' = min(`ph', `pltmp', `phtmp') if `touse'
+			replace `phhigh' = max(`phhigh', `pltmp', `phtmp') if `touse'
+			drop `phtmp' `pltmp'
+		}
+		cap conf v `bicarbhigh'
+		if _rc != 0 {
+			tempvar bicarbhigh
+			gen `bicarbhigh' = `bicarb' if `touse'
+		}
+		if _rc == 0 {
+			tempvar bhtmp bltmp
+			replace `bicarb' = `bicarbhigh' if `bicarb' == . & `touse'
+			replace `bicarbhigh' = `bicarb' if `bicarbhigh' == . & `touse'
+			gen `bltmp' = `bicarbhigh'	///
+				if inrange(`bicarb', `bicarbhigh', .) & `touse'
+			gen `bhtmp' = `bicarb'		///
+				if inrange(`bicarbhigh', ., `bicarb') & `touse'
+			replace `bicarb' = min(`bicarb', `bltmp', `bhtmp') if `touse'
+			replace `bicarbhigh' = max(`bicarbhigh', `bltmp', `bhtmp')	///
+				if `touse'
+			drop `bhtmp' `bltmp'
+		}
 	}
-	else{
-		tempvar phtmp pltmp
-		replace `I_ph' = `I_phhigh' if `I_ph' == . & `touse'
-		replace `I_phhigh' = `I_ph' if `I_phhigh' == . & `touse'
-		generate `pltmp' = `I_phhigh' /*
-		*/	if inrange(`I_ph', `I_phhigh', .) & `touse'
-		generate `phtmp' = `I_ph' if inrange(`I_phhigh', ., `I_ph') & `touse'
-		replace `I_ph' = min(`I_ph', `pltmp', `phtmp') if `touse'
-		replace `I_phhigh' = max(`I_phhigh', `pltmp', `phtmp') if `touse'
-		drop `phtmp' `pltmp'
-	}
-	capture confirm variable `I_bicarbhigh'
-	if _rc != 0 {
-		tempvar I_bicarbhigh
-		generate `I_bicarbhigh' = `I_bicarb' if `touse'
-	}
-	if _rc == 0 {
-		tempvar bhtmp bltmp
-		replace `I_bicarb' = `I_bicarbhigh' if `I_bicarb' == . & `touse'
-		replace `I_bicarbhigh' = `I_bicarb' if `I_bicarbhigh' == . & `touse'
-		generate `bltmp' = `I_bicarbhigh' /*
-		*/	if inrange(`I_bicarb', `I_bicarbhigh', .) & `touse'
-		generate `bhtmp' = `I_bicarb' /*
-		*/	if inrange(`I_bicarbhigh', ., `I_bicarb') & `touse'
-		replace `I_bicarb' = min(`I_bicarb', `bltmp', `bhtmp') if `touse'
-		replace `I_bicarbhigh' = max(`I_bicarbhigh', `bltmp', `bhtmp') /*
-		*/	if `touse'
-		drop `bhtmp' `bltmp'
-	}
-}
 ********************************************************************************
 // Error Checking
 
-		capture {
-			tempvar I_age
-			generate `I_age' = `age'
-		}
-			if _rc != 0{
-				scalar ag1 = 0
-			}
-			else {
-				scalar ag1 = 1
-			}
-		
-		capture {
-			tempvar I_dob
-			generate `I_dob' = `dob'
-		}
+		cap conf numeric v `age'
 			if _rc != 0 {
-				scalar ag2 = 0
+				sca ag1 = 0
 			}
 			else {
-				scalar ag2 = 1
+				sca ag1 = 1
 			}
-		capture {
-			tempvar I_doa
-			generate `I_doa' = `doa'
-		}
+
+		cap conf numeric v `dob'
 			if _rc != 0 {
-				scalar ag3 = 0
+				sca ag2 = 0
 			}
 			else {
-				scalar ag3 = 1
+				sca ag2 = 1
 			}
-		scalar ag4 = ag2 + ag3 
+		cap conf numeric v `doa'
+			if _rc != 0 {
+				sca ag3 = 0
+			}
+			else {
+				sca ag3 = 1
+			}
+		sca ag4 = ag2 + ag3 
 			// If 2 both dob and doa exist, if 1 only one exists. If 0, none
 		if ag1 == 1 & ag4 == 0 {
-			scalar agecase = 1 // Only categorical age is specified
+			sca agecase = 1 // Only categorical age is specified
 		}
-		
+
 		if ag1 == 1 & inrange(ag4, 1, 2) {
-			scalar agecase = 2 // Both age & DoB DoA are specified
+			sca agecase = 2 // Both age & DoB DoA are specified
 		}
-		
+
 		if ag1 == 0 & ag4 == 0 {
-			scalar agecase = 3 // Nothing is specified
+			sca agecase = 3 // Nothing is specified
 		}
-		
+
 		if ag1 == 0 & ag4 == 1 {
-			scalar agecase = 4
+			sca agecase = 4
 		}
-		
+
 		if ag1 == 0 & ag4 == 2 {
-			scalar agecase = 5
+			sca agecase = 5
 		}
-	
 		if agecase == 2 {
-			di as error "Both age, DoB and DoA are specified."
-			di as error "Specify either age or DoB and DoA"
+			di as err "Both age, DoB and DoA are specified."
+			di as err "Specify either age or DoB and DoA"
+			err 103
 		}
-		
+
 		if agecase == 3 {
-			di as error "Neither age, DoB or DoA are specified."
-			di as error "Specify either age or DoB and DoA"
+			di as err "Neither age, DoB or DoA are specified."
+			di as err "Specify either age or DoB and DoA"
+			err 102
 		}
-		
+
 		if agecase == 4 {
-			di as error "You must specify both DoB and DoA"
+			di as err "You must specify both DoB and DoA"
+			err 102
 		}
-		
-			
+
+
 		// Ensures categorical variables are entered in the correct format
 		if agecase == 1 {
-			count if !inlist(`I_age', 0, 1, 2, 3, 4, .)
+			cou if !inlist(`age', 0, 1, 2, 3, 4, .)
 				if r(N) != 0 {
-					di as error "Age is not in the correct format. `helpme'"
-					error 498
+					di as err "Age is not in the correct format. `helpme'"
+					err 498
 				}
-			generate `I_ageIV' = 0 if `I_age' == 0
-			replace `I_ageIV' = 1 if `I_age' == 1
-			replace `I_ageIV' = 2 if `I_age' == 2
-			replace `I_ageIV' = 3 if inrange(`I_age', 3,4)
-			replace `I_age' = 0 if inrange(`I_age',0,1)
-			replace `I_age' = 1 if `I_age' == 2
-			replace `I_age' = 2 if `I_age' == 3
-			replace `I_age' = 3 if `I_age' == 4
+			gen `ageIV' = 0 if `age' == 0
+			replace `ageIV' = 1 if `age' == 1
+			replace `ageIV' = 2 if `age' == 2
+			replace `ageIV' = 3 if inrange(`age', 3,4)
+			replace `age' = 0 if inrange(`age',0,1)
+			replace `age' = 1 if `age' == 2
+			replace `age' = 2 if `age' == 3
+			replace `age' = 3 if `age' == 4
 		}
-		
+
 		if agecase == 5 {
-			generate `calculated_age' = datediff(`I_dob', `I_doa', "DAY")
-			capture assert `calculated_age' >= 0
+			gen `calculated_age' = datediff(`dob', `doa', "d")
+			cap as `calculated_age' >= 0, fast
 			if _rc != 0 {
-				di as error "Calculated age is negative. Observations will be ignored."
+				di as err "Calculated age is negative. Observations will " ///
+				"be ignored."
 			}
-			generate `I_age' = 0 if inrange(`calculated_age', 0, 30)
-			replace `I_age' = 1 if inrange(`calculated_age', 31, 365)
-			replace `I_age' = 2 if inrange(`calculated_age', 366, 4380) //12y
-			replace `I_age' = 3 if inrange(`calculated_age', 4381, .) //12y
-			generate `I_ageIV' = 0 if inrange(`calculated_age', 0, 14)
-			replace `I_ageIV' = 1 if inrange(`calculated_age', 15, 30)
-			replace `I_ageIV' = 2 if `I_age' == 1
-			replace `I_ageIV' = 3 if inrange(`I_age', 2,3)
+			tempvar age
+			gen `age' = 0 if inrange(`calculated_age', age0, age3)
+				replace `age' = 1 if inrange(`calculated_age', age4, age5)
+				replace `age' = 2 if inrange(`calculated_age', age6, age7) //12y
+				replace `age' = 3 if inrange(`calculated_age', age8, .) //12y
+			gen `ageIV' = 0 if inrange(`calculated_age', age0, age1)
+			replace `ageIV' = 1 if inrange(`calculated_age', age2, age3)
+			replace `ageIV' = 2 if `age' == 1
+			replace `ageIV' = 3 if inlist(`age', 2, 3)
 		}
 
 	if suppressoption != 2 { 	// Checks that either PT or PTT are specified
-		scalar rc1 = 0			// If either are missing generates empty var
-		scalar rc2 = 0			// to prevent errors in calculation.
-		scalar ag1 = 0
-		scalar ag2 = 0
-		scalar ag3 = 0
-		scalar ag4 = 0
-		capture {
-			confirm variable `I_pt'
-		}
-			if _rc != 0 {
-				scalar rc1 = 1
+		sca rc1 = 0				// If either are missing generates empty var
+		sca rc2 = 0				// to prevent errors in calculation.
+		sca ag1 = 0
+		sca ag2 = 0
+		sca ag3 = 0
+		sca ag4 = 0
+		
+			cap {
+				conf v `pt'
 			}
-		capture {
-			confirm variable `I_ptt'
-		}
-			if _rc != 0 {
-				scalar rc2 = 1
-			}	
-		scalar rc3 = rc1 + rc2	
-		if rc3 == 2 {
-			di as error "You must specify either PT or PTT. `helpme'"
-			error 498
-		}
-		else {		
-			if rc1 == 1 { 	
-				replace `I_pt' = .
+				if _rc != 0 {
+					sca rc1 = 1
+				}
+				
+			cap {
+				conf v `ptt'
 			}
-			if rc2 == 1 {
-				replace `I_ptt' = .
+				if _rc != 0 {
+					sca rc2 = 1
+				}
+				
+			sca rc3 = rc1 + rc2	
+			if rc3 == 2 {
+				di as err "You must specify either PT or PTT. `helpme'"
+				err 102
 			}
-		}
+			else {		
+				if rc1 == 1 { 	
+					replace `pt' = .
+				}
+				if rc2 == 1 {
+					replace `ptt' = .
+				}
+			}
 
-	count if !inlist(`I_pupils', 0, 1, 2, .)
-	if r(N) != 0 {
-			di as error "Pupils are not in the correct format. `helpme'"
-			error 498
-		}
-
-if prismivoption == 1 & noimputationoption == 0 {
-	count if !inlist(`I_source', 0, 1, 2, 3, .) 
-	if r(N) != 0 {
-		di as error "source is not in the correct format. `helpme'"
-		error 498
-			}
-	if suppressoption == 0 {
-		count if `I_source' == .
-		if r(N) != 0 {
-			di as error "source imputed. `helpme'"
-			}
-	}	
-	
-	foreach x in cpr cancer risk {
-		count if !inlist(`I_`x'', 0, 1, .)
-		if r(N) != 0 {
-			di as error "`x' is not binary. `helpme'"
-			error 450
-		}
-		if suppressoption == 0 {
-			count if `I_`x'' == .
+			cou if !inlist(`pupils', 0, 1, 2, .)
 			if r(N) != 0 {
-				di as error "Some `x' values imputed. `helpme'"
+					di as err "Pupils are not in the correct format. `helpme'"
+					err 499
+			}
+
+		if prismivoption == 1 {
+			cou if !inlist(`source', 0, 1, 2, 3, .) 
+			if r(N) != 0 {
+				di as err "source is not in the correct format. `helpme'"
+				err 499
+			}
+			if suppressoption == 0 & noimputationoption == 0 {
+				cou if `source' == .
+				if r(N) != 0 {
+					di as err "source imputed. `helpme'"
+				}
+			}
+
+			foreach var in cpr cancer risk {
+				cou if !inlist(``var'', 0, 1, .)
+				if r(N) != 0 {
+					di as err "`var' is not binary. `helpme'"
+					err 450
+				}
+				if suppressoption == 0 & noimputationoption == 0 {
+					cou if ``var'' == .
+					if r(N) != 0 {
+						di as err "Some `var' values imputed. `helpme'"
+					}
+				}
 			}
 		}
-	}
-}
-}	// If errors are suppressed, generates empty vars for missing variables 
-if suppressoption == 2{ 
-	foreach x in `l_allvars' {
-		capture{
-		confirm var `I_`x''
+	}	// If errors are suppressed, generates empty vars for missing variables 
+	if suppressoption == 2 { 
+		foreach var in `l_allvars' {
+			cap {
+				conf v ``var''
+			}
+			if _rc != 0 {
+				gen ``var'' = .
+			}
 		}
-		if _rc != 0 {
-			generate `I_`x'' = .
+	}	// Assigns age and source coefficients based on age and source values
+	if prismivoption == 1 {
+		forvalues x = 0(1)3 {
+			replace `source_score' = sourcecoef`x' if `source' == `x'
+		}
+
+
+		forvalues x = 0(1)3 {
+			replace `age_score' = agecoef`x' if `ageIV' == `x'
 		}
 	}
-}	// Assigns age and source coefficients based on age and source values
-if prismivoption == 1 {
-	forvalues x = 0(1)3 {
-		replace `source_score' = sourcecoef`x' if `I_source' == `x'
-	}
 
-
-	forvalues x = 0(1)3 {
-		replace `age_score' = agecoef`x' if `I_ageIV' == `x'
-	} 
-}
-
-if validationoption == 1{
-	noisily{
-		di ""
-		di as text "The following lists the number of out-of-range values:"
-		di as text "SBP"
-	replace `I_sbp' = . if `I_sbp' < 0 & `I_sbp' > 300
-		di "HR"
-	replace `I_hr' = . if `I_hr' < 0 & `I_hr' > 300
-		di "GCS"
-	replace `I_gcs' = . if `I_gcs' < 3 & `I_gcs' > 15
-		di "Temperature High"
-	replace `I_temp' = . if `I_temp' < tmpoor0 & `I_temp' > tmpoor1
-		di "Temperature Low"
-	replace `I_templow' = . if `I_templow' < tmpoor0 & `I_templow' > tmpoor1
-		di "pH Low"
-	replace `I_ph' = . if `I_ph' < 6.5 & `I_ph' > 7.9
-		di "pH High"
-	replace `I_phhigh' = . if `I_phhigh' < 6.5 & `I_phhigh' > 7.9
-		di "Bicarb Low"
-	replace `I_bicarb' = . if `I_bicarb' < 0.1 & `I_bicarb' > 60
+	if validationoption == 1 {
+		noi {
+			di ""
+			di as text "The following lists the number of out-of-range values:"
+			di as text "SBP"
+		replace `sbp' = . if !inrange(`sbp', sbpoor0, sbpoor1)
+			di "HR"
+		replace `hr' = . if !inrange(`hr', hroor0, hroor1)
+			di "GCS"
+		replace `gcs' = . if !inrange(`gcs', gcsoor0, gscoor1)
+			di "Temperature High"
+		replace `temp' = . if !inrange(`temp', tmpoor0, tmpoor1)
+			di "Temperature Low"
+		replace `templow' = . if !inrange(`templow', tmpoor0, tmpoor1)
+			di "pH Low"
+		replace `ph' = . if !inrange(`ph', phoor0, phoor1)
+			di "pH High"
+		replace `phhigh' = . if !inrange(`phhigh', phoor0, phoor1)
+			di "Bicarb Low"
+		replace `bicarb' = . if !inrange(`bicarb', co2oor0, co2oor1)
 			di "Bicarb High"
-	replace `I_bicarbhigh' = . if `I_bicarbhigh' < 0.1 & `I_bicarbhigh' > 60
+		replace `bicarbhigh' = . if !inrange(`bicarbhigh', co2oor0, co2oor1)
 			di "PCO2"
-	replace `I_pco2' = . if `I_pco2' < 1 & `I_pco2' > 200
+		replace `pco2' = . if !inrange(`pco2', pco2oor0, pco2oor1)
 			di "PaO2"
-	replace `I_pao2' = . if `I_pao2' < 1 & `I_pao2' > 600
+		replace `pao2' = . if !inrange(`pao2', pao2oor0, pao2oor1)
 			di "Glucose"
-	replace `I_glucose' = . if `I_glucose' < gluoor0 & `I_glucose' > gluoor1
+		replace `glucose' = . if !inrange(`glucose', gluoor0, gluoor1)
 			di "Potassium"
-	replace `I_potassium' = . if `I_potassium' < 1 & `I_potassium' > 10
+		replace `potassium' = . if !inrange(`potassium', potoor0, potoor1)
 			di "Creatinine"
-	replace `I_creatinine' = . if `I_creatinine' < croor0 & /*
-	*/	`I_creatinine' > croor1
+		replace `creatinine' = . if !inrange(`creatinine', croor0, croor1)
 			di "BUN"
-	replace `I_bun' = . if `I_bun' < bunoor0 & `I_bun' > bunoor1
+		replace `bun' = . if !inrange(`bun', bunoor0, bunoor1)
+		}
 	}
-}
 ********************************************************************************
 // Score Calculation
-	replace `sbp_score' = 3 if ((`I_age' == 0 & inrange(`I_sbp', sbp0, sbp2))|/*
-	*/	(`I_age' == 1 & inrange(`I_sbp', sbp1, sbp3)) | /*
-	*/	(`I_age' == 2 & inrange(`I_sbp', sbp2, sbp4)) | /*
-	*/	(`I_age' == 3 & inrange(`I_sbp', sbp3, sbp5))) & `I_sbp' != .
-	replace `sbp_score' = 7 if ((`I_age' == 0 & `I_sbp' < sbp0) |  /*
-	*/	(`I_age' == 1 & `I_sbp' < sbp1) | (`I_age' == 2 & `I_sbp' < sbp2) | /*
-	*/	(`I_age' == 3 & `I_sbp' < sbp3)) & `I_sbp' != .
-	
-	replace `temperature_score' = 3 if (`I_temp' > tmp1 | `I_templow' > tmp1 |/*
-	*/	`I_temp' < tmp0 | `I_templow' < tmp0) & `I_temp' != . & `I_templow' != .
-	
-	replace `mentalstatus_score' = 5 if `I_gcs' < gcs0 & `I_gcs' != .
-	replace `mentalstatus_score' = 0 if `I_gcs' >= gcs0 & `I_gcs' != .
-	
-	replace `hr_score' = 3 if ((`I_age' == 0 & inrange(`I_hr', hr4, hr5)) | /*
-	*/	(`I_age' == 1 & inrange(`I_hr', hr4, hr5)) | /*
-	*/	(`I_age' == 2 & inrange(`I_hr', hr2, hr3))|/*
-	*/	(`I_age' == 3 & inrange(`I_hr', hr0, hr1))) & `I_hr' != . 
-	replace `hr_score' = 4 if ((`I_age' == 0 & hr > hr5) | /*
-	*/	(`I_age' == 1 & `I_hr' > hr5) | (`I_age' == 2 & `I_hr' > hr3) | /*
-	*/	(`I_age' == 3 & `I_hr' > hr1)) & `I_hr' != . 
-		
-	replace `pupils_score' = 7 if `I_pupils' == 1
-	replace `pupils_score' = 11 if `I_pupils' == 2 
-	replace `pupils_score' = 0 if `I_pupils' == 0
-	
-	replace `acidosis_score' = 2 if (inrange(`I_ph', ph0, ph1) | /*
-	*/	inrange(`I_bicarb', bicarb0, bicarb1)) 
-	replace `acidosis_score' = 6 if (`I_ph' < ph0 | `I_bicarb' < bicarb0 ) /*
-	*/	& `I_ph' != . & `I_bicarb' != . 
+	replace `sbp_score' = 3 if ((`age' == 0 & inrange(`sbp', sbp0, sbp2)) |  ///
+		(`age' == 1 & inrange(`sbp', sbp1, sbp3)) | 						 ///
+		(`age' == 2 & inrange(`sbp', sbp2, sbp4)) | 						 ///
+		(`age' == 3 & inrange(`sbp', sbp3, sbp5))) & `sbp' != .
+	replace `sbp_score' = 7 if ((`age' == 0 & `sbp' < sbp0) |  				 ///
+		(`age' == 1 & `sbp' < sbp1) | (`age' == 2 & `sbp' < sbp2) | 		 ///
+		(`age' == 3 & `sbp' < sbp3)) & `sbp' != .
 
-	replace `ph_score' = 2 if inrange(`I_phhigh', ph2, ph3) | /*
-	*/	inrange(`I_ph', ph2, ph3)
-	replace `ph_score' = 3 if `I_phhigh' != . & (`I_phhigh' >ph3)
-			
-	replace `pco2_score' = 1 if inrange(`I_pco2', pco20, pco21)
-	replace `pco2_score' = 3 if `I_pco2' > pco21 & `I_pco2' != .
-		
-	replace `bicarb_score' = 4 if (`I_bicarbhigh' > bicarb2 /*
-	*/	& `I_bicarbhigh' != .) | (`I_bicarb' > bicarb2 & `I_bicarb' != .)
-		
-	replace `pao2_score' = 3 if inrange(`I_pao2', pao20, pao21) 
-	replace `pao2_score' = 6 if `I_pao2' < pao20 & `I_pao2' != .	
-		
-	replace `wbc_score' = 4 if `I_wbc' < wbc0 
-	replace `coag_score' = 3 if (`I_age' == 0 & ((inrange(`I_pt', pt0, .) & /*
-	*/	!inlist(`I_pt',pt0)) |((inrange(`I_ptt', ptt1, .) & /*
-	*/	!inlist(`I_ptt',ptt1))))) | (inrange(`I_age', 1, 3) & /*
-	*/	((inrange(`I_pt', pt0, .) & !inlist(`I_pt',pt0))| /*
-	*/	(inrange(`I_ptt', ptt0, .) & !inlist(`I_ptt',ptt0))))
-	
-	replace `glucose_score' = 2 if `I_glucose' > glu0 & `I_glucose' != .
-			
-	replace `potassium_score' = 3 if `I_potassium' > pot0 & `I_potassium' != .
+	replace `temperature_score' = 3 if (`temp' > tmp1 | `templow' > tmp1 | 	 ///
+		`temp' < tmp0 | `templow' < tmp0) & `temp' != . & `templow' != .
 
-	replace `creatinine_score' = 2 if ((`I_age' == 0 & `I_creatinine' > cr0)| /*
-	*/	(inrange(`I_age', 1, 2) & `I_creatinine' > cr1) | /*
-	*/	(`I_age' == 3 & `I_creatinine' > cr2)) & `I_creatinine'!= . 
-	
-	replace `bun_score' = 3	if ((`I_age' == 0 & `I_bun' > bun0) | /*
-	*/	(inrange(`I_age', 1, 3) & `I_bun' > bun1)) & `I_bun' !=.
-		
+	replace `mentalstatus_score' = 5 if `gcs' < gcs0 & `gcs' != .
+	replace `mentalstatus_score' = 0 if `gcs' >= gcs0 & `gcs' != .
+
+	replace `hr_score' = 3 if ((`age' == 0 & inrange(`hr', hr4, hr5)) | 	 ///
+		(`age' == 1 & inrange(`hr', hr4, hr5)) |					 		 ///
+		(`age' == 2 & inrange(`hr', hr2, hr3)) | 							 ///
+		(`age' == 3 & inrange(`hr', hr0, hr1))) & `hr' != . 
+	replace `hr_score' = 4 if ((`age' == 0 & hr > hr5) | 					 ///
+		(`age' == 1 & `hr' > hr5) | (`age' == 2 & `hr' > hr3) | 			 ///
+		(`age' == 3 & `hr' > hr1)) & `hr' != .
+
+	replace `pupils_score' = 7 if `pupils' == 1
+	replace `pupils_score' = 11 if `pupils' == 2 
+	replace `pupils_score' = 0 if `pupils' == 0
+
+	replace `acidosis_score' = 2 if (inrange(`ph', ph0, ph1) | 				 ///
+		inrange(`bicarb', bicarb0, bicarb1)) 
+	replace `acidosis_score' = 6 if (`ph' < ph0 | `bicarb' < bicarb0 ) 		 ///
+		& `ph' != . & `bicarb' != .
+
+	replace `ph_score' = 2 if inrange(`phhigh', ph2, ph3) | 				 ///
+		inrange(`ph', ph2, ph3)
+	replace `ph_score' = 3 if `phhigh' != . & (`phhigh' >ph3)
+
+	replace `pco2_score' = 1 if inrange(`pco2', pco20, pco21)
+	replace `pco2_score' = 3 if `pco2' > pco21 & `pco2' != .
+
+	replace `bicarb_score' = 4 if (`bicarbhigh' > bicarb2 					 ///
+		& `bicarbhigh' != .) | (`bicarb' > bicarb2 & `bicarb' != .)
+
+	replace `pao2_score' = 3 if inrange(`pao2', pao20, pao21) 
+	replace `pao2_score' = 6 if `pao2' < pao20 & `pao2' != .	
+
+	replace `wbc_score' = 4 if `wbc' < wbc0 
+	replace `coag_score' = 3 if (`age' == 0 & ((inrange(`pt', pt0, .) & 	 ///
+		!inlist(`pt',pt0)) | ((inrange(`ptt', ptt1, .) & 					 ///
+		!inlist(`ptt',ptt1))))) | (inrange(`age', 1, 3) & 					 ///
+		((inrange(`pt', pt0, .) & !inlist(`pt',pt0)) | 						 ///
+		(inrange(`ptt', ptt0, .) & !inlist(`ptt',ptt0))))
+
+	replace `glucose_score' = 2 if `glucose' > glu0 & `glucose' != .
+
+	replace `potassium_score' = 3 if `potassium' > pot0 & `potassium' != .
+
+	replace `creatinine_score' = 2 if ((`age' == 0 & `creatinine' > cr0) | 	 ///
+		(inrange(`age', 1, 2) & `creatinine' > cr1) | 						 ///
+		(`age' == 3 & `creatinine' > cr2)) & `creatinine' != . 
+
+	replace `bun_score' = 3	if ((`age' == 0 & `bun' > bun0) | 				 ///
+		(inrange(`age', 1, 3) & `bun' > bun1)) & `bun' != .
+
 	replace `platelet_score' = 2 if inrange(`plt', plt2, plt3)
 	replace `platelet_score' = 4 if inrange(`plt', plt0, plt1)
 	replace `platelet_score' = 5 if `plt' < plt0 & `plt' != . 
 
 ********************************************************************************
 
-	generate `neuroscore' = `pupils_score' + `mentalstatus_score' if `touse'
-    generate `nonneuroscore' = `sbp_score' + `temperature_score' +  /* 
-	*/	`hr_score' + `acidosis_score' + `bicarb_score' + `ph_score' +  /*
-	*/	`pao2_score' + `pco2_score' + `glucose_score' + `potassium_score' + /*
-	*/	`creatinine_score' + `bun_score' + `wbc_score' + `coag_score' + /*
-	*/	`platelet_score' if `touse'
-	generate `totalscore' = `neuroscore' + `nonneuroscore' if `touse'
-	
+	gen `neuroscore' = `pupils_score' + `mentalstatus_score' if `touse'
+	gen `nonneuroscore' = `sbp_score' + `temperature_score' +				 ///
+		`hr_score' + `acidosis_score' + `bicarb_score' + `ph_score' + 		 ///
+		`pao2_score' + `pco2_score' + `glucose_score' + `potassium_score' +  ///
+		`creatinine_score' + `bun_score' + `wbc_score' + `coag_score' +	 	 ///
+		`platelet_score' if `touse'
+	gen `totalscore' = `neuroscore' + `nonneuroscore' if `touse'
+
 		// Places temporary variables into permanent ones
 	if noimputationoption == 1 {
 		tempvar missingcheck3
-		egen `missingcheck3' = rowmiss(`I_sbp' `I_gcs' `I_hr' `I_pupils' /*
-		*/	`I_temp' `I_' `I_ph' `I_' `I_bicarb' `I_' `I_pco2' `I_pao2' /*
-		*/	`I_glucose' `I_potassium' `I_creatinine' `I_bun' `I_wbc' `I_plt' /*
-		*/	`I_templow' `I_phhigh' `I_bicarbhigh' `I_pt' `I_ptt' )
-		replace `neuroscore' = . if `missingcheck3' != 0
-		replace `nonneuroscore' = . if `missingcheck3' != 0
-		replace `totalscore' = . if `missingcheck3' != 0
+		egen `missingcheck3' = rowmiss(`sbp' `gcs' `hr' `pupils'			 ///
+			`temp' `' `ph' `' `bicarb' `' `pco2' `pao2'						 ///
+			`glucose' `potassium' `creatinine' `bun' `wbc' `plt'			 ///
+			`templow' `phhigh' `bicarbhigh' `pt' `ptt' )
+			replace `neuroscore' = . if `missingcheck3' != 0
+			replace `nonneuroscore' = . if `missingcheck3' != 0
+			replace `totalscore' = . if `missingcheck3' != 0
 	}	
-	capture {	
-	replace `neurovar' = `neuroscore'
-	replace `nonneurovar' = `nonneuroscore'
-	replace `totalvar' = `totalscore'
+	cap {	
+		replace `neurovar' = `neuroscore'
+		replace `nonneurovar' = `nonneuroscore'
+		replace `totalvar' = `totalscore'
 	}
-	
 
-if prismivoption == 1 {
-		// Calculates PRISM IV coefficient sum
-		
-	generate double `prismintermediate' = intercept + `age_score' + /*
-	*/	`source_score' + (`I_cpr' * cprcoef) + (`I_cancer' * cancercoef) + /*
-	*/	(`I_risk' * riskcoef) + (`neuroscore' * neurocoef) + /*
-	*/	(`nonneuroscore' * nonneurocoef) if `touse'
-	
-		// Applies logistic function to previous result
-	generate double `prismfinal' = 100 / (1 + exp(-`prismintermediate')) /*
-	*/	if `touse'
-	
-		// Rounds result to make it look pretty
-	replace `prismfinal' = round(`prismfinal', 0.01) 
-	if noimputationoption == 1 {
-		tempvar missingcheck4
-		egen `missingcheck4' = rowmiss(`I_cpr' `I_cancer' `I_risk' `I_source')
-		replace `prismfinal' = . if `missingcheck4' != 0 | `missingcheck3' != 0
+
+	if prismivoption == 1 {
+			// Calculates PRISM IV coefficient sum
+
+		gen double `prismintermediate' = intercept + `age_score' +				 ///
+			`source_score' + (`cpr' * cprcoef) + (`cancer' * cancercoef) + 		 ///
+			(`risk' * riskcoef) + (`neuroscore' * neurocoef) +					 ///
+			(`nonneuroscore' * nonneurocoef) if `touse'
+
+			// Applies logistic function to previous result
+		gen double `prismfinal' = 100 / (1 + exp(-`prismintermediate')) if `touse'
+
+			// Rounds result to make it look pretty
+		replace `prismfinal' = round(`prismfinal', 0.01) 
+		if noimputationoption == 1 {
+			tempvar missingcheck4
+			egen `missingcheck4' = rowmiss(`cpr' `cancer' `risk' `source')
+			replace `prismfinal' = . if `missingcheck4' != 0 | `missingcheck3' != 0
+		}
+			// Places temporary variable into the permanent one
+		replace `prismivvar' = `prismfinal' 
 	}
-		// Places temporary variable into the permanent one
-	replace `prismivvar' = `prismfinal' 
-}
 ********************************************************************************
-if traceoption == 1{
-	set trace off
-}
-if suppressoption == 2 {
-	noisily: di as text/*
-	*/	"This calculation ran with suppressall enabled. "/*
-	*/	"It skipped all data validation and imputed " /*
-	*/	"missing values as normal. You should be using " /*
-	*/	"option suppress if you want to hide imputation " /*
-	*/	"messages while still keeping data validation." /*
-	*/	_newline "`helpme'"
-}
+	if traceoption == 1 {
+		set tr off
+	}
+	if suppressoption == 2 {
+		noi: di as text ///
+			"This calculation ran with suppressall enabled. "	///
+			"It skipped all data validation and imputed "		///
+			"missing values as normal. You should be using "	///
+			"option suppress if you want to hide imputation "	///
+			"messages while still keeping data validation."		///
+			_newline "`helpme'"
+	}
 }
 }
 ********************************************************************************
@@ -793,9 +845,15 @@ restore, not
 end
 
 /*
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free Software 
+Foundation, either version 3 of the License, or (at your option) any later 
+version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with 
+this program. If not, see <https://www.gnu.org/licenses/>.
 */ 
