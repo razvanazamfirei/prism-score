@@ -1,0 +1,17 @@
+
+site_name: prismscore Documentation
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - toc.follow
+    - navigation.tabs
+nav:
+    - Home: 'index.md'
+    - Documentation: 'details.md'
+    - About:
+      - 'Release Notes': about/release-notes.md
+      - 'About': 'about.md'
+      - 'License': about/license.md
+      - 'Command Certification': about/certification.pdf
+repo_url: https://github.com/razvanazamfirei/prism-score

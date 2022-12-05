@@ -1,8 +1,0 @@
-
-site_name: prismscore Documentation
-theme:
-  name: material
-  features:
-    - navigation.instant
-    - toc.follow
-    - navigation.tabs
