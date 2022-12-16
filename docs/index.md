@@ -13,7 +13,7 @@ This is a command developed for the calculation of PRISM III & PRISM IV scores. 
 Open Stata. Run the following command:
 
 ```stata
-net install prismscore, from(https://razvanazamfirei.github.io/prism-score)
+net install prismscore, from(https://azamfirei.com/prism-score)
 ```
 
 ### Using ssc
