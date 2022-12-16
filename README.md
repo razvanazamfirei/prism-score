@@ -1,3 +1,3 @@
 # PRISMSCORE
 
-This is the development repository for the *prismscore* stata command. For information about usage of the command, please go to the [Documentation](https://azamfirei.com/prism-score) page.
+This branch contains in progress work. It will likely **not** work on your machine. Once development and testing are complete, the branch will be merged into the main branch. At that point, a new releae will be issued.
