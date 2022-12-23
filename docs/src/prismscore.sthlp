@@ -39,7 +39,7 @@
 {syntab:PRISM IV}
 {synopt:1 variable} new variable will contain {ul:{bf:only}} the PRISM IV score.{p_end}
 {synopt:4 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score prism4_score{p_end}
-{p2colreset}{...} 
+{p2colreset}{...}
 {synoptline}
 
 {synoptset 20 tabbed}{...}
@@ -108,7 +108,7 @@
 {synopt:{opt plt(varname)}} Platelet Count variable in cells/mm3. {p_end}
 {synoptline}
 {marker p4v}
-{syntab:{bf:PRISM IV Variable List}} 
+{syntab:{bf:PRISM IV Variable List}}
 
 {synopthdr}
 {synoptline}
@@ -126,13 +126,13 @@
 {pstd}
 
 {pstd}
-{cmd:prismscore} calculates PRISM III and PRISM IV scores. The scores are outcome prognostication tools that have been used 
+{cmd:prismscore} calculates PRISM III and PRISM IV scores. The scores are outcome prognostication tools that have been used
 extensively in clinical care and research to calculate the expected mortality and control for illness severity in pediatric intensive care units.{p_end}
 
 {marker options}{...}
 {title:Options}
 
-{phang} 
+{phang}
 For all required variables, if there is data missing you will receive a warning. The calculation will still be performed using normal values for the age group. See options  {opt suppress} and {opt suppressall} for more information.{p_end}
 
 {dlgtab:Main}
@@ -143,8 +143,8 @@ For all required variables, if there is data missing you will receive a warning.
 {dlgtab:PRISM III}
 
 {phang}
-{opt age}(varname numeric) designates the age variable. Age must be coded as: 
-{bf:0} = (<- - 14 days] | {bf:1} = (14 days - 1 month) | {bf:2} = [1 month - 12 months) | {bf:3} = [12 months - 12 years) | {bf:4} = [12 years ->). Alternatively use {opt dob} and {opt doa} for automatic calculations of age. 
+{opt age}(varname numeric) designates the age variable. Age must be coded as:
+{bf:0} = (<- - 14 days] | {bf:1} = (14 days - 1 month) | {bf:2} = [1 month - 12 months) | {bf:3} = [12 months - 12 years) | {bf:4} = [12 years ->). Alternatively use {opt dob} and {opt doa} for automatic calculations of age.
 This is recommended if the age is not already appropriately coded.{p_end}
 
 {phang}
@@ -159,9 +159,9 @@ This is recommended if the age is not already appropriately coded.{p_end}
 {opt sbp(varname numeric)} designates the systolic blood pressure variable.{p_end}
 
 {phang}
-{opt hr(varname numeric)} designates the heart rate variable.{p_end} 
+{opt hr(varname numeric)} designates the heart rate variable.{p_end}
 {phang}
-{opt gcs(varname integer)} designates the Glascow Coma Score variable.{p_end} 
+{opt gcs(varname integer)} designates the Glascow Coma Score variable.{p_end}
 {phang}
 {opt pupils(varname integer)} designates the variable containing the number of pupils >3mm and fixed.{p_end}
 
@@ -289,12 +289,12 @@ both high and low pH calculations. If both a high and a low pH value are recorde
 	{col 30}2{col 45}>  1 month & <= 1 year
 	{col 30}3{col 45}>  1 year & < 12 years
 	{col 30}4{col 45}>= 12 years
-	
+
 	Source{col 30}0{col 45}Operating Room or PACU
 	{col 30}1{col 45}Another Hospital
 	{col 30}2{col 45}Inpatient Unit
 	{col 30}3{col 45}Emergency Department
-	
+
 	CPR{col 30}0{col 45}No
 	{col 30}1{col 45}Yes
 
@@ -310,12 +310,12 @@ both high and low pH calculations. If both a high and a low pH value are recorde
 {title:Custom Implementations}
 
 {pstd}
-Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016. If you wish to change them, you have to modify the 
-prismscore.ado file. 
+Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016. If you wish to change them, you have to modify the
+prismscore.ado file.
 I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please email me and I'm happy to help. {p_end}
 
 {pstd}
-{it:Instructions}{break}Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for {hi:CHANGE THIS}. Modify the coefficients as needed and reload the program. 
+{it:Instructions}{break}Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for {hi:CHANGE THIS}. Modify the coefficients as needed and reload the program.
 The following commands should be helpful:
 
 {phang}
@@ -349,6 +349,6 @@ Email: {browse "mailto:stata@azamfirei.com":stata@azamfirei.com}
 
 {marker License}{...}
 {title:License}
-{p} This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.{p_end}
-See the GNU General Public {browse "gnu.org/licenses/gpl-3.0.html":License} for more details.
+{p}
+This program is free software: you can redistribute it and/or modify it under version 3 of the terms of the GNU Affero General Public License as published by the Free Software Foundation. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see the GNU Affero General Public{browse "https://www.gnu.org/licenses/": License}. See source code for additional terms.{p_end}

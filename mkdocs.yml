@@ -1,4 +1,3 @@
-
 site_name: prismscore Documentation
 theme:
   name: material
@@ -23,7 +22,7 @@ nav:
     - About:
       - 'Release Notes': about/release-notes.md
       - 'License': about/license.md
-      - 'Command Certification': about/certification.pdf
+      - 'Command Certification': about/certification_pdf.md
 repo_url: https://github.com/razvanazamfirei/prism-score
 copyright: Copyright &copy; 2022 - 2023 Razvan Azamfirei
 extra:
@@ -38,8 +37,12 @@ extra:
     property: G-QVMW49HZ58
   version:
     provider: mike
-    default: stable
+    default: latest
 markdown_extensions:
+  - admonition
+  - tables
+  - footnotes
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
       linenums: true
@@ -50,6 +53,3 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.mark
   - pymdownx.tilde
-  - tables
-  - footnotes
-
