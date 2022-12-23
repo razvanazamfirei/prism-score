@@ -1,7 +1,7 @@
 v 3
 d Razvan Azamfirei
 d Department of Anesthesiology and Critical Care Medicine
-d Johns Hopkins University School of Medicine 
+d Johns Hopkins University School of Medicine
 d
 d
 d PRISM III & PRISM IV Score Stata Command

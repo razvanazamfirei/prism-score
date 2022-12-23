@@ -5,7 +5,7 @@
   {txt}log type:  {res}smcl
  {txt}opened on:  {res}22 Nov 2022, 11:38:38
 
-{com}. 
+{com}.
 . run "/Users/razvanazamfirei/Git/stata-commands/prism-scoring-private/prism4_data_generation.do"
 {res}{txt}PRISM IV Data Generated
 {res}{txt}Confirming PRISM III Data is validated
