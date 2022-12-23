@@ -49,7 +49,9 @@ Open the directory listed under (PLUS). Copy the files into the folder. For extr
 
 ## Usage Instructions
 
-For more information about PRISM III & PRISM IV scores see . There are two main ways of running this command.
+For more information about PRISM III & PRISM IV scores see the following references.[^1]^,^[^2] There are two main ways of running this command.
+[^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52. 
+[^2]: Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
 
 ### Stata dialog
 

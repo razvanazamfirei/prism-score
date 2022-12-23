@@ -14,7 +14,9 @@ hide:
 
 ``` stata
 prismscore [new_varlist] [if] [in] , 
-  [prismIII_varlist] [prism4 [prismIV_varlist] [unit_options] [debugging_options]
+  [prismIII_varlist]
+  [prism4] [prismIV_varlist] 
+  [unit_options] [debugging_options]
 ```
 
 ### New Variables
@@ -58,6 +60,7 @@ Must specify either `age` or both `dob` and `doa`
 | *Optional*           |                                    |
 | templow(varname)     | low temperature variable           |
 [1]If *templow* is used, then *temp* designates the high temperature variable
+
 
 ##### Additional Vitals
 
@@ -106,7 +109,7 @@ Must specify either `age` or both `dob` and `doa`
 Required
 
 | Option Name     | Option Description                            |
-| --------------- | --------------------------------------------  |
+| --------------  | --------------------------------------------  |
 | source(varname) | admission source. Requires special coding     |
 | cpr(varname)    | CPR status                                    |
 | cancer(varname) | cancer status                                 |
@@ -145,7 +148,9 @@ For all required variables, if there is data missing you will receive a warning.
 
 ### PRISM III
 
-**age** (varname numeric) designates the age variable. Age must be coded as:
+**age** (varname numeric) designates the age variable. Age must be coded as (1):
+{ .annotate }
+1.  :man_raising_hand: I'm an annotation
 
 | Value         | Value Description       |
 | ------------- | ----------------------- |
@@ -238,16 +243,19 @@ For all required variables, if there is data missing you will receive a warning.
 
 ## Custom Implementations
 
-Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016. If you wish to change them, you have to modify the prismscore.ado file. I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please reach out.
+Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016.[^1][^2] If you wish to change them, you have to modify the prismscore.ado file. I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please reach out.
 
+[^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52. 
+[^2]: Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
+    
 Instructions:  
 Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for **CHANGE THIS**. Modify the coefficients as needed and reload the program. The following commands should be helpful:
 
-```stata
-1\. doedit prismscore.ado
-2\. Make edits and save.
-3\. program drop prismscore
-4\. do prismscore.ado
+```stata 
+doedit prismscore.ado
+* Make edits and save.
+program drop prismscore
+do prismscore.ado
 ```
 
 ## References

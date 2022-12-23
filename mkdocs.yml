@@ -2,16 +2,54 @@
 site_name: prismscore Documentation
 theme:
   name: material
+  palette:
+    primary: blue grey
+  font:
+    code: JetBrains Mono
   features:
     - navigation.instant
     - toc.follow
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+
+edit_uri: ""
+plugins:
+  - search
 nav:
     - Home: 'index.md'
     - Documentation: 'details.md'
     - About:
       - 'Release Notes': about/release-notes.md
-      - 'About': 'about.md'
       - 'License': about/license.md
       - 'Command Certification': about/certification.pdf
 repo_url: https://github.com/razvanazamfirei/prism-score
+copyright: Copyright &copy; 2022 - 2023 Razvan Azamfirei
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/razvanazamfirei
+    - icon: fontawesome/brands/github
+      link: https://github.com/razvanazamfirei
+  generator: false
+  analytics:
+    provider: google
+    property: G-QVMW49HZ58
+  version:
+    provider: mike
+    default: stable
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      linenums: true
+      auto_title: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - tables
+  - footnotes
+
