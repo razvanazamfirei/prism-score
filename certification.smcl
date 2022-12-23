@@ -24,20 +24,20 @@
 (data unchanged since 21nov2022 18:59{txt})
 {p_end}
 
-{com}. 
+{com}.
 . qui prismscore neuro_c nonneuro_c totalscore_c, age(age) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose) potassium(potassium) creatinine(creatinine) bun(bun) wbc(wbc) plt(plt) pt(pt) ptt(ptt)
 {txt}
-{com}. 
+{com}.
 .         assert neuro_c == neuro
 {txt}
 {com}.         assert nonneuro_c == nonneuro
 {txt}
 {com}.         assert totalscore_c == totalscore
 {txt}
-{com}.         
+{com}.
 . drop neuro_c nonneuro_c totalscore_c
 {txt}
-{com}. 
+{com}.
 . qui prismscore neuro_c nonneuro_c totalscore_c, doa(doa) dob(dob) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose_si) potassium(potassium) creatinine(creatinine_si) bun(bun_si) wbc(wbc_k) plt(plt_k) pt(pt) ptt(ptt) pltunit(1000) wbcunit(1000) si
 {txt}
 {com}.         assert neuro_c == neuro
@@ -48,10 +48,10 @@
 {txt}
 {com}. drop neuro_c nonneuro_c totalscore_c
 {txt}
-{com}. 
+{com}.
 . clear
 {txt}
-{com}. 
+{com}.
 . use "P4_Validated Data.dta"
 {txt}
 {com}. datasignature confirm using "P4_Validated Data.dtasig", strict
@@ -59,10 +59,10 @@
 (data unchanged since 22nov2022 11:38{txt})
 {p_end}
 
-{com}.         
+{com}.
 .         qui prismscore neuro_c nonneuro_c totalscore_c score, age(age) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose) potassium(potassium) creatinine(creatinine) bun(bun) wbc(wbc) plt(plt) pt(pt) ptt(ptt) prismiv source(source) risk(risk) cancer(cancer) cpr(cpr)
 {txt}
-{com}. 
+{com}.
 .         assert abs(float(prism4) - float(score)) < 2 * 1E-2
 {txt}
 {com}.         assert neuro_c == neuro
@@ -73,7 +73,7 @@
 {txt}
 {com}.         drop score neuro_c nonneuro_c totalscore_c
 {txt}
-{com}.         
+{com}.
 .         qui prismscore neuro_c nonneuro_c totalscore_c score, dob(dob) doa(doa) sbp(sbp) hr(hr) temp(temp_high) templow(temp_low) gcs(gcs) pupils(pupils) ph(phlow) phhigh(phhigh) bicarb(bicarblow) bicarbhigh(bicarbhigh) pco2(pco2) pao2(pao2) glucose(glucose_si) potassium(potassium) creatinine(creatinine_si) bun(bun_si) wbc(wbc_k) plt(plt_k) pt(pt) ptt(ptt) pltunit(1000) wbcunit(1000) si prismiv source(source) risk(risk) cancer(cancer) cpr(cpr)
 {txt}
 {com}.         assert abs(float(prism4) - float(score)) < 2 * 1E-2
@@ -86,7 +86,7 @@
 {txt}
 {com}.         drop score neuro_c nonneuro_c totalscore_c
 {txt}
-{com}.         
+{com}.
 .         noi di as result "The following section will intentionally trigger errors and verify the appropriate error code. This test is passed succesfully if the last line displays: Certification completed succesfully."
 {res}The following section will intentionally trigger errors and verify the appropriate error code. This test is passed succesfully if the last line displays: Certification completed succesfully.
 {txt}
@@ -128,10 +128,10 @@ cancer is not binary. See help prismscore for more details.
 risk is not binary. See help prismscore for more details.
 0/1 variable required
 {txt}
-{com}.         noi di as result "Certification completed succesfully. `c(current_date)' `c(current_time)'" 
+{com}.         noi di as result "Certification completed succesfully. `c(current_date)' `c(current_time)'"
 {res}Certification completed succesfully. 28 Nov 2022 17:36:54
 {txt}
-{com}. 
+{com}.
 {txt}end of do-file
 
 {com}. log close Certification
