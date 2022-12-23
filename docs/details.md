@@ -2,6 +2,25 @@
 hide:
   - navigation
 ---
+<style>
+.md-typeset__scrollwrap{
+  margin: 0em;
+}
+.md-typeset__table {
+    table-layout: fixed;
+    width: 70%;
+}
+table th:first-of-type {
+    width: 10%;
+}
+table th:nth-of-type(2) {
+    width: auto;
+}
+.admonition.info{
+  width: 70%;
+}
+</style>
+
 # Documentation
 
 ## Title
@@ -13,9 +32,9 @@ hide:
 ### Syntax Structure
 
 ``` stata
-prismscore [new_varlist] [if] [in] , 
+prismscore [new_varlist] [if] [in] ,
   [prismIII_varlist]
-  [prism4] [prismIV_varlist] 
+  [prism4] [prismIV_varlist]
   [unit_options] [debugging_options]
 ```
 
@@ -59,8 +78,10 @@ Must specify either `age` or both `dob` and `doa`
 | temp(varname)        | temperature variable<sup>[1]</sup> |
 | *Optional*           |                                    |
 | templow(varname)     | low temperature variable           |
-[1]If *templow* is used, then *temp* designates the high temperature variable
 
+!!! info
+
+    [1]If *templow* is used, then *temp* designates the high temperature variable
 
 ##### Additional Vitals
 
@@ -71,6 +92,7 @@ Must specify either `age` or both `dob` and `doa`
 | gcs(varname)    | Glasgow Coma Score variable      |
 | pupils(varname) | number of pupils > 3mm and fixed |
 
+
 ##### Acid-Base Status
 
 | Option Name     | Option Description       |
@@ -79,8 +101,11 @@ Must specify either `age` or both `dob` and `doa`
 | bicarb(varname) | bicarbonate variable <sup>[2]</sup>|
 | pco2(varname)   | PCO2 variable            |
 | pao2(varname)   | PaO2 variable            |
-[1] if *phhigh* is used, then *ph* designates the low pH variable.
-[2] If *bicarbhigh* is used, then it designates the low bicarbonate variable.
+
+!!! info
+    [1] if *phhigh* is used, then *ph* designates the low pH variable.
+
+    [2] If *bicarbhigh* is used, then it designates the low bicarbonate variable.
 
 ###### Optional
 
@@ -88,8 +113,11 @@ Must specify either `age` or both `dob` and `doa`
 | ------------------- | ---------------------------------------- |
 | phhigh(varname)     | pH High Variable <sup>[1]</sup>          |
 | bicarbhigh(varname) | Bicarbonate High Variable <sup>[2]</sup> |
-[1] if *phhigh* is used, then *ph* designates the low pH variable.
-[2] If *bicarbhigh* is used, then it designates the low bicarbonate variable.
+
+
+!!! info
+    [1] if *phhigh* is used, then *ph* designates the low pH variable.
+    [2] If *bicarbhigh* is used, then it designates the low bicarbonate variable.
 
 ##### Laboratory Values
 
@@ -148,9 +176,7 @@ For all required variables, if there is data missing you will receive a warning.
 
 ### PRISM III
 
-**age** (varname numeric) designates the age variable. Age must be coded as (1):
-{ .annotate }
-1.  :man_raising_hand: I'm an annotation
+**age** (varname numeric) designates the age variable. Age must be coded as:
 
 | Value         | Value Description       |
 | ------------- | ----------------------- |
@@ -160,7 +186,7 @@ For all required variables, if there is data missing you will receive a warning.
 | **3**         | \[12 months - 12 years) |
 | **4**         | \[12 years ->)          |
 
- Alternatively use *dob* and *doa* for automatic calculations of age. This is recommended if the age is not already appropriately coded.
+Alternatively use *dob* and *doa* for automatic calculations of age. This is recommended if the age is not already appropriately coded.
 
 **dob** (varname [**date**](http://www.stata.com/help.cgi?datetime)) designates the date of birth variable. Date of birth must be in [**%td**](http://www.stata.com/help.cgi?datetime_display_formats) format.
 
@@ -239,34 +265,21 @@ For all required variables, if there is data missing you will receive a warning.
 
 **noimputation** calculated score will be set to missing if any of the included variables are missing
 
-**novalidation** if this option is
+**novalidation** values that are out-of-range will be set to missing.
 
 ## Custom Implementations
 
 Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016.[^1][^2] If you wish to change them, you have to modify the prismscore.ado file. I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please reach out.
 
-[^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52. 
+[^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52.
 [^2]: Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
-    
-Instructions:  
+
+Instructions:
 Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for **CHANGE THIS**. Modify the coefficients as needed and reload the program. The following commands should be helpful:
 
-```stata 
+```stata
 doedit prismscore.ado
 * Make edits and save.
 program drop prismscore
 do prismscore.ado
 ```
-
-## References
-
-\[1\] Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52.  
-\[2\] Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
-
-## License
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. 
-You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-*Copyright (C) 2022 Razvan Azamfirei*
