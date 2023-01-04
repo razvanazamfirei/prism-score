@@ -32,32 +32,42 @@ table th:nth-of-type(2) {
 ### Syntax Structure
 
 ``` stata
-prismscore [new_varlist] [if] [in] ,
-  [prismIII_varlist]
+prismscore new_varlist [if] [in] ,
+  prismIII_varlist
   [prism4] [prismIV_varlist]
   [unit_options] [debugging_options]
 ```
 
 ### New Variables
 
-**new\_varlist** - will contain the calculated score; need to specifiy either 1, 3 or 4 variables:
+**new\_varlist** - will contain the calculated score; need to specify either 1, 3 or 4 variables:
 
 #### PRISM III - New Variables
 
-You must specify **3 new variables** in the following order: neurologic\_score nonneurologic\_score total\_score. The new variables can have any name you want, but the order is very important.
+-   You must specify **3 new variables** in the following order:
+    1. **neurologic\_score**
+    1. **nonneurologic\_score**
+    1. **total\_score** 
+
+The new variables can have any name, but they **must** be specified in this order.
 
 #### PRISM IV - New Variables
 
-You have 2 options here:
+There are 2 options:
 
-- If you are only interested in the PRISM IV score, specify **1 new variable**. The new variable will contain **only** the PRISM IV score.
-- Otherwise, you must specify **4 new variables**. The new variables must follow this order: neurologic\_score nonneurologic\_score total\_score prism4\_score.
+-   If you are only interested in the PRISM IV score, specify **1 new variable**. The new variable will contain **only** the PRISM IV score.
+-   Otherwise, you must specify **4 new variables**. The new variables must follow this order:
 
-Note: The new variables should not already exist. You will get an error if you try using an existing variable.
+    1.  **neurologic\_score**
+    1.  **nonneurologic\_score**
+    1.  **total\_score**
+    1.  **prism4\_score**
+
+Note: The new variable names should be unique (i.e. not already exist). You will get an error if you try using an existing variable.
 
 ### Variable Lists and Options
 
-This is a very quick overview of the syntax. For more information see ##Options
+This is a very quick overview of the syntax. For more information see [Options](#options)
 
 #### PRISM III - Variable List
 
@@ -81,7 +91,7 @@ Must specify either `age` or both `dob` and `doa`
 
 !!! info
 
-    [1]If *templow* is used, then *temp* designates the high temperature variable
+    [1] if *templow* is used, then *temp* designates the high temperature variable
 
 ##### Additional Vitals
 
@@ -117,6 +127,7 @@ Must specify either `age` or both `dob` and `doa`
 
 !!! info
     [1] if *phhigh* is used, then *ph* designates the low pH variable.
+
     [2] If *bicarbhigh* is used, then it designates the low bicarbonate variable.
 
 ##### Laboratory Values
@@ -178,20 +189,20 @@ For all required variables, if there is data missing you will receive a warning.
 
 **age** (varname numeric) designates the age variable. Age must be coded as:
 
-| Value         | Value Description       |
-| ------------- | ----------------------- |
-| **0**         | (<- - 14 days\]         |
-| **1**         | (14 days - 1 month)     |
-| **2**         | \[1 month - 12 months)  |
-| **3**         | \[12 months - 12 years) |
-| **4**         | \[12 years ->)          |
+| Value         | Value Description                  |
+| ------------- | ---------------------------------- |
+| **0**         | *age* &le; 14 days                 |
+| **1**         | 14 days &lt; *age* &lt; 1 month    |
+| **2**         | 1 month &le; *age* &lt; 12 months  |
+| **3**         | 12 months &le; *age* &lt; 12 years |
+| **4**         | *age* &ge; 12 years                |
 
 Alternatively use *dob* and *doa* for automatic calculations of age. This is recommended if the age is not already appropriately coded.
 
-**dob** (varname [**date**](http://www.stata.com/help.cgi?datetime)) designates the date of birth variable. Date of birth must be in [**%td**](http://www.stata.com/help.cgi?datetime_display_formats) format.
+**dob**(varname [**date**](http://www.stata.com/help.cgi?datetime)) designates the date of birth variable. Date of birth must be in [**%td**](http://www.stata.com/help.cgi?datetime_display_formats) format.
 
 **doa**(varname [**date**](http://www.stata.com/help.cgi?datetime)) designates the date of admission variable. Date of admission must be in [**%td**](http://www.stata.com/help.cgi?datetime_display_formats) format.
-
+___
 **sbp(varname numeric)** designates the systolic blood pressure variable.
 
 **hr(varname numeric)** designates the heart rate variable.
@@ -200,22 +211,24 @@ Alternatively use *dob* and *doa* for automatic calculations of age. This is rec
 
 **pupils(varname integer)** designates the variable containing the number of pupils >3mm and fixed.
 
+___
 **temp(varname numeric)** designates the temperature variable. If there is only one temperature recorded, the command will use the recorded temperature for both high and low temperature calculations. If both a high and a low temperature value are recorded, specify *templow*.
 
 **templow(varname numeric)** designates the low temperature variable. If both *temp* and *templow* are specified, the command will compare the values and will use the highest value for high temperature calculations and the lowest value for the low temperature calculations.
 
+___
 **ph(varname numeric)** designates the ph variable. If there is only one pH recorded, the command will use the recorded pH for both high and low pH calculations. If both a high and a low pH value are recorded, specify *phhigh*.
 
 **phhigh(varname numeric)** designates the high ph variable. If both *ph* and *phhigh* are specified, the command will compare the values and will use the highest value for high ph calculations and the lowest value for the low ph calculations.
-
+___
 **bicarb(varname numeric)** designates the HCO3-/CO2 variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations. If both a high and a low bicarbonate value are recorded, specify *bicarbhigh*.
 
 **bicarbhigh(varname numeric)** designates the high HCO3-/CO2 variable. If both *bicarb* and *bicarbhigh* are specified, the command will compare the values and will use the highest value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations.
-
+___
 **pco2(varname numeric)** designates the PCO2 variable; not to be confused with the bicarb variable.
 
 **po2(varname numeric)** designates the PO2 variable.
-
+___
 **glucose(varname)** glucose variable in mg/dL.
 
 **potassium(varname)** potassium variable in mEq/L or mmol/L. The units are identical.
@@ -223,7 +236,7 @@ Alternatively use *dob* and *doa* for automatic calculations of age. This is rec
 **creatinine(varname)** creatinine variable in mg/dL.
 
 **bun(varname)** BUN variable in mg/dL.
-
+___
 **wbc(varname)** WBC variable in cells/mm3.
 
 **plt(varname)** Platelet Count variable in cells/mm3.
@@ -247,9 +260,9 @@ Alternatively use *dob* and *doa* for automatic calculations of age. This is rec
 
 ### Unit Options
 
-**wbcunit(numeric)** If not specified, it defaults to cells/mm3 - *wbcunit(1)*. If data is in 1000 \* cells/mm3 specify *wbcunit(1000)*.
+**wbcunit(numeric)** If not specified, it defaults to cells/mm3 (i.e. *wbcunit(1)*). If data is in 1000 \* cells/mm3 specify *wbcunit(1000)*.
 
-**pltunit(numeric)** If not specified, it defaults to cells/mm3 - *pltunit(1)*. If data is in 1000 \* cells/mm3 specify *pltunit(1000)*.
+**pltunit(numeric)** If not specified, it defaults to cells/mm3 (i.e. *pltunit(1)*). If data is in 1000 \* cells/mm3 specify *pltunit(1000)*.
 
 **si** If specified, it assumes glucose is recorded as mmol/L, creatinine is recorded as umol/L and BUN is recorded as mmol/L. Otherwise it assumes glucose, creatinine and BUN are recorded as mg/dL.
 
@@ -269,15 +282,38 @@ Alternatively use *dob* and *doa* for automatic calculations of age. This is rec
 
 ## Custom Implementations
 
-Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016.[^1][^2] If you wish to change them, you have to modify the prismscore.ado file. I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please reach out.
+Some groups have modified the coefficients attributed to each of the variables in the PRISM IV score calculation. The coefficients used in this command are the ones reported in Pollack 2016.[^1]^,^[^2] If you wish to change them, you have to modify the prismscore.ado file. I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please reach out.
 
 [^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52.
 [^2]: Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
 
 Instructions:
-Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for **CHANGE THIS**. Modify the coefficients as needed and reload the program. The following commands should be helpful:
+Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 261); alternatively search for **CHANGE THIS**. 
+```stata linenums="257" hl_lines="5" title="prismscore.ado"
+//  Sets coefficients and bounds
 
-```stata
+    tempname `l_scalars'
+
+        // PRISM IV coefficients - Change this
+        sca intercept = -5.776
+        sca agecoef0 = 1.311
+        sca agecoef1 = 0.968
+        sca agecoef2 = 0.357
+        sca agecoef3 = 0
+        sca sourcecoef0 = 0
+        sca sourcecoef1 = 1.012
+        sca sourcecoef2 = 1.626
+        sca sourcecoef3 = 0.693
+        sca cprcoef = 1.082
+        sca cancercoef = 0.766
+        sca riskcoef = -1.697
+        sca neurocoef = 0.197
+        sca nonneurocoef = 0.163
+```        
+
+Modify the coefficients as needed and reload the program. The following commands should be helpful:
+
+```stata title=""
 doedit prismscore.ado
 * Make edits and save.
 program drop prismscore

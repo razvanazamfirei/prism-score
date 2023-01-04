@@ -20,8 +20,6 @@ net install prismscore, from(https://azamfirei.com/prism-score)
 
 Open Stata. Run the following command:
 
-**Note**: This is not yet available.
-
 ```stata
 ssc install prismscore
 ```
@@ -70,43 +68,23 @@ See [Manual Installation](#manually) instructions; your personal directory is fo
 prismscore [syntax]
 ```
 
-See `help prismscore` for more information.
+See `help prismscore` or [Documentation](details.md) for more information.
 
 ## Important Remarks
 
 The command assumes your data is clean. While there are data validation checks built in, they cannot account for every situation. The quality of the calculation depends on the quality of the underlying data. You should explore your data beforehand and try to correct any errors.
 
-The command supports only one measurement scale per variable. If, for example, you have temperature data that's both in Celsius and Fahrenheit, you will have to convert Fahrenheit -> Celsius or viceversa.
+The command supports only one measurement scale per variable. If, for example, you have temperature data that's both in &deg;C and &deg;F, you will have to convert &deg;F -> &deg;C or vice-versa.
 
-As detailed in the help file, you can change the coefficients used for the logistic function.
+As detailed in the [documentation](details#custom-implementations) file, you can change the coefficients used for the logistic function.
+### License
 
-### Disclaimer
+**Copyright 2022 Razvan Azamfirei**
 
-I would like to draw your attention to [Section 15](about/license.md#15-disclaimer-of-warranty) and [Section 16](about/license.md#16-limitation-of-liability) of the license.
+Licensed under the Apache License, Version 2.0 (the"License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
 
-```markdown
-### 15. Disclaimer of Warranty
+http://www.apache.org/licenses/LICENSE-2.0
 
-  THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
-APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
-HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
-OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
-IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
-ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-### 16. Limitation of Liability
-
-  IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS
-THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
-GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE
-USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF
-DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD
-PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
-EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGES.
-```
-
-Every section of the license under which this program is distributed is important. My failure to mention it explicitly here does not constitute a waiver of those terms.
+See the License for the specific language governing permissions and limitations under the License.
