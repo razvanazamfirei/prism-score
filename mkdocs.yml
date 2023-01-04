@@ -1,10 +1,14 @@
-site_name: prismscore Documentation
+site_name: PRISM Score Command Documentation
 theme:
   name: material
   palette:
-    primary: blue grey
+#    primary: teal
+    accent: red
   font:
     code: JetBrains Mono
+  icon:
+    logo: material/calculator-variant
+    favicon: material/calculator-variant
   features:
     - navigation.instant
     - toc.follow
@@ -12,17 +16,17 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.top
-
+    - content.code.annotate
 edit_uri: ""
 plugins:
   - search
 nav:
-    - Home: 'index.md'
-    - Documentation: 'details.md'
-    - About:
+  - Home: 'index.md'
+  - Documentation: 'details.md'
+  - About:
       - 'Release Notes': about/release-notes.md
       - 'License': about/license.md
-      - 'Command Certification': about/certification_pdf.md
+#      - 'Command Certification': about/certification_pdf.md
 repo_url: https://github.com/razvanazamfirei/prism-score
 copyright: Copyright &copy; 2022 - 2023 Razvan Azamfirei
 extra:
@@ -39,10 +43,15 @@ extra:
     provider: mike
     default: latest
 markdown_extensions:
+  - abbr
   - admonition
+  - attr_list
   - tables
   - footnotes
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       linenums: true
@@ -53,3 +62,5 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.mark
   - pymdownx.tilde
+extra_css:
+  - stylesheets/extra.css

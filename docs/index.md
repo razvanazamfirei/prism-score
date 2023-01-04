@@ -20,8 +20,6 @@ net install prismscore, from(https://azamfirei.com/prism-score)
 
 Open Stata. Run the following command:
 
-**Note**: This is not yet available.
-
 ```stata
 ssc install prismscore
 ```
@@ -70,19 +68,19 @@ See [Manual Installation](#manually) instructions; your personal directory is fo
 prismscore [syntax]
 ```
 
-See `help prismscore` for more information.
+See `help prismscore` or [Documentation](details.md) for more information.
 
 ## Important Remarks
 
 The command assumes your data is clean. While there are data validation checks built in, they cannot account for every situation. The quality of the calculation depends on the quality of the underlying data. You should explore your data beforehand and try to correct any errors.
 
-The command supports only one measurement scale per variable. If, for example, you have temperature data that's both in Celsius and Fahrenheit, you will have to convert Fahrenheit -> Celsius or viceversa.
+The command supports only one measurement scale per variable. If, for example, you have temperature data that's both in &deg;C and &deg;F, you will have to convert &deg;F -> &deg;C or vice-versa.
 
-As detailed in the help file, you can change the coefficients used for the logistic function.
+As detailed in the [documentation](details#custom-implementations) file, you can change the coefficients used for the logistic function.
 
 ### Disclaimer
 
-I would like to draw your attention to [Section 15](about/license.md#15-disclaimer-of-warranty) and [Section 16](about/license.md#16-limitation-of-liability) of the license.
+Please review the full terms of the license. In particular, I would like to highlight [Section 15](about/license.md#15-disclaimer-of-warranty) and [Section 16](about/license.md#16-limitation-of-liability).
 
 ```markdown
 ### 15. Disclaimer of Warranty
@@ -108,5 +106,3 @@ PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
 EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES.
 ```
-
-Every section of the license under which this program is distributed is important. My failure to mention it explicitly here does not constitute a waiver of those terms.
