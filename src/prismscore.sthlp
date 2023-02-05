@@ -266,7 +266,7 @@ both high and low pH calculations. If both a high and a low pH value are recorde
 	{col 35} {it:(min) - (max)}
 	{hline 45}
 	Systolic BP{col 35}0{col 40} -{col 45}300
-	Heart Rate{col 35}0{col 40} -{col 45}300
+	Heart Rate{col 35}0{col 40} -{col 45}350
 	Temperature - C{col 35}25{col 40} -{col 45}45
 	Temperature - F{col 35}77{col 40} -{col 45}113
 	pH{col 35}6.5{col 40} -{col 45}7.9

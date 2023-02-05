@@ -339,7 +339,7 @@ cap program drop    prismscore
         sca sbpoor0 = float(0)
         sca sbpoor1 = float(300)
         sca hroor0 = float(0)
-        sca hroor1 = float(300)
+        sca hroor1 = float(350)
         sca gcsoor0 = float(3)
         sca gscoor1 = float(15)
         sca phoor0 = float(6.5)
