@@ -1,1 +1,3 @@
-tests/data/*
+tests/*
+prismscore_reworking*
+prismscore_dlg.ado
