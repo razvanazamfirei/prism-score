@@ -28,6 +28,7 @@
 
 {synoptset 20 tabbed}{...}
 {marker new_varlist}{...}
+<<<<<<< HEAD
 {syntab: {bf:new_varlist} - will contain the calculated score; need to specifiy either 1, 3 or 4 variables:}
 {synoptline}
 
@@ -38,14 +39,35 @@
 
 {syntab:{bf:PRISM IV}}
 
+=======
+{syntab:{bf:New Variables}}
+
+{synopthdr: Scenarios}
+{synoptline}
+{phang} The new variables will contain the calculated scores. Depending on the scenario, you will need to specify either 1, 3, or 4 options.{p_end}
+
+{syntab:PRISM III}
+{synopt:3 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score{p_end}
+{syntab:PRISM IV}
+>>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synopt:1 variable} new variable will contain {ul:{bf:only}} the PRISM IV score.{p_end}
 {synopt:4 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score prism4_score{p_end}
 {p2colreset}{...}
 {synoptline}
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 
 {synoptset 20 tabbed}{...}
+{syntab:{bf:Variable Lists}}
+
+{synopt: {help prismscore##p3v:{it:PRISM III Variable List}}} See Below {p_end}
+{synopt: {help prismscore##p4v:{it:PRISM IV Variable List}}}See Below{p_end}
+{syntab:{bf:Options}}
+
 {synopthdr}
+<<<<<<< HEAD
 {synoptline}{marker p3v}{...}
 {syntab:{bf:PRISM III} (required)}
 
@@ -107,20 +129,81 @@
 
 {syntab:{bf:Additional Options}}
 {p2line}
+=======
+{synoptline}
+{synopt:{opt prism:iv}} calculates the PRISM IV % mortality.{p_end}
+
+{syntab:Additional Options}
+>>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synoptset 20 tabbed}{...}
 {synopt:{opt si}} will calculate scores based on SI Lab values. {p_end}
 {synopt:{opt pltu:nit(integer)}} allows specifying a different platelet count unit.{p_end}
 {synopt:{opt wbcu:nit(integer)}} allows specifying a different WBC unit.{p_end}
 {synopt:{opt FAHR:enheit}} allows specifying a different temperature unit.{p_end}
 
+<<<<<<< HEAD
 {syntab:{bf:Debugging Options}}
 {p2line}
+=======
+{syntab:Debugging Options}
+>>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synopt:{opt trace}} enables the trace option for the command. Useful in case of unexpected errors. {p_end}
 {synopt:{opt supp:ress}} suppresses warnings regarding data imputation. {p_end}
 {synopt:{opt suppressa:ll}} suppress all errors and data validation functions. {p_end}
 {synopt:{opt noimp:utation}} shows missing score if any variables are missing. {p_end}
 {synopt:{opt noval:idation}} supresses out-of-range data checks. If this is not specified, values that are out-of-range will be considered missing. {p_end}
 {synoptline}
+
+{synoptset 20 tabbed}{...}
+{syntab:{bf:PRISM III Variable List}}
+
+{synopthdr}
+{synoptline}{marker p3v}{...}
+{syntab:Age - Must specify either {opt age} or both {opt dob} and {opt doa}}
+{synopt:{opt age(varname)}} age variable. Requires special coding.{p_end}
+{synopt:{opt dob(varname)}} date of birth variable {p_end}
+{synopt:{opt doa(varname)}} date of admission variable {p_end}
+
+{syntab:Temperature}
+{synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+{synopt: {it:Optional}} {p_end}
+{synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+
+{syntab:Additional Vitals}
+{synopt:{opt sbp(varname)}} systolic blood pressure variable. {p_end}
+{synopt:{opt hr(varname)}} heart rate variable. {p_end}
+{synopt:{opt gcs(varname)}} Glasgow Coma Score variable. {p_end}
+{synopt:{opt pup:ils(varname)}} number of pupils > 3mm and fixed. {p_end}
+
+{syntab:Acid-Base Status}
+{synopt:{opt ph(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+{synopt:{opt bicarb(varname)}} designates the bicarbonate variable; if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+{synopt:{opt pc:o2(varname)}} PCO2 variable. {p_end}
+{synopt:{opt pa:o2(varname)}} PaO2 variable. {p_end}
+
+{synopt: {it:Optional}} {p_end}
+{synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
+{synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+{synoptset 20 tabbed}{...}
+{syntab:Laboratory Values}
+{synopt:{opt glu:cose(varname)}} glucose variable in mg/dL. {p_end}
+{synopt:{opt pot:assium(varname)}} potassium variable in mmol/L. {p_end}
+{synopt:{opt cr:eatinine(varname)}} creatinine variable in mg/dL. {p_end}
+{synopt:{opt bun(varname)}} BUN variable in mg/dL. {p_end}
+{synopt:{opt wbc(varname)}} WBC variable in cells/mm3. {p_end}
+{synopt:{opt plt(varname)}} Platelet Count variable in cells/mm3. {p_end}
+{synoptline}
+{marker p4v}
+{syntab:{bf:PRISM IV Variable List}}
+
+{synopthdr}
+{synoptline}
+{synopt:{opt sou:rce(varname)}} admission source. Requires special coding. {p_end}
+{synopt:{opt cpr(varname)}} CPR status. {p_end}
+{synopt:{opt can:cer(varname)}} cancer status.{p_end}
+{synopt:{opt risk(varname)}} low-risk system of primary dysfunction status. {p_end}
+{synoptline}
+
 {p2colreset}{...}
 {p 4 6 2}
 
@@ -359,4 +442,8 @@ Email: {browse "mailto:stata@azamfirei.com":stata@azamfirei.com}
 {pstd}{browse "https://www.apache.org/licenses/LICENSE-2.0":http://www.apache.org/licenses/LICENSE-2.0}{p_end}
 
 {pstd}Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.{p_end}
+<<<<<<< HEAD
 {pstd} See the License for the specific language governing permissions and limitations under the License. {p_end}
+=======
+{pstd} See the License for the specific language governing permissions and limitations under the License. {p_end}
+>>>>>>> b5817c7203f8caaca95248f5014897d918148fec
