@@ -1,14 +1,38 @@
-*! | Version: 1.1 | Last Updated: Nov 28, 2022
+*! | Version: 1.2 | Last Updated: Feb 28, 2023
 /*----------------------------------------------------------------------------*\
 |   PRISM Score Calculator - a statistical package designed to calculate       |
 |       PRISM III & IV scores.                                                 |
 |                                                                              |
 |   For help, please see help prismscore.                                      |
+|   Additional information available at:                                       |
+|       https://azamfirei.com/prism-score                                      |
 |                                                                              |
-|   Version: 1.1 | Created: Jul 28, 2022 | Last Updated: Nov 28, 2022          |
+|   Version: 1.2 | Created: Jul 28, 2022 | Last Updated: Feb 28, 2023          |
 |   Author: Razvan Azamfirei - stata@azamfirei.com                             |
 |                                                                              |
+|   CHANGELOG:                                                                 |
+|       - Version 1.2:                                                         |
+|           Updated HR OOR forvalues                                           |
 |                                                                              |
+|       - Version 1.1:                                                         |
+|           Minor bugs and fixes                                               |
+|           Updated documentation                                              |
+|           Code linting                                                       |
+|                                                                              |
+|   LICENSE:                                                                   |
+|   Copyright 2022 Razvan Azamfirei                                            |
+|                                                                              |
+|       Licensed under the Apache License, Version 2.0 (the"License"); you may |
+|       not use this file except in compliance with the License. You may obtain|
+|       a copy of the License at:                                              |
+|           http://www.apache.org/licenses/LICENSE-2.0                         |
+|       Unless required by applicable law or agreed to in writing, software    |
+|       distributed under the License is distributed on an "AS IS" BASIS,      |
+|       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or        |
+|       implied.                                                               |
+|                                                                              |
+|    See the License for the specific language governing permissions and       |
+|    limitations under the License.                                            |
 \*----------------------------------------------------------------------------*/
 cap program drop    prismscore
     program         prismscore
@@ -16,10 +40,17 @@ cap program drop    prismscore
         if (c(stata_version) < 17) {
             di as txt "Note: this command is written " ///
             "and comprehensively tested for Stata release 17.0 or higher."
-            di as txt "The command was tested on Stata 12.0 with no "///
+            di as txt "The command was tested on Stata 12.0 with no " ///
             "issues. However, a comprehensive validation was not performed."
-            di as txt "The command might not work properly with " ///
+            if (c(stata_version) >= 12) {
+                di as txt "There are no technical reasons preventing this " ///
+            "command from working with Stata version `c(stata_version)'. "  ///
+            "However no guarantees are made."
+            }
+            else{
+                di as txt "The command might not work properly with " ///
             "Stata version `c(stata_version)'"
+                }
             loc vers = c(stata_version)
         }
         else loc vers 17
@@ -843,17 +874,3 @@ if noimputationoption == 0 {
 di as text _newline "Calculation completed successfully." _continue
 restore, not
 end
-
-/*
-Copyright 2022 Razvan Azamfirei
-    Licensed under the Apache License, Version 2.0 (the"License"); you may not
-    use this file except in compliance with the License. You may obtain a copy
-    of the License at:
-        http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-    either express or implied.
-See the License for the specific language governing permissions and limitations
-under the License.
-*/

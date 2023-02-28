@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0 21 Jul 2022}{...}
+{* *! version 1.2 28 Feb 2023}{...}
 {viewerdialog "prismscore" "dialog prismscore"}{...}
 {viewerjumpto "Syntax" "./prismscore##syntax"}{...}
 {viewerjumpto "Syntax Details" "./prismscore##syntaxd"}{...}
