@@ -63,6 +63,7 @@
 {p2line}
 {synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
 {synoptset 20 notes}{...}
+
 {synopt: {it:Optional}} {p_end}
 {p2line}
 {synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
@@ -87,6 +88,7 @@
 {p2line}
 {synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
 {synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
 {synoptset 20 tabbed}{...}
 {synopt:Laboratory Values} {p_end}
 {p2line}
@@ -99,6 +101,7 @@
 {p2line}
 {marker p4v}
 {syntab:{bf:PRISM IV} (optional)}
+
 {synopt:{opt prism:iv}} calculates the PRISM IV % mortality.{p_end}
 
 {synoptset 20 notes}{...}
@@ -139,6 +142,7 @@
 
 {syntab:Temperature}
 {synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+
 {synopt: {it:Optional}} {p_end}
 {synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
 
@@ -157,6 +161,7 @@
 {synopt: {it:Optional}} {p_end}
 {synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
 {synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
 {synoptset 20 tabbed}{...}
 {syntab:Laboratory Values}
 {synopt:{opt glu:cose(varname)}} glucose variable in mg/dL. {p_end}
@@ -219,8 +224,10 @@ This is recommended if the age is not already appropriately coded.{p_end}
 
 {phang}
 {opt hr(varname numeric)} designates the heart rate variable.{p_end}
+
 {phang}
 {opt gcs(varname integer)} designates the Glascow Coma Score variable.{p_end}
+
 {phang}
 {opt pupils(varname integer)} designates the variable containing the number of pupils >3mm and fixed.{p_end}
 
