@@ -28,7 +28,6 @@
 
 {synoptset 20 tabbed}{...}
 {marker new_varlist}{...}
-<<<<<<< HEAD
 {syntab: {bf:new_varlist} - will contain the calculated score; need to specifiy either 1, 3 or 4 variables:}
 {synoptline}
 
@@ -39,7 +38,6 @@
 
 {syntab:{bf:PRISM IV}}
 
-=======
 {syntab:{bf:New Variables}}
 
 {synopthdr: Scenarios}
@@ -49,15 +47,10 @@
 {syntab:PRISM III}
 {synopt:3 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score{p_end}
 {syntab:PRISM IV}
->>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synopt:1 variable} new variable will contain {ul:{bf:only}} the PRISM IV score.{p_end}
 {synopt:4 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score prism4_score{p_end}
 {p2colreset}{...}
 {synoptline}
-<<<<<<< HEAD
-
-=======
->>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 
 {synoptset 20 tabbed}{...}
 {syntab:{bf:Variable Lists}}
@@ -67,7 +60,6 @@
 {syntab:{bf:Options}}
 
 {synopthdr}
-<<<<<<< HEAD
 {synoptline}{marker p3v}{...}
 {syntab:{bf:PRISM III} (required)}
 
@@ -129,24 +121,19 @@
 
 {syntab:{bf:Additional Options}}
 {p2line}
-=======
 {synoptline}
 {synopt:{opt prism:iv}} calculates the PRISM IV % mortality.{p_end}
 
 {syntab:Additional Options}
->>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synoptset 20 tabbed}{...}
 {synopt:{opt si}} will calculate scores based on SI Lab values. {p_end}
 {synopt:{opt pltu:nit(integer)}} allows specifying a different platelet count unit.{p_end}
 {synopt:{opt wbcu:nit(integer)}} allows specifying a different WBC unit.{p_end}
 {synopt:{opt FAHR:enheit}} allows specifying a different temperature unit.{p_end}
 
-<<<<<<< HEAD
 {syntab:{bf:Debugging Options}}
 {p2line}
-=======
 {syntab:Debugging Options}
->>>>>>> b5817c7203f8caaca95248f5014897d918148fec
 {synopt:{opt trace}} enables the trace option for the command. Useful in case of unexpected errors. {p_end}
 {synopt:{opt supp:ress}} suppresses warnings regarding data imputation. {p_end}
 {synopt:{opt suppressa:ll}} suppress all errors and data validation functions. {p_end}
@@ -442,8 +429,5 @@ Email: {browse "mailto:stata@azamfirei.com":stata@azamfirei.com}
 {pstd}{browse "https://www.apache.org/licenses/LICENSE-2.0":http://www.apache.org/licenses/LICENSE-2.0}{p_end}
 
 {pstd}Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.{p_end}
-<<<<<<< HEAD
 {pstd} See the License for the specific language governing permissions and limitations under the License. {p_end}
-=======
 {pstd} See the License for the specific language governing permissions and limitations under the License. {p_end}
->>>>>>> b5817c7203f8caaca95248f5014897d918148fec
