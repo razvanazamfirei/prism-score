@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.2 28 Feb 2023}{...}
+{* *! version 1.2.1 1 Mar 2023}{...}
 {viewerdialog "prismscore" "dialog prismscore"}{...}
 {viewerjumpto "Syntax" "./prismscore##syntax"}{...}
 {viewerjumpto "Syntax Details" "./prismscore##syntaxd"}{...}
@@ -28,22 +28,12 @@
 
 {synoptset 20 tabbed}{...}
 {marker new_varlist}{...}
-{syntab: {bf:new_varlist} - will contain the calculated score; need to specifiy either 1, 3 or 4 variables:}
-{synoptline}
-
-{syntab:{bf:PRISM III}}
-
-{synopt:3 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score{p_end}
-{p2line}
-
-{syntab:{bf:PRISM IV}}
-
 {syntab:{bf:New Variables}}
+
+{phang} The new variables will contain the calculated scores. Depending on the scenario, you will need to specify either 1, 3, or 4 options.{p_end}
 
 {synopthdr: Scenarios}
 {synoptline}
-{phang} The new variables will contain the calculated scores. Depending on the scenario, you will need to specify either 1, 3, or 4 options.{p_end}
-
 {syntab:PRISM III}
 {synopt:3 variables} new variables must follow this order: neurologic_score nonneurologic_score total_score{p_end}
 {syntab:PRISM IV}
@@ -73,6 +63,7 @@
 {p2line}
 {synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
 {synoptset 20 notes}{...}
+
 {synopt: {it:Optional}} {p_end}
 {p2line}
 {synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
@@ -97,6 +88,7 @@
 {p2line}
 {synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
 {synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
 {synoptset 20 tabbed}{...}
 {synopt:Laboratory Values} {p_end}
 {p2line}
@@ -109,6 +101,7 @@
 {p2line}
 {marker p4v}
 {syntab:{bf:PRISM IV} (optional)}
+
 {synopt:{opt prism:iv}} calculates the PRISM IV % mortality.{p_end}
 
 {synoptset 20 notes}{...}
@@ -118,21 +111,17 @@
 {synopt:{opt cpr(varname)}} CPR status. {p_end}
 {synopt:{opt can:cer(varname)}} cancer status.{p_end}
 {synopt:{opt risk(varname)}} low-risk system of primary dysfunction status. {p_end}
+{p2line}
 
 {syntab:{bf:Additional Options}}
-{p2line}
 {synoptline}
-{synopt:{opt prism:iv}} calculates the PRISM IV % mortality.{p_end}
-
-{syntab:Additional Options}
 {synoptset 20 tabbed}{...}
+{syntab:Unit Options}
 {synopt:{opt si}} will calculate scores based on SI Lab values. {p_end}
 {synopt:{opt pltu:nit(integer)}} allows specifying a different platelet count unit.{p_end}
 {synopt:{opt wbcu:nit(integer)}} allows specifying a different WBC unit.{p_end}
 {synopt:{opt FAHR:enheit}} allows specifying a different temperature unit.{p_end}
 
-{syntab:{bf:Debugging Options}}
-{p2line}
 {syntab:Debugging Options}
 {synopt:{opt trace}} enables the trace option for the command. Useful in case of unexpected errors. {p_end}
 {synopt:{opt supp:ress}} suppresses warnings regarding data imputation. {p_end}
@@ -153,6 +142,7 @@
 
 {syntab:Temperature}
 {synopt:{opt temp(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
+
 {synopt: {it:Optional}} {p_end}
 {synopt:{opt templ:ow(varname)}} temperature variable. If {opt templow} is used, then {opt temp} designates the high temperature variable{p_end}
 
@@ -171,6 +161,7 @@
 {synopt: {it:Optional}} {p_end}
 {synopt:{opt phh:igh(varname)}} pH variable; if {opt phhigh} is used, then {opt ph} designates the low pH variable. {p_end}
 {synopt:{opt bicarbh:igh(varname)}} designates the bicarbonate variable. if {opt bicarbhigh} is used, then it designates the low bicarbonate variable {p_end}
+
 {synoptset 20 tabbed}{...}
 {syntab:Laboratory Values}
 {synopt:{opt glu:cose(varname)}} glucose variable in mg/dL. {p_end}
@@ -233,13 +224,16 @@ This is recommended if the age is not already appropriately coded.{p_end}
 
 {phang}
 {opt hr(varname numeric)} designates the heart rate variable.{p_end}
+
 {phang}
 {opt gcs(varname integer)} designates the Glascow Coma Score variable.{p_end}
+
 {phang}
 {opt pupils(varname integer)} designates the variable containing the number of pupils >3mm and fixed.{p_end}
 
 {phang}
-{opt temp(varname numeric)} designates the temperature variable. If there is only one temperature recorded, the command will use the recorded temperature for both high and low temperature calculations. If both a high and a low temperature value are recorded, specify {opt templow}.{p_end}
+{opt temp(varname numeric)} designates the temperature variable. If there is only one temperature recorded, the command will use the recorded temperature for both high and low temperature calculations. If both a high and a low
+temperature value are recorded, specify {opt templow}.{p_end}
 
 {phang}
 {opt templow(varname numeric)} designates the low temperature variable. If both {opt temp} and {opt templow} are specified, the command will compare the values and will use the highest value for high temperature calculations and the lowest value for the low temperature calculations.{p_end}
@@ -251,13 +245,16 @@ This is recommended if the age is not already appropriately coded.{p_end}
 both high and low pH calculations. If both a high and a low pH value are recorded, specify {opt phhigh}.{p_end}
 
 {phang}
-{opt phhigh(varname numeric)} designates the high ph variable. If both {opt ph} and {opt phhigh} are specified, the command will compare the values and will use the highest value for high ph calculations and the lowest value for the low ph calculations.{p_end}
+{opt phhigh(varname numeric)} designates the high ph variable. If both {opt ph} and {opt phhigh} are specified, the command will compare the values and will use the highest value for high ph calculations
+and the lowest value for the low ph calculations.{p_end}
 
 {phang}
-{opt bicarb(varname numeric)} designates the HCO3-/CO2 variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations. If both a high and a low bicarbonate value are recorded, specify {opt bicarbhigh}.{p_end}
+{opt bicarb(varname numeric)} designates the HCO3-/CO2 variable. If there is only one bicarbonate value recorded, the command will use the recorded bicarbonate values for both high and low bicarbonate calculations.
+If both a high and a low bicarbonate value are recorded, specify {opt bicarbhigh}.{p_end}
 
 {phang}
-{opt bicarbhigh(varname numeric)} designates the high HCO3-/CO2 variable. If both {opt bicarb} and {opt bicarbhigh} are specified, the command will compare the values and will use the highest value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations.{p_end}
+{opt bicarbhigh(varname numeric)} designates the high HCO3-/CO2 variable. If both {opt bicarb} and {opt bicarbhigh} are specified, the command will compare the values and will use the highest
+value for high bicarbonate calculations and the lowest value for the low bicarbonate calculations.{p_end}
 
 {phang}
 {opt pco2(varname numeric)} designates the PCO2 variable; not to be confused with the bicarb variable.{p_end}
@@ -388,7 +385,7 @@ prismscore.ado file.
 I am not offering a command-based option to prevent inadvertent changes by inexperienced users. If you are having issues with this, please email me and I'm happy to help. {p_end}
 
 {pstd}
-{it:Instructions}{break}Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 210); alternatively search for {hi:CHANGE THIS}. Modify the coefficients as needed and reload the program.
+{it:Instructions}{break}Open the prism.ado file. Locate the section containing the PRISM IV coefficients (line 292); alternatively search for {hi:CHANGE THIS}. Modify the coefficients as needed and reload the program.
 The following commands should be helpful:
 
 {phang}
