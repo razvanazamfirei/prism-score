@@ -7,7 +7,8 @@
 {viewerjumpto "Options" "./prismscore##options"}{...}
 {viewerjumpto "Remarks" "./prismscore##remarks"}{...}
 {viewerjumpto "Custom Implementations" "./prismscore##custom"}{...}
-{viewerjumpto "License" "./prismscore##License"}{...}
+{viewerjumpto "Citation" "./prismscore##citation"}{...}
+{viewerjumpto "License" "./prismscore##citation"}{...}
 {viewerjumpto "Variable Coding Reference" "./prismscore##variable"}{...}
 {title:Title}
 
@@ -192,6 +193,8 @@
 {pstd}
 {cmd:prismscore} calculates PRISM III and PRISM IV scores. The scores are outcome prognostication tools that have been used
 extensively in clinical care and research to calculate the expected mortality and control for illness severity in pediatric intensive care units.{p_end}
+
+{pstd}See {help "./prismscore##citation":Citation} for proper attribution.{p_end}
 
 {marker options}{...}
 {title:Options}
@@ -410,6 +413,15 @@ The following commands should be helpful:
 {pstd}
 
 {pstd}
+
+{marker citation}{...}
+{title:Citation}
+
+{pstd}
+Please cite this command as:
+
+{pstd}
+Azamfirei, Razvan; Mennie, Colleen; Fackler, James; Kudchadkar, Sapna R. Development of a Stata Command for Pediatric Risk of Mortality Calculation. Pediatric Critical Care Medicine 24(3):p e162-e163, March 2023. | DOI: {browse "https://doi.org/10.1097/PCC.0000000000003149":10.1097/PCC.0000000000003149}
 
 {title:Author}
 {p}
