@@ -77,6 +77,14 @@ The command assumes your data is clean. While there are data validation checks b
 The command supports only one measurement scale per variable. If, for example, you have temperature data that's both in &deg;C and &deg;F, you will have to convert &deg;F -> &deg;C or vice-versa.
 
 As detailed in the [documentation](details#custom-implementations) file, you can change the coefficients used for the logistic function.
+
+## Citation
+
+!!! info "Citation"
+
+    Azamfirei, Razvan; Mennie, Colleen; Fackler, James; Kudchadkar, Sapna R. Development of a Stata Command for Pediatric Risk of Mortality Calculation. Pediatric Critical Care Medicine 24(3):p e162-e163, March 2023. | DOI: 10.1097/PCC.0000000000003149
+
+
 ### License
 
 **Copyright 2022 Razvan Azamfirei**

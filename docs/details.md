@@ -23,6 +23,14 @@ table th:nth-of-type(2) {
 
 # Documentation
 
+If this command is used in in any publications, please reference the following article.
+
+!!! info "Citation"
+
+    Azamfirei, Razvan; Mennie, Colleen; Fackler, James; Kudchadkar, Sapna R. Development of a Stata Command for Pediatric Risk of Mortality Calculation. Pediatric Critical Care Medicine 24(3):p e162-e163, March 2023. | DOI: 10.1097/PCC.0000000000003149
+
+
+
 ## Title
 
 **PRISM Score** — a command to calculate the PRISM III and PRISM IV scores
