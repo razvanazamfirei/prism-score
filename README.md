@@ -1,10 +1,15 @@
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/razvanazamfirei/prism-score?style=flat-square)
+![DOI](https://img.shields.io/badge/doi-10.1097%2FPCC.0000000000003149-blue?style=flat-square)
+![GitHub](https://img.shields.io/github/license/razvanazamfirei/prism-score?style=flat-square)
 # Getting Started
 
 This is a command developed for the calculation of PRISM III & PRISM IV scores.
 
-For additional information, please see the [command documentation](https://azamfirei.com/prism-score/).
 
-<details><summary>Installation Instructions</summary>
+Azamfirei, Razvan; Mennie, Colleen; Fackler, James; Kudchadkar, Sapna R. Development of a Stata Command for Pediatric Risk of Mortality Calculation. Pediatric Critical Care Medicine 24(3):p e162-e163, March 2023. | DOI: 10.1097/PCC.0000000000003149
+
+
+For additional information, please see the [command documentation](https://azamfirei.com/prism-score/).
 
 ## Installation Instructions
 
@@ -20,7 +25,6 @@ net install prismscore, from(https://azamfirei.com/prism-score)
 
 Open Stata. Run the following command:
 
-**Note**: This is not yet available.
 
 ```stata
 ssc install prismscore
@@ -50,6 +54,7 @@ Open the directory listed under (PLUS). Copy the files into the folder. For extr
 ## Usage Instructions
 
 For more information about PRISM III & PRISM IV scores see the following references.[^1][^2] There are two main ways of running this command.
+
 [^1]: Pollack MM, Patel KM, Ruttimann UE. PRISM III: an updated Pediatric Risk of Mortality score. Crit Care Med. 1996;24(5):743-52.
 [^2]: Pollack MM, Holubkov R, Funai T, Dean JM, Berger JT, Wessel DL, et al. The Pediatric Risk of Mortality Score: Update 2015. Pediatr Crit Care Med. 2016;17(1):2-9.
 
@@ -84,7 +89,7 @@ As detailed in the help file, you can change the coefficients used for the logis
 
 **Copyright 2022 Razvan Azamfirei**
 
-Licensed under the Apache License, Version 2.0 (the"License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
 
 http://www.apache.org/licenses/LICENSE-2.0
 
