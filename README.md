@@ -1,5 +1,5 @@
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/razvanazamfirei/prism-score?style=flat-square)
-![DOI](https://img.shields.io/badge/doi-10.1097%2FPCC.0000000000003149-blue)
+![DOI](https://img.shields.io/badge/doi-10.1097%2FPCC.0000000000003149-blue?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/razvanazamfirei/prism-score?style=flat-square)
 # Getting Started
 
