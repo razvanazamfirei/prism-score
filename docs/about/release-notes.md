@@ -2,6 +2,10 @@
 
 ## Command
 
+### Version 1.2.1
+
+* Changed the minimum dialog Stata version from 17 to 12
+
 ### Version 1.2
 
 * Increased acceptable ranges for heart rate
