@@ -2,6 +2,10 @@
 
 ## Command
 
+### Version 1.3
+
+* Documentation updates
+
 ### Version 1.2.1
 
 * Changed the minimum dialog Stata version from 17 to 12
