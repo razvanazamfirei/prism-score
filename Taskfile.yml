@@ -1,0 +1,44 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  update-pkg:
+    desc: "Update the package file"
+    vars:
+      DATE: '{{ now | date "02Jan2006" | lower }}'
+    cmds:
+      - 'echo -e "v 3\nd prismscore\nd PRISM Score Calculator\nd\nd Razvan Azamfirei\nd Department of Anesthesiology and Critical Care\nd University of Pennsylvania\nd\nd Distribution-Date: {{.DATE}}\nf src/prismscore.ado\nf src/prismscore.sthlp\nf src/prismscore.dlg" > prismscore.pkg'
+    silent: true
+
+  copy-files:
+    desc: "Copy files to docs folder"
+    cmds:
+      - cp -r src/ docs/src/
+      - cp stata.toc docs/stata.toc
+      - cp prismscore.pkg docs/prismscore.pkg
+    sources:
+      - src/prismscore.*
+      - stata.toc
+      - prismscore.pkg
+    generates:
+      - docs/src/prismscore.ado
+      - docs/src/prismscore.sthlp
+      - docs/src/prismscore.dlg
+      - docs/stata.toc
+      - docs/prismscore.pkg
+
+  git-operations:
+    vars:
+      DATE: '{{ now | date "2006-01-02" }}'
+    cmds:
+      - git add .
+      - git commit -m "Package Update - {{.DATE}}"
+      - git push
+    silent: true
+
+  release:
+    cmds:
+      - task update-pkg
+      - task copy-files
+      - task git-operations

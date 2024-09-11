@@ -1,4 +1,4 @@
-*! | Version: 1.2.1 | Last Updated: Apr 21, 2023
+*! | Version: 1.3 | Last Updated: Sep 11, 2024
 /*----------------------------------------------------------------------------*\
 |   PRISM Score Calculator - a statistical package designed to calculate       |
 |       PRISM III & IV scores.                                                 |
