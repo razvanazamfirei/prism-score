@@ -1,0 +1,12 @@
+v 3
+d prismscore
+d PRISM Score Calculator
+d
+d Razvan Azamfirei
+d Department of Anesthesiology and Critical Care
+d University of Pennsylvania
+d
+d Distribution-Date: 11sep2024
+f src/prismscore.ado
+f src/prismscore.sthlp
+f src/prismscore.dlg
