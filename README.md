@@ -27,7 +27,7 @@ Open Stata. Run the following command:
 
 
 ```stata
-ssc install prismscore
+ssc install pccmtoolkit
 ```
 
 ### Manually
